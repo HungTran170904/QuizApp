@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration.EnvironmentVariables;
 using QuizApp_backend.Models;
 using QuizApp_backend.Util;
-using System.Data;
 using System.Data.SqlClient;
 
 namespace QuizApp_backend.Repository
@@ -10,9 +9,13 @@ namespace QuizApp_backend.Repository
     {
         private readonly string connString;
         private readonly PasswordEncoder _passwordEncoder;
-        public AccountRepo(IConfiguration configuration, PasswordEncoder passwordEncoder) {
+        private readonly ReaderConverter _converter;
+        public AccountRepo(IConfiguration configuration,
+            PasswordEncoder passwordEncoder,
+            ReaderConverter converter) {
              connString= configuration["ConnectionStrings:DefaultConnection"];
             _passwordEncoder= passwordEncoder;
+            _converter= converter;
         }
         public Account Save(Account account)
         {
@@ -35,13 +38,12 @@ namespace QuizApp_backend.Repository
             {
                 conn.Open();
                 var query = "select * from Account where Id=@Id";
-                SqlCommand smd = new SqlCommand(query, conn);
-                smd.Parameters.AddWithValue("Id", Id);
-                SqlDataReader reader = smd.ExecuteReader();
+                SqlCommand sql_cmd = new SqlCommand(query, conn);
+                sql_cmd.Parameters.AddWithValue("Id", Id);
+                SqlDataReader reader = sql_cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    var account =new Account(reader.GetGuid(0).ToString(),reader.GetString(1), 
-                            reader.GetString(2), reader.GetString(3));
+                    var account = _converter.convertToAccount(reader);
                     return account;
                 }
                 else return null;
@@ -53,9 +55,9 @@ namespace QuizApp_backend.Repository
             {
                 conn.Open();
                 var query = "select password from Account where Id=@Email";
-                SqlCommand smd = new SqlCommand(query, conn);
-                smd.Parameters.AddWithValue("Email",Email);
-                SqlDataReader reader = smd.ExecuteReader();
+                SqlCommand sql_cmd = new SqlCommand(query, conn);
+                sql_cmd.Parameters.AddWithValue("Email",Email);
+                SqlDataReader reader = sql_cmd.ExecuteReader();
                 if (reader.Read())
                 {
                     var password = reader.GetString(0);
