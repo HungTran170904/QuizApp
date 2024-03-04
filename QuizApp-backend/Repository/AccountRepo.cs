@@ -28,7 +28,7 @@ namespace QuizApp_backend.Repository
                 smd.Parameters.AddWithValue("Email", account.Email);
                 smd.Parameters.AddWithValue("Password", _passwordEncoder.encode(account.Password));
                 SqlDataReader reader = smd.ExecuteReader();
-                if (reader.Read()) return (Account) reader.GetValue(0);
+                if (reader.Read()) return _converter.convertToAccount(reader);
                 else return null;
             }
         }
@@ -41,15 +41,11 @@ namespace QuizApp_backend.Repository
                 SqlCommand sql_cmd = new SqlCommand(query, conn);
                 sql_cmd.Parameters.AddWithValue("Id", Id);
                 SqlDataReader reader = sql_cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    var account = _converter.convertToAccount(reader);
-                    return account;
-                }
+                if (reader.Read()) return _converter.convertToAccount(reader);
                 else return null;
             }
         }
-        public bool existsByEmailAndPassword(string Email, string enteredPassword)
+        public bool ExistsByEmailAndPassword(string Email, string enteredPassword)
         {
             using (var conn = new SqlConnection(connString))
             {

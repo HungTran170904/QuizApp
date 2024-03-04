@@ -6,7 +6,6 @@
         public string CreatorId { get; set; }
         public string Title { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string Code { get; set; }
         public string Status { get; set; }
     }
 }
