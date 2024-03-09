@@ -8,13 +8,11 @@ namespace QuizApp_backend.Repository
     public class AccountRepo
     {
         private readonly string connString;
-        private readonly PasswordEncoder _passwordEncoder;
         private readonly ReaderConverter _converter;
         public AccountRepo(IConfiguration configuration,
             PasswordEncoder passwordEncoder,
             ReaderConverter converter) {
              connString= configuration["ConnectionStrings:DefaultConnection"];
-            _passwordEncoder= passwordEncoder;
             _converter= converter;
         }
         public Account Save(Account account)
@@ -26,7 +24,7 @@ namespace QuizApp_backend.Repository
                 SqlCommand smd = new SqlCommand(query, conn);
                 smd.Parameters.AddWithValue("Name", account.Name);
                 smd.Parameters.AddWithValue("Email", account.Email);
-                smd.Parameters.AddWithValue("Password", _passwordEncoder.encode(account.Password));
+                smd.Parameters.AddWithValue("Password",account.Password);
                 SqlDataReader reader = smd.ExecuteReader();
                 if (reader.Read()) return _converter.convertToAccount(reader);
                 else return null;
@@ -45,21 +43,17 @@ namespace QuizApp_backend.Repository
                 else return null;
             }
         }
-        public bool ExistsByEmailAndPassword(string Email, string enteredPassword)
+        public Account FindByEmail(string Email)
         {
             using (var conn = new SqlConnection(connString))
             {
                 conn.Open();
-                var query = "select password from Account where Id=@Email";
+                var query = "select * from Account where Email=@Email";
                 SqlCommand sql_cmd = new SqlCommand(query, conn);
-                sql_cmd.Parameters.AddWithValue("Email",Email);
+                sql_cmd.Parameters.AddWithValue("Email", Email);
                 SqlDataReader reader = sql_cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    var password = reader.GetString(0);
-                    return password.Equals(_passwordEncoder.encode(enteredPassword));
-                }
-                else return false;
+                if (reader.Read()) return _converter.convertToAccount(reader);
+                else return null;
             }
         }
     }

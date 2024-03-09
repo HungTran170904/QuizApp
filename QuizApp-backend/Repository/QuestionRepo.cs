@@ -24,7 +24,6 @@ namespace QuizApp_backend.Repository
                 SqlCommand sql_cmd = new SqlCommand(query, conn);
                 sql_cmd.Parameters.AddWithValue("QuizId", question.QuizId);
                 sql_cmd.Parameters.AddWithValue("QuestionText", question.QuestionText);
-                sql_cmd.Parameters.AddWithValue("QuestionType", question.QuestionType);
                 sql_cmd.Parameters.AddWithValue("Options", JsonNet.Serialize(question.Options));
                 sql_cmd.Parameters.AddWithValue("CorrectAnswer", question.CorrectAnswer);
                 sql_cmd.Parameters.AddWithValue("TimeOut", question.TimeOut);
@@ -42,7 +41,6 @@ namespace QuizApp_backend.Repository
                 DataRow dr = dt.NewRow();
                 dr["QuizId"] = question.QuizId;
                 dr["QuestionText"] = question.QuestionText;
-                dr["QuestionType"] = question.QuestionType;
                 dr["CorrectAnswer"] = question.CorrectAnswer;
                 dr["TimeOut"] = question.TimeOut;
                 dr["Options"] = JsonNet.Serialize(question.Options);
@@ -84,17 +82,18 @@ namespace QuizApp_backend.Repository
                 return questions;
             }
         }
-        public bool DeleteQuestion(string questionId)
+        public Question FindById(string QuestionId)
         {
             using (var conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string query = "DELETE FROM Question WHERE Id = @QuestionId";
-                SqlCommand sqlCmd = new SqlCommand(query, conn);
-                sqlCmd.Parameters.AddWithValue("@QuestionId", questionId);
-                return sqlCmd.ExecuteNonQuery() > 0;
+                string query = "select * from Question where Id=@Id";
+                SqlCommand sql_cmd = new SqlCommand(query, conn);
+                sql_cmd.Parameters.AddWithValue("Id", QuestionId);
+                SqlDataReader reader = sql_cmd.ExecuteReader();
+                if (reader.Read()) return _converter.convertToQuestion(reader);
+                else return null;
             }
         }
-
     }
 }

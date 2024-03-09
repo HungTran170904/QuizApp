@@ -12,7 +12,9 @@ namespace QuizApp_backend.Util
         {
             Account account=new Account();
             account.Id=reader.GetFieldValue<Guid>("Id").ToString();
+            account.Name=reader.GetFieldValue<string>("Name");
             account.Email = reader.GetFieldValue<string>("Email");
+            account.Password = reader.GetFieldValue<string>("Password");
             return account;
         }
         public Question convertToQuestion(SqlDataReader reader)
@@ -21,7 +23,6 @@ namespace QuizApp_backend.Util
             question.Id = reader.GetFieldValue<Guid>("Id").ToString();
             question.QuizId = reader.GetFieldValue<Guid>("QuizId").ToString();
             question.QuestionText = reader.GetFieldValue<string>("QuestionText");
-            question.QuestionType = reader.GetFieldValue<string>("QuestionType");
             question.TimeOut = reader.GetFieldValue<int>("TimeOut");
             string jsonOptions = reader.GetFieldValue<string>("Options");
             question.Options = JsonNet.Deserialize<List<string>>(jsonOptions);
@@ -40,14 +41,24 @@ namespace QuizApp_backend.Util
         public Participant convertToParticipant(SqlDataReader reader)
         {
             Participant participant = new Participant();
-            participant.Id= reader.GetFieldValue<Guid>("Id").ToString(); ;
+            participant.Id= reader.GetFieldValue<Guid>("Id").ToString();
             participant.QuizId= reader.GetFieldValue<Guid>("QuizId").ToString();
             participant.Name= reader.GetFieldValue<string>("Name");
-            participant.TotalScore= reader.GetFieldValue<int>("TotalScore");
+            if (!reader.IsDBNull(reader.GetOrdinal("TotalScore")))
+                participant.TotalScore= reader.GetFieldValue<int>("TotalScore");
             participant.AttendedAt= reader.GetFieldValue<DateTime>("AttendedAt");
             if(!reader.IsDBNull(reader.GetOrdinal("FinishedAt")))
                 participant.FinishedAt= reader.GetFieldValue<DateTime>("FinishedAt");
             return participant;
+        }
+        public Result convertToResult(SqlDataReader reader)
+        {
+            Result result = new Result();
+            //result.ParticipantId= reader.GetFieldValue<Guid>("ParticipantId").ToString();
+            result.QuestionId= reader.GetFieldValue<Guid>("QuestionId").ToString();
+            result.ChoosedOption= reader.GetFieldValue<string>("ChoosedOption");
+            result.IsCorrect= reader.GetFieldValue<bool>("IsCorrect");
+            return result;
         }
     }
 }

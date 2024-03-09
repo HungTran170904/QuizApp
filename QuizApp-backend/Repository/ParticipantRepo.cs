@@ -1,5 +1,6 @@
 ﻿using QuizApp_backend.Models;
 using QuizApp_backend.Util;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace QuizApp_backend.Repository
@@ -42,6 +43,44 @@ namespace QuizApp_backend.Repository
                 SqlDataReader reader= sql_cmd.ExecuteReader();
                 if (reader.Read()) return reader.GetInt32(0);
                 else return -1;
+            }
+        }
+        public List<Participant> FindByQuizId(string QuizId)
+        {
+            using (var conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                string query = "select * from Participant p " +
+                                "left join Result r on r.ParticipantId=p.Id " +
+                                "where p.QuizId=@QuizId";
+                SqlCommand sql_cmd = new SqlCommand(query, conn);
+                sql_cmd.Parameters.AddWithValue("QuizId", QuizId);
+                SqlDataReader reader = sql_cmd.ExecuteReader();
+                Dictionary<string, Participant> dictionary=new Dictionary<string, Participant>();
+                while (reader.Read())
+                {
+                    if (reader.IsDBNull(reader.GetOrdinal("ParticipantId")))
+                    {
+                        Participant p = _converter.convertToParticipant(reader);
+                        dictionary[p.Id] = p;
+                    }
+                    else
+                    {
+                        string participantId = reader.GetFieldValue<Guid>("ParticipantId").ToString();
+                        Result r = _converter.convertToResult(reader);
+                        if (dictionary.ContainsKey(participantId))
+                        {
+                            dictionary[participantId].Results.Add(r);
+                        }
+                        else
+                        {
+                            Participant p = _converter.convertToParticipant(reader);
+                            p.Results.Add(r);
+                            dictionary[participantId] = p;
+                        }
+                    }
+                }
+                return dictionary.Values.ToList();
             }
         }
     }

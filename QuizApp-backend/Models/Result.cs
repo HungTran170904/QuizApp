@@ -2,10 +2,9 @@
 {
     public class Result
     {
-        public string Id { get; set; }
-        public string ChoosedOption { get; set; }
-        public bool IsCorrect { get; set; }
         public string ParticipantId { get; set; }
         public string QuestionId { get; set; }
+        public string ChoosedOption { get; set; }
+        public bool IsCorrect { get; set; }
     }
 }

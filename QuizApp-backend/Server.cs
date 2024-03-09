@@ -1,22 +1,122 @@
-﻿using QuizApp_backend.Models;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using QuizApp_backend.Controllers;
+using QuizApp_backend.Exceptions;
+using QuizApp_backend.Models;
 using QuizApp_backend.Repository;
+using QuizApp_backend.Util;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace QuizApp_backend
 {
     public class Server
     {
-        public readonly AccountRepo _accountRepo;
-        public Server(AccountRepo accountRepo)
+        private readonly IPAddress ipaddress;
+        private readonly int port;
+        public Dictionary<string,QuizSession> quizSessions;
+
+        private readonly AccountController _accountController;
+        public Server(IConfiguration configuration,
+                    AccountController accountController)
         {
-            _accountRepo = accountRepo;
+            ipaddress = IPAddress.Parse(GetLocalIPAddress());
+            port = Int32.Parse(configuration["ServerConfiguration:Port"]);
+            _accountController=accountController;
+            quizSessions= new Dictionary<string,QuizSession>();
         }
-        public void Run()
+
+        private static string GetLocalIPAddress()
         {
-            Account account = new Account();
-            account.Email = "22520527@gmail.com";
-            account.Name = "Teo";
-            account.Password = "password";
-            _accountRepo.Save(account);
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
+        }
+        public async Task Run()
+        {
+            TcpListener listener = new TcpListener(ipaddress, port);
+            listener.Start();
+            Console.WriteLine($"Server starting at {ipaddress}:{port}");
+            while (true)
+            {
+                TcpClient client = listener.AcceptTcpClient();
+                _ = HandleClientAsync(client);
+            }
+        }
+        private async Task HandleClientAsync(TcpClient client)
+        {
+            try
+            {
+                NetworkStream stream = client.GetStream();
+                byte[] buffer = new byte[2048];
+                int bytesRead;
+                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                {
+                    string data = Encoding.UTF8.GetString(buffer);
+                    Console.WriteLine("Request: "+data);
+                    string response=await HandlePacket(data);
+                    Console.WriteLine("Response "+response);
+                    byte[] resBytes = Encoding.UTF8.GetBytes(response);
+                    await stream.WriteAsync(resBytes, 0, resBytes.Length);
+                }
+                client.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                client.Close();
+            }
+        }
+        private async Task<string> HandlePacket(string jsonString)
+        {
+            var returnedObject=new JObject();
+            try
+            {
+                var jobject = JObject.Parse(jsonString);
+                string url =(string) jobject["url"];
+                string payload = (string) jobject["payload"];
+                string result = "";
+                if (url.StartsWith(_accountController.prefix))
+                    result=_accountController.RouteRequests(url, payload);
+
+                returnedObject["payload"] = result;
+                returnedObject["status"] = "success";
+            }
+            catch (RequestException rex)
+            {
+                returnedObject["payload"] = rex.Message;
+                returnedObject["status"] = "error";
+                Console.WriteLine(rex.StackTrace);
+            }
+            catch(Exception ex)
+            {
+                returnedObject["payload"] = "Unknown error";
+                returnedObject["status"] = "error";
+                Console.WriteLine(ex.ToString());
+            }
+            return JsonConvert.SerializeObject(returnedObject);
+        }
+        public async Task SendData(TcpClient client, string response)
+        {
+            try
+            {
+                NetworkStream stream = client.GetStream();
+                byte[] resBytes = Encoding.UTF8.GetBytes(response);
+                await stream.WriteAsync(resBytes, 0, resBytes.Length);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
     }
 }
