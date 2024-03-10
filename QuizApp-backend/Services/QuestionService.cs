@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QuizApp_backend.Exceptions;
 using QuizApp_backend.Models;
@@ -11,12 +13,12 @@ namespace QuizApp_backend.Services
     {
         private readonly QuestionRepo _questionRepo;
         private readonly ParticipantRepo _participantRepo;
-        private Server _server;
+        private readonly SocketService _socketService;
         public QuestionService(QuestionRepo questionRepo,
                             ParticipantRepo participantRepo,
-                            Server server)
+                            SocketService socketService)
         {
-            _server = server;
+            _socketService= socketService;
             _questionRepo = questionRepo;
             _participantRepo = participantRepo;
         }
@@ -33,24 +35,24 @@ namespace QuizApp_backend.Services
             }
             return questions;
         }
-        public bool AnswerQuestion(string quizId, Result result)
+        private async Task SendScoreToHost(Question question, Result result)
+        {
+            int score = (result.IsCorrect) ? 10 : -10;
+            int totalScore = _participantRepo.AddScore(result.ParticipantId, score);
+            JObject jobject = new JObject();
+            jobject["ParticipantId"] = result.ParticipantId;
+            jobject["TotalScore"] = totalScore;
+            await _socketService.SendDataToHost(question.QuizId,"/question/updateLeaderboard",JsonConvert.SerializeObject(jobject));
+        }
+        public bool AnswerQuestion(Result result)
         {
             var question= _questionRepo.FindById(result.QuestionId);
             if (question == null) 
                 throw new RequestException("QuestionId "+result.QuestionId+" does not exist");
-            if(!_server.quizSessions.ContainsKey(question.QuizId))
+            if(!_socketService.quizSessions.ContainsKey(question.QuizId))
                 throw new RequestException("Sorry, the quiz has been closed");
             result.IsCorrect=question.CorrectAnswer.Equals(result.ChoosedOption);
-            int score = (result.IsCorrect) ? 10 : -10;
-            int totalScore = _participantRepo.AddScore(result.ParticipantId, score);
-            var host = _server.quizSessions[question.QuizId].Host;
-            if (host.Connected)
-            {
-                JObject jobject = new JObject();
-                jobject["ParticipantId"] = result.ParticipantId;
-                jobject["TotalScore"] = totalScore;
-                _server.SendData(host, JsonConvert.SerializeObject(jobject));
-            }
+            SendScoreToHost(question, result);
             return result.IsCorrect;
         }
     }

@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QuizApp_backend.Models;
 using QuizApp_backend.Services;
-using System.Runtime.InteropServices.JavaScript;
 
 namespace QuizApp_backend.Controllers
 {
@@ -30,8 +28,6 @@ namespace QuizApp_backend.Controllers
               var jobject=JObject.Parse(payload);
               string email = (string) jobject["email"];
               string password = (string) jobject["password"];
-              Console.WriteLine("email" + email);
-              Console.WriteLine("password" + password);
               Account account= _accountService.Login(email, password);
               return JsonConvert.SerializeObject(account);
         }

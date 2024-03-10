@@ -2,31 +2,29 @@
 using Newtonsoft.Json.Linq;
 using QuizApp_backend.Controllers;
 using QuizApp_backend.Exceptions;
-using QuizApp_backend.Models;
-using QuizApp_backend.Repository;
-using QuizApp_backend.Util;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.Json.Serialization;
-using System.Text.Unicode;
-
 namespace QuizApp_backend
 {
     public class Server
     {
         private readonly IPAddress ipaddress;
         private readonly int port;
-        public Dictionary<string,QuizSession> quizSessions;
 
         private readonly AccountController _accountController;
+        private readonly QuizController _quizController;
+        private readonly QuestionController _questionController;
         public Server(IConfiguration configuration,
-                    AccountController accountController)
+                    AccountController accountController,
+                    QuizController quizController,
+                    QuestionController questionController)
         {
             ipaddress = IPAddress.Parse(GetLocalIPAddress());
             port = Int32.Parse(configuration["ServerConfiguration:Port"]);
-            _accountController=accountController;
-            quizSessions= new Dictionary<string,QuizSession>();
+            _accountController = accountController;
+            _quizController = quizController;
+            _questionController = questionController;
         }
 
         private static string GetLocalIPAddress()
@@ -63,7 +61,7 @@ namespace QuizApp_backend
                 {
                     string data = Encoding.UTF8.GetString(buffer);
                     Console.WriteLine("Request: "+data);
-                    string response=await HandlePacket(data);
+                    string response=await HandlePacket(data, client);
                     Console.WriteLine("Response "+response);
                     byte[] resBytes = Encoding.UTF8.GetBytes(response);
                     await stream.WriteAsync(resBytes, 0, resBytes.Length);
@@ -76,23 +74,29 @@ namespace QuizApp_backend
                 client.Close();
             }
         }
-        private async Task<string> HandlePacket(string jsonString)
+        private async Task<string> HandlePacket(string jsonString, TcpClient client)
         {
             var returnedObject=new JObject();
+            var jobject = JObject.Parse(jsonString);
+            string url = (string)jobject["url"];
+            string accountId = (string)jobject["accountId"];
+            string payload = (string)jobject["payload"];
             try
             {
-                var jobject = JObject.Parse(jsonString);
-                string url =(string) jobject["url"];
-                string payload = (string) jobject["payload"];
                 string result = "";
                 if (url.StartsWith(_accountController.prefix))
-                    result=_accountController.RouteRequests(url, payload);
-
+                    result=_accountController.RouteRequests(url,payload);
+                else if(url.StartsWith(_quizController.prefix))
+                    result=_quizController.RouteRequests(url,accountId,payload, client);
+                else if(url.StartsWith(_questionController.prefix))
+                    result=_questionController.RouteRequests(url, payload);
+                returnedObject["topic"] = url;
                 returnedObject["payload"] = result;
                 returnedObject["status"] = "success";
             }
             catch (RequestException rex)
             {
+                returnedObject["topic"] = url;
                 returnedObject["payload"] = rex.Message;
                 returnedObject["status"] = "error";
                 Console.WriteLine(rex.StackTrace);
@@ -104,19 +108,6 @@ namespace QuizApp_backend
                 Console.WriteLine(ex.ToString());
             }
             return JsonConvert.SerializeObject(returnedObject);
-        }
-        public async Task SendData(TcpClient client, string response)
-        {
-            try
-            {
-                NetworkStream stream = client.GetStream();
-                byte[] resBytes = Encoding.UTF8.GetBytes(response);
-                await stream.WriteAsync(resBytes, 0, resBytes.Length);
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
         }
     }
 }

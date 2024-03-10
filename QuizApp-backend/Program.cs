@@ -21,11 +21,18 @@ internal class Program
         builder.Services.AddSingleton<ParticipantRepo>();
         builder.Services.AddSingleton<ResultRepo>();
 
+        builder.Services.AddSingleton<SocketService>();
         builder.Services.AddSingleton<AccountService>();
         builder.Services.AddSingleton<QuestionService>();
         builder.Services.AddSingleton<QuizService>();
+        builder.Services.AddSingleton<ParticipantService>();
 
         builder.Services.AddSingleton<AccountController>();
+        builder.Services.AddSingleton<QuestionController>();
+        builder.Services.AddSingleton<AccountController>();
+        builder.Services.AddSingleton<QuizController>();
+        builder.Services.AddSingleton<ParticipantController>();
+
         builder.Services.AddSingleton<Server>();
         var app=builder.Build();
 
