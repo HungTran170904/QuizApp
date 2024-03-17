@@ -50,19 +50,21 @@ namespace QuizApp_backend.Repository
                 conn.Open();
                 string query = "update Quiz set IsBlocked=@IsBlocked where Id=@Id";
                 SqlCommand sql_cmd = new SqlCommand(query, conn);
+                sql_cmd.Parameters.AddWithValue("Id", QuizId);
                 sql_cmd.Parameters.AddWithValue("IsBlocked", IsBlocked);
                 sql_cmd.ExecuteNonQuery();
             }
         }
 
-        public List<Quiz> FindByCreatorId(string accountId)
+        public List<Quiz> FindByCreatorId(string AccountId)
         {
             using (var conn = new SqlConnection(connString))
             {
                 conn.Open();
                 SqlCommand sql_cmd = new SqlCommand("select * from Quiz where CreatorId=@CreatorId", conn);
-                List<Quiz> quizzes = new List<Quiz>();
+                sql_cmd.Parameters.AddWithValue("CreatorId", AccountId);
                 SqlDataReader reader = sql_cmd.ExecuteReader();
+                List<Quiz> quizzes = new List<Quiz>();
                 while (reader.Read())
                 {
                     quizzes.Add(_converter.convertToQuiz(reader));

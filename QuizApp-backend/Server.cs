@@ -5,6 +5,7 @@ using QuizApp_backend.Exceptions;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace QuizApp_backend
 {
     public class Server
@@ -55,16 +56,35 @@ namespace QuizApp_backend
             try
             {
                 NetworkStream stream = client.GetStream();
-                byte[] buffer = new byte[2048];
+                byte[] buffer = new byte[1024];
+                string restData = ""; // the rest of data that is not fully streamed
                 int bytesRead;
                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
-                    string data = Encoding.UTF8.GetString(buffer);
-                    Console.WriteLine("Request: "+data);
-                    string response=await HandlePacket(data, client);
-                    Console.WriteLine("Response "+response);
-                    byte[] resBytes = Encoding.UTF8.GetBytes(response);
-                    await stream.WriteAsync(resBytes, 0, resBytes.Length);
+                    string receivedChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    string[] receivedData = receivedChunk.Split("\r\n\r\n");
+                    if (receivedData.Length > 0)
+                    {
+                        if (restData.Length>0)
+                        {
+                            receivedData[0] = restData + receivedData[0];
+                            restData = "";
+                        }
+
+                        // check if the last packet of receivedChunk is not fully streamed
+                        if (!receivedChunk.EndsWith("\r\n\r\n"))
+                            restData = receivedData[receivedData.Length - 1];
+
+                        for(int i=0;i<receivedData.Length-1;i++)
+                        {
+                            string data = receivedData[i];
+                            Console.WriteLine("Request: " + data);
+                            string response = await HandlePacket(data, client);
+                            Console.WriteLine("Response " + response);
+                            byte[] resBytes = Encoding.UTF8.GetBytes(response+ "\r\n\r\n");
+                            await stream.WriteAsync(resBytes, 0, resBytes.Length);
+                        }
+                    }
                 }
                 client.Close();
             }
@@ -79,24 +99,24 @@ namespace QuizApp_backend
             var returnedObject=new JObject();
             var jobject = JObject.Parse(jsonString);
             string url = (string)jobject["url"];
+            returnedObject["topic"] = url;
             string accountId = (string)jobject["accountId"];
             string payload = (string)jobject["payload"];
             try
             {
                 string result = "";
                 if (url.StartsWith(_accountController.prefix))
-                    result=_accountController.RouteRequests(url,payload);
-                else if(url.StartsWith(_quizController.prefix))
-                    result=_quizController.RouteRequests(url,accountId,payload, client);
-                else if(url.StartsWith(_questionController.prefix))
-                    result=_questionController.RouteRequests(url, payload);
-                returnedObject["topic"] = url;
+                    result = _accountController.RouteRequests(url, payload);
+                else if (url.StartsWith(_quizController.prefix))
+                    result = _quizController.RouteRequests(url, accountId, payload, client);
+                else if (url.StartsWith(_questionController.prefix))
+                    result = _questionController.RouteRequests(url, payload);
+                else throw new RequestException("The url " + url + " does not exists");
                 returnedObject["payload"] = result;
                 returnedObject["status"] = "success";
             }
             catch (RequestException rex)
             {
-                returnedObject["topic"] = url;
                 returnedObject["payload"] = rex.Message;
                 returnedObject["status"] = "error";
                 Console.WriteLine(rex.StackTrace);

@@ -40,8 +40,8 @@ namespace QuizApp_backend.Services
             int score = (result.IsCorrect) ? 10 : -10;
             int totalScore = _participantRepo.AddScore(result.ParticipantId, score);
             JObject jobject = new JObject();
-            jobject["ParticipantId"] = result.ParticipantId;
-            jobject["TotalScore"] = totalScore;
+            jobject["participantId"] = result.ParticipantId;
+            jobject["totalScore"] = totalScore;
             await _socketService.SendDataToHost(question.QuizId,"/question/updateLeaderboard",JsonConvert.SerializeObject(jobject));
         }
         public bool AnswerQuestion(Result result)

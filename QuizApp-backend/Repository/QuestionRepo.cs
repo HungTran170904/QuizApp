@@ -74,6 +74,7 @@ namespace QuizApp_backend.Repository
                 List<Question> questions = new List<Question>();
                 string query = "select * from Question q where q.QuizId=@QuizId";
                 SqlCommand sql_cmd= new SqlCommand(query, conn);
+                sql_cmd.Parameters.AddWithValue("QuizId", QuizId);
                 SqlDataReader reader = sql_cmd.ExecuteReader();
                 while(reader.Read())
                 {

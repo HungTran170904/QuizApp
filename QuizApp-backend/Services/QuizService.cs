@@ -25,6 +25,7 @@ namespace QuizApp_backend.Services
         {
             if (quiz.Title == null) throw new RequestException("Title is reuqired");
             quiz.Status = "stop";
+            quiz.CreatedAt = DateTime.Now;
             var savedQuiz=_quizRepo.SaveQuiz(quiz);
             var questions=_questionRepo.SaveQuestions(quiz.Questions);
             savedQuiz.Questions = questions;
@@ -52,7 +53,7 @@ namespace QuizApp_backend.Services
             JObject jobject=new JObject();
             jobject["quizId"]=quizId;
             jobject["questions"]=JsonConvert.SerializeObject(questions);
-            _socketService.SendDataToPlayers(quizId,"/quiz/startGame", JsonConvert.SerializeObject(jobject));
+            _socketService.SendDataToPlayers(quizId,"/quiz/startGameForPlayers", JsonConvert.SerializeObject(jobject));
         }
         public void StopGame(string accountId, string quizId)
         {
@@ -61,7 +62,7 @@ namespace QuizApp_backend.Services
                 throw new RequestException("You do not have permission to end this game");
             _quizRepo.UpdateStatus(quizId, "stop");
             _socketService.RemoveQuizSession(quizId);
-            _socketService.SendDataToPlayers(quizId, "/quiz/stopGame", quizId);
+            _socketService.SendDataToPlayers(quizId, "/quiz/stopGameForPlayers", quizId);
         }
         public void UpdateBlock(string accountId, string quizId, bool IsBlocked) 
         {
