@@ -24,15 +24,11 @@ namespace QuizApp_backend.Services
         }
         public List<Question> GetQuestions(string QuizId)
         {
-            return _questionRepo.FindByQuizId(QuizId);
+            return _questionRepo.FindByQuizId(QuizId, true);
         }
         public List<Question> GetQuestionsForPlay(string QuizId)
         {
-            var questions= _questionRepo.FindByQuizId(QuizId);
-            foreach(var question in questions)
-            {
-                question.CorrectAnswer = null;
-            }
+            var questions= _questionRepo.FindByQuizId(QuizId, false);
             return questions;
         }
         private async Task SendScoreToHost(Question question, Result result)

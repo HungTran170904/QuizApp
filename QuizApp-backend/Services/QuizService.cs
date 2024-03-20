@@ -15,6 +15,7 @@ namespace QuizApp_backend.Services
         private readonly SocketService _socketService;
         public QuizService(QuizRepo quizRepo,
                     QuestionRepo questionRepo,
+                    ParticipantRepo participantRepo,
                     SocketService socketService)
         {
             _socketService=socketService;
@@ -49,11 +50,12 @@ namespace QuizApp_backend.Services
             if (creatorId == null || !creatorId.Equals(accountId))
                 throw new RequestException("You do not have permission to start this game");
             _quizRepo.UpdateStatus(quizId, "play");
-            List<Question> questions=_questionRepo.FindByQuizId(quizId);
-            JObject jobject=new JObject();
-            jobject["quizId"]=quizId;
-            jobject["questions"]=JsonConvert.SerializeObject(questions);
-            _socketService.SendDataToPlayers(quizId,"/quiz/startGameForPlayers", JsonConvert.SerializeObject(jobject));
+            List<Question> questions=_questionRepo.FindByQuizId(quizId, false);
+            JObject jobject = new JObject();
+            jobject["quizId"] = quizId;
+            jobject["questions"] = JsonConvert.SerializeObject(questions);
+            _socketService.SendDataToPlayers(quizId, "/quiz/startGameForPlayers", 
+                    JsonConvert.SerializeObject(jobject));
         }
         public void StopGame(string accountId, string quizId)
         {

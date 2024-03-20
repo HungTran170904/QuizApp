@@ -16,7 +16,7 @@ namespace QuizApp_frontend.API
         private static Dictionary<string, Action<JObject>> topics=new Dictionary<string, Action<JObject>>();
         public static void InitConnection()
         {
-            IPAddress ipaddress = IPAddress.Parse("172.17.9.46");
+            IPAddress ipaddress = IPAddress.Parse("192.168.153.1");
             int port = 8080;
             tcpClient.Connect(ipaddress, port);
             byte[] resBuffer = new byte[1024];
