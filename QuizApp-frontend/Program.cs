@@ -1,3 +1,5 @@
+using QuizApp_frontend.FormNguoichoi;
+
 namespace QuizApp_frontend
 {
     internal static class Program

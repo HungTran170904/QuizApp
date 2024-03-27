@@ -27,5 +27,11 @@ namespace QuizApp_frontend.FormNguoichoi
         {
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            FormAnwser form = new FormAnwser();
+            form.ShowDialog();
+        }
     }
 }

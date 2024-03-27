@@ -30,6 +30,8 @@
         {
             textBox1 = new TextBox();
             textBox2 = new TextBox();
+            button1 = new Button();
+            button2 = new Button();
             SuspendLayout();
             // 
             // textBox1
@@ -57,6 +59,28 @@
             textBox2.TextAlign = HorizontalAlignment.Center;
             textBox2.TextChanged += textBox2_TextChanged;
             // 
+            // button1
+            // 
+            button1.Location = new Point(0, 0);
+            button1.Name = "button1";
+            button1.Size = new Size(94, 29);
+            button1.TabIndex = 3;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.BackColor = Color.IndianRed;
+            button2.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button2.ForeColor = SystemColors.ButtonFace;
+            button2.Location = new Point(731, 107);
+            button2.Name = "button2";
+            button2.Size = new Size(254, 114);
+            button2.TabIndex = 4;
+            button2.Text = "Play";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
+            // 
             // formHangCho
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -64,6 +88,8 @@
             BackgroundImage = Properties.Resources.formHangcho;
             BackgroundImageLayout = ImageLayout.None;
             ClientSize = new Size(1031, 714);
+            Controls.Add(button2);
+            Controls.Add(button1);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
             DoubleBuffered = true;
@@ -77,5 +103,7 @@
         #endregion
         private TextBox textBox1;
         private TextBox textBox2;
+        private Button button1;
+        private Button button2;
     }
 }
