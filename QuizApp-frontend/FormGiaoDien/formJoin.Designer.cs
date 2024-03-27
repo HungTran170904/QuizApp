@@ -96,14 +96,15 @@
             pictureBox4.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox4.TabIndex = 10;
             pictureBox4.TabStop = false;
+            pictureBox4.Click += pictureBox4_Click;
             // 
             // richTextBox1
             // 
             richTextBox1.BorderStyle = BorderStyle.None;
             richTextBox1.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            richTextBox1.Location = new Point(315, 86);
+            richTextBox1.Location = new Point(315, 87);
             richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(257, 36);
+            richTextBox1.Size = new Size(257, 29);
             richTextBox1.TabIndex = 11;
             richTextBox1.Text = "";
             // 
@@ -111,9 +112,9 @@
             // 
             richTextBox2.BorderStyle = BorderStyle.None;
             richTextBox2.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            richTextBox2.Location = new Point(315, 215);
+            richTextBox2.Location = new Point(315, 223);
             richTextBox2.Name = "richTextBox2";
-            richTextBox2.Size = new Size(257, 36);
+            richTextBox2.Size = new Size(257, 30);
             richTextBox2.TabIndex = 12;
             richTextBox2.Text = "";
             // 

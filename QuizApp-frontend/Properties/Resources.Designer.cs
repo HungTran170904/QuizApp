@@ -123,6 +123,26 @@ namespace QuizApp_frontend.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FormDapan {
+            get {
+                object obj = ResourceManager.GetObject("FormDapan", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap formHangcho {
+            get {
+                object obj = ResourceManager.GetObject("formHangcho", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap joinBackground {
             get {
                 object obj = ResourceManager.GetObject("joinBackground", resourceCulture);
