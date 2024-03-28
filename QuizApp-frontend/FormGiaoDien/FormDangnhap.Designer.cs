@@ -164,6 +164,7 @@
             Controls.Add(pictureBox3);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "FormDangnhap";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

@@ -139,6 +139,9 @@
   <data name="FormDapan" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resourse\FormDapan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="FormEnd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resourse\FormEnd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="formHangcho" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resourse\formHangcho.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -156,6 +159,9 @@
   </data>
   <data name="pincode" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resourse\pincode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Podium" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resourse\Podium.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="registerbackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resourse\registerbackground.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

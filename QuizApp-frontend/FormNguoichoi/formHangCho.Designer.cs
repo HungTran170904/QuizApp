@@ -30,7 +30,6 @@
         {
             textBox1 = new TextBox();
             textBox2 = new TextBox();
-            button1 = new Button();
             button2 = new Button();
             SuspendLayout();
             // 
@@ -59,15 +58,6 @@
             textBox2.TextAlign = HorizontalAlignment.Center;
             textBox2.TextChanged += textBox2_TextChanged;
             // 
-            // button1
-            // 
-            button1.Location = new Point(0, 0);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 3;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            // 
             // button2
             // 
             button2.BackColor = Color.IndianRed;
@@ -89,11 +79,10 @@
             BackgroundImageLayout = ImageLayout.None;
             ClientSize = new Size(1031, 714);
             Controls.Add(button2);
-            Controls.Add(button1);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
             DoubleBuffered = true;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "formHangCho";
             Text = "formHangCho";
             ResumeLayout(false);
@@ -103,7 +92,6 @@
         #endregion
         private TextBox textBox1;
         private TextBox textBox2;
-        private Button button1;
         private Button button2;
     }
 }

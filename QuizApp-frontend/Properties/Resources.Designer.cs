@@ -133,6 +133,16 @@ namespace QuizApp_frontend.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FormEnd {
+            get {
+                object obj = ResourceManager.GetObject("FormEnd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap formHangcho {
             get {
                 object obj = ResourceManager.GetObject("formHangcho", resourceCulture);
@@ -186,6 +196,16 @@ namespace QuizApp_frontend.Properties {
         internal static System.Drawing.Bitmap pincode {
             get {
                 object obj = ResourceManager.GetObject("pincode", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Podium {
+            get {
+                object obj = ResourceManager.GetObject("Podium", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

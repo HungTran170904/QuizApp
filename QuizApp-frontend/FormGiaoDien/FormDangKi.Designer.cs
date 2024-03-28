@@ -211,6 +211,7 @@
             Controls.Add(pictureBox3);
             Controls.Add(pictureBox1);
             Controls.Add(pictureBox2);
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "FormDangKi";
             Text = "FormDangKi";
             Load += FormDangKi_Load;

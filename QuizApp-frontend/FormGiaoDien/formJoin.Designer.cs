@@ -131,6 +131,7 @@
             Controls.Add(pictureBox6);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "formJoin";
             Text = "formJoin";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
