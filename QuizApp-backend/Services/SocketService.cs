@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QuizApp_backend.Util;
 using System.Net.Sockets;

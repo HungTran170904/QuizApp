@@ -5,6 +5,7 @@ using QuizApp_backend.Models;
 using QuizApp_backend.Repository;
 using QuizApp_backend.Util;
 using System.Net.Sockets;
+using System.Transactions;
 
 namespace QuizApp_backend.Services
 {
@@ -27,10 +28,17 @@ namespace QuizApp_backend.Services
             if (quiz.Title == null) throw new RequestException("Title is reuqired");
             quiz.Status = "stop";
             quiz.CreatedAt = DateTime.Now;
-            var savedQuiz=_quizRepo.SaveQuiz(quiz);
-            var questions=_questionRepo.SaveQuestions(quiz.Questions, savedQuiz.Id);
-            savedQuiz.Questions = questions;
-            return savedQuiz;
+            using(var tx=new TransactionScope())
+            {
+                var savedQuiz = _quizRepo.SaveQuiz(quiz);
+                if (quiz.Questions != null)
+                {
+                    var questions = _questionRepo.SaveQuestions(quiz.Questions, savedQuiz.Id);
+                    savedQuiz.Questions = questions;
+                }
+                tx.Complete();
+                return savedQuiz;
+            }
         }
         public List<Quiz> GetQuizzes(string accountId)
         {

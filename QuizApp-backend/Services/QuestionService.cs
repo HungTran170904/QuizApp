@@ -40,7 +40,7 @@ namespace QuizApp_backend.Services
             jobject["totalScore"] = totalScore;
             await _socketService.SendDataToHost(question.QuizId,"/question/updateLeaderboard",JsonConvert.SerializeObject(jobject));
         }
-        public bool AnswerQuestion(Result result)
+        public Result AnswerQuestion(Result result)
         {
             var question= _questionRepo.FindById(result.QuestionId);
             if (question == null) 
@@ -48,8 +48,8 @@ namespace QuizApp_backend.Services
             if(!_socketService.quizSessions.ContainsKey(question.QuizId))
                 throw new RequestException("Sorry, the quiz has been closed");
             result.IsCorrect=question.CorrectAnswer.Equals(result.ChoosedOption);
-            SendScoreToHost(question, result);
-            return result.IsCorrect;
+            _ = SendScoreToHost(question, result);
+            return result;
         }
     }
 }

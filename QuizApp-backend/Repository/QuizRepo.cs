@@ -19,8 +19,8 @@ namespace QuizApp_backend.Repository
             using(var conn=new SqlConnection(connString))
             {
                 conn.Open();
-                string query = "insert into Quiz(CreatorId,Title,CreatedAt,Status) output inserted.*" +
-                        "values (@CreatorId,@Title,@CreatedAt,@Status)";
+                string query = "insert into Quiz(CreatorId,Title,CreatedAt,Status,IsBlocked) output inserted.*" +
+                        "values (@CreatorId,@Title,@CreatedAt,@Status,@IsBlocked)";
                 SqlCommand sql_cmd = new SqlCommand(query, conn);
                 sql_cmd.Parameters.AddWithValue("CreatorId", quiz.CreatorId);
                 sql_cmd.Parameters.AddWithValue("Title", quiz.Title);

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using QuizApp_backend.Models;
 using QuizApp_backend.Services;
 
 namespace QuizApp_backend.Controllers
@@ -19,6 +20,8 @@ namespace QuizApp_backend.Controllers
                 result=GetQuestions(payload);
             else if(url.Equals("/getQuestionsForPlay"))
                 result=GetQuestionsForPlay(payload);
+            else if(url.Equals("/answerQuestion"))
+                result= AnswerQuestion(payload);
             return result;
         }
         public string GetQuestions(string quizId)
@@ -30,6 +33,11 @@ namespace QuizApp_backend.Controllers
         {
             var questions = _questionService.GetQuestionsForPlay(quizId);
             return JsonConvert.SerializeObject(questions);
+        }
+        public string AnswerQuestion(string payload)
+        {
+            var result = JsonConvert.DeserializeObject<Result>(payload);
+            return JsonConvert.SerializeObject(_questionService.AnswerQuestion(result));
         }
     }
 }
