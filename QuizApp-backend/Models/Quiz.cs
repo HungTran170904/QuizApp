@@ -8,6 +8,6 @@
         public DateTime? CreatedAt { get; set; }
         public string Status { get; set; } // stop, play, host
         public bool IsBlocked { get; set; } = false;
-        public List<Question> Questions { get; set; }=new List<Question>();
+        public List<Question> Questions { get; set; } = new List<Question>();
     }
 }

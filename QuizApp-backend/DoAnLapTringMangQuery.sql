@@ -1,3 +1,7 @@
+use master 
+go
+create database QuizDB
+go
 use QuizDB
 create table Account(
 	Id uniqueidentifier primary key default newid(),

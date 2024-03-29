@@ -28,7 +28,7 @@ namespace QuizApp_backend.Services
             quiz.Status = "stop";
             quiz.CreatedAt = DateTime.Now;
             var savedQuiz=_quizRepo.SaveQuiz(quiz);
-            var questions=_questionRepo.SaveQuestions(quiz.Questions);
+            var questions=_questionRepo.SaveQuestions(quiz.Questions, savedQuiz.Id);
             savedQuiz.Questions = questions;
             return savedQuiz;
         }

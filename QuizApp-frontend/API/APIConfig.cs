@@ -16,7 +16,7 @@ namespace QuizApp_frontend.API
         private static Dictionary<string, Action<JObject>> topics=new Dictionary<string, Action<JObject>>();
         public static void InitConnection()
         {
-            IPAddress ipaddress = IPAddress.Parse("192.168.153.1");
+            IPAddress ipaddress = IPAddress.Parse(GetLocalIPAddress());
             int port = 8080;
             tcpClient.Connect(ipaddress, port);
             byte[] resBuffer = new byte[1024];
@@ -43,6 +43,18 @@ namespace QuizApp_frontend.API
                     }
                 }
             }
+        }
+        private static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
         }
         public static void HandleData(string data)
         {

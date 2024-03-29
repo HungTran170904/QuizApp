@@ -62,6 +62,7 @@ namespace QuizApp_backend
                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
                     string receivedChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    //Console.WriteLine("ReceivedChunk:"+receivedChunk);
                     string[] receivedData = receivedChunk.Split("\r\n\r\n");
                     if (receivedData.Length > 0)
                     {

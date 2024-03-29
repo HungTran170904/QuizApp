@@ -21,8 +21,7 @@ namespace QuizApp_frontend.API
             JObject jobject=new JObject();
             jobject["email"]=email;
             jobject["password"]=password;
-            string data=JsonConvert.SerializeObject(jobject);
-            APIConfig.SendData("/account/login",data);
+            APIConfig.SendData("/account/login", JsonConvert.SerializeObject(jobject));
         }
         public static void Register(Account account, Action<JObject> callback)
         {
