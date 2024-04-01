@@ -46,7 +46,7 @@ namespace QuizApp_backend.Services
         }
         public void HostGame(string accountId,string quizId, TcpClient client)
         {
-            string creatorId=_quizRepo.GetCreatorId(accountId);
+            string creatorId=_quizRepo.GetCreatorId(quizId);
             if (creatorId == null || !creatorId.Equals(accountId))
                 throw new RequestException("You do not have permission to host this game");
             _quizRepo.UpdateStatus(quizId, "host");
@@ -67,7 +67,7 @@ namespace QuizApp_backend.Services
         }
         public void StopGame(string accountId, string quizId)
         {
-            string creatorId = _quizRepo.GetCreatorId(accountId);
+            string creatorId = _quizRepo.GetCreatorId(quizId);
             if (creatorId == null || !creatorId.Equals(accountId))
                 throw new RequestException("You do not have permission to end this game");
             _quizRepo.UpdateStatus(quizId, "stop");
@@ -76,7 +76,8 @@ namespace QuizApp_backend.Services
         }
         public void UpdateBlock(string accountId, string quizId, bool IsBlocked) 
         {
-            string creatorId = _quizRepo.GetCreatorId(accountId);
+            string creatorId = _quizRepo.GetCreatorId(quizId);
+            Console.WriteLine("CreatorId:" + creatorId);
             if (creatorId == null || !creatorId.Equals(accountId))
                 throw new RequestException("You do not have permission to end this game");
             _quizRepo.UpdateBlock(quizId, IsBlocked);

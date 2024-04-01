@@ -40,6 +40,7 @@ namespace QuizApp_backend.Repository
                 string query = "update Quiz set Status=@Status where Id=@Id";
                 SqlCommand sql_cmd = new SqlCommand(query, conn);
                 sql_cmd.Parameters.AddWithValue("Status", status);
+                sql_cmd.Parameters.AddWithValue("Id", QuizId);
                 sql_cmd.ExecuteNonQuery();
             }
         }
@@ -78,8 +79,9 @@ namespace QuizApp_backend.Repository
             {
                 conn.Open();
                 SqlCommand sql_cmd = new SqlCommand("select CreatorId from Quiz where Id=@Id", conn);
+                sql_cmd.Parameters.AddWithValue("Id", QuizId);
                 SqlDataReader reader = sql_cmd.ExecuteReader();
-                if (reader.Read()) return reader.GetString(0);
+                if (reader.Read()) return reader.GetGuid(0).ToString();
                 else return null;
             }
         }
@@ -89,6 +91,7 @@ namespace QuizApp_backend.Repository
             {
                 conn.Open();
                 SqlCommand sql_cmd = new SqlCommand("select * from Quiz where Id=@Id", conn);
+                sql_cmd.Parameters.AddWithValue("Id", Id);
                 SqlDataReader reader = sql_cmd.ExecuteReader();
                 if (reader.Read()) return _converter.convertToQuiz(reader);
                 else return null;

@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QuizApp_frontend.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuizApp_frontend.API
 {
@@ -25,12 +20,12 @@ namespace QuizApp_frontend.API
         }
         public static void Register(Account account, Action<JObject> callback)
         {
-            APIConfig.AddTopic("/account/registry", (jobject) =>
+            APIConfig.AddTopic("/account/register", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/account/login");
+                APIConfig.RemoveTopic("/account/register");
             });
-            APIConfig.SendData("/account/registry", JsonConvert.SerializeObject(account));
+            APIConfig.SendData("/account/register", JsonConvert.SerializeObject(account));
         }
     }
 }

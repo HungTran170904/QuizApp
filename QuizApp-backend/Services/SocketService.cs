@@ -8,7 +8,7 @@ namespace QuizApp_backend.Services
 {
     public class SocketService
     {
-        public Dictionary<string, QuizSession> quizSessions;
+        public Dictionary<string, QuizSession> quizSessions = new Dictionary<string, QuizSession>();
 
         public void AddQuizSession(string quizId, TcpClient host)
         {

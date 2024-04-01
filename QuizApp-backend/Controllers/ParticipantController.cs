@@ -14,7 +14,7 @@ namespace QuizApp_backend.Controllers
         { 
             _participantService = participantService;
         }
-        public string routeRequests(string url,string payload,TcpClient client)
+        public string RouteRequests(string url,string payload,TcpClient client)
         {
             url=url.Substring(prefix.Length);
             string result = "";

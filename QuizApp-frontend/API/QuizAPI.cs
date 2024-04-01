@@ -43,14 +43,14 @@ namespace QuizApp_frontend.API
             });
             APIConfig.SendData("/quiz/startGame", quizId);
         }
-        public static void EndGame(string quizId, Action<JObject> callback)
+        public static void StopGame(string quizId, Action<JObject> callback)
         {
-            APIConfig.AddTopic("/quiz/endGame", (jobject) =>
+            APIConfig.AddTopic("/quiz/stopGame", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/quiz/endGame");
+                APIConfig.RemoveTopic("/quiz/stopGame");
             });
-            APIConfig.SendData("/quiz/endGame", quizId);
+            APIConfig.SendData("/quiz/stopGame", quizId);
         }
         public static void UpdateBlock(string quizId, bool isBlocked, Action<JObject> callback)
         {

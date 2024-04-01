@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using QuizApp_frontend.API;
+using QuizApp_frontend.FormHost;
 using QuizApp_frontend.Models;
 
 namespace QuizApp_frontend
@@ -7,41 +8,35 @@ namespace QuizApp_frontend
     public partial class MainForm : Form
     {
         public static Account account = null;
+        private Form curChildForm;
         public MainForm()
         {
             try
             {
                 Thread apiThread = new Thread(() => APIConfig.InitConnection());
+                apiThread.IsBackground = true;
                 apiThread.Start();
                 InitializeComponent();
+                curChildForm = new FormDangKi();
+                showChildForm();
             }
-            catch
-            {
-                MessageBox.Show("There is error");
-            }
+            catch(Exception ex) { }
         }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void showChildForm()
         {
-            try
+            curChildForm.TopLevel = false;
+            this.Controls.Add(curChildForm);
+            curChildForm.Show();
+        }
+        public void switchChildForm(Form newForm)
+        {
+            if (curChildForm != null)
             {
-                AccountAPI.Login(emailTextbox.Text, passwordTextbox.Text,
-                (jobject) =>
-                {
-                    string status = (string)jobject["status"];
-                    string payload = (string)jobject["payload"];
-                    if (status == "success")
-                    {
-                        account = JsonConvert.DeserializeObject<Account>(payload);
-                        resultTextbox.BeginInvoke(() => resultTextbox.Text = "Name " + account.Name);
-                    }
-                    else BeginInvoke(() => MessageBox.Show("Error " + payload));
-                });
+                this.Controls.Remove(curChildForm);
+                curChildForm.Dispose();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error " + ex.Message);
-            }
+            curChildForm= newForm;
+            showChildForm();
         }
     }
 }

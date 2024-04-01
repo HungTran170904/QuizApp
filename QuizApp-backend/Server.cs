@@ -16,16 +16,19 @@ namespace QuizApp_backend
         private readonly AccountController _accountController;
         private readonly QuizController _quizController;
         private readonly QuestionController _questionController;
+        private readonly ParticipantController _partController;
         public Server(IConfiguration configuration,
                     AccountController accountController,
                     QuizController quizController,
-                    QuestionController questionController)
+                    QuestionController questionController,
+                    ParticipantController partController)
         {
             ipaddress = IPAddress.Parse(GetLocalIPAddress());
             port = Int32.Parse(configuration["ServerConfiguration:Port"]);
             _accountController = accountController;
             _quizController = quizController;
             _questionController = questionController;
+            _partController = partController;
         }
 
         private static string GetLocalIPAddress()
@@ -112,6 +115,8 @@ namespace QuizApp_backend
                     result = _quizController.RouteRequests(url, accountId, payload, client);
                 else if (url.StartsWith(_questionController.prefix))
                     result = _questionController.RouteRequests(url, payload);
+                else if (url.StartsWith(_partController.prefix))
+                    result = _partController.RouteRequests(url, payload,client);
                 else throw new RequestException("The url " + url + " does not exists");
                 returnedObject["payload"] = result;
                 returnedObject["status"] = "success";
