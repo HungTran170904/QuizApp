@@ -1,4 +1,5 @@
 using QuizApp_frontend.API;
+using QuizApp_frontend.FormHost;
 
 namespace QuizApp_frontend
 {
@@ -8,7 +9,7 @@ namespace QuizApp_frontend
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+            Application.Run(new NameCategory());
         }
     }
 }

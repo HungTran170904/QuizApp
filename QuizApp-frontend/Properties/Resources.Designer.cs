@@ -219,5 +219,6 @@ namespace QuizApp_frontend.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+
     }
 }
