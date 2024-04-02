@@ -30,7 +30,6 @@
         {
             textBox1 = new TextBox();
             textBox2 = new TextBox();
-            button1 = new Button();
             button2 = new Button();
             SuspendLayout();
             // 
@@ -42,7 +41,7 @@
             textBox1.Location = new Point(118, 12);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(151, 60);
+            textBox1.Size = new Size(188, 60);
             textBox1.TabIndex = 1;
             textBox1.TextAlign = HorizontalAlignment.Center;
             // 
@@ -58,15 +57,6 @@
             textBox2.TabIndex = 2;
             textBox2.TextAlign = HorizontalAlignment.Center;
             textBox2.TextChanged += textBox2_TextChanged;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(0, 0);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 3;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
@@ -89,7 +79,6 @@
             BackgroundImageLayout = ImageLayout.None;
             ClientSize = new Size(1031, 714);
             Controls.Add(button2);
-            Controls.Add(button1);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
             DoubleBuffered = true;
@@ -103,7 +92,6 @@
         #endregion
         private TextBox textBox1;
         private TextBox textBox2;
-        private Button button1;
         private Button button2;
     }
 }

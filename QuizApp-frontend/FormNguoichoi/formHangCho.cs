@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using QuizApp_frontend.API;
+using QuizApp_frontend.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,8 +33,8 @@ namespace QuizApp_frontend.FormNguoichoi
 
         private void button2_Click(object sender, EventArgs e)
         {
-            FormAnwser form = new FormAnwser();
-            form.ShowDialog();
+            FormNguoichoi.FormAnwser f1 = new FormNguoichoi.FormAnwser(textBox1.Text);
+            f1.ShowDialog();
         }
     }
 }

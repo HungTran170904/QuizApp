@@ -17,7 +17,7 @@ namespace QuizApp_frontend
                 apiThread.IsBackground = true;
                 apiThread.Start();
                 InitializeComponent();
-                curChildForm = new FormDangKi();
+                curChildForm = new FormDangnhap();
                 showChildForm();
             }
             catch(Exception ex) { }

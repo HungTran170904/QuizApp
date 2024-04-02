@@ -30,6 +30,7 @@ namespace QuizApp_frontend
                 {
                     Account savedAccount=JsonConvert.DeserializeObject<Account>(payload);
                     MainForm.account = savedAccount;
+                    MessageBox.Show("Bạn đã đăng kí thành công,hãy quay lại đăng nhập nhé");
                 }
             });
         }

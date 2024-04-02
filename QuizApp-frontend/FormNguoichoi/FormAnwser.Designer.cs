@@ -32,6 +32,9 @@
             richTextBox2 = new RichTextBox();
             richTextBox3 = new RichTextBox();
             richTextBox4 = new RichTextBox();
+            richTextBox5 = new RichTextBox();
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // richTextBox1
@@ -82,12 +85,33 @@
             richTextBox4.TabIndex = 3;
             richTextBox4.Text = "dap an a";
             // 
+            // richTextBox5
+            // 
+            richTextBox5.BackColor = SystemColors.Control;
+            richTextBox5.Location = new Point(163, 52);
+            richTextBox5.Name = "richTextBox5";
+            richTextBox5.Size = new Size(648, 171);
+            richTextBox5.TabIndex = 4;
+            richTextBox5.Text = "";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackColor = Color.Transparent;
+            pictureBox1.Location = new Point(870, 117);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(125, 62);
+            pictureBox1.TabIndex = 5;
+            pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
+            // 
             // FormAnwser
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.FormDapan;
             ClientSize = new Size(1032, 578);
+            Controls.Add(pictureBox1);
+            Controls.Add(richTextBox5);
             Controls.Add(richTextBox4);
             Controls.Add(richTextBox3);
             Controls.Add(richTextBox2);
@@ -95,6 +119,7 @@
             Name = "FormAnwser";
             Text = "FormAnwser";
             Load += FormAnwser_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -104,5 +129,7 @@
         private RichTextBox richTextBox2;
         private RichTextBox richTextBox3;
         private RichTextBox richTextBox4;
+        private RichTextBox richTextBox5;
+        private PictureBox pictureBox1;
     }
 }

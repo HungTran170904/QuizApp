@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace QuizApp_frontend.API
             });
             APIConfig.SendData("/question/getQuestions", quizId);
         }
-        public static void GetQuestionsForPlay(string quizId, Action<JObject> callback)
+        public static void GetQuestionsForPlay(string quizId,Action<JObject> callback)
         {
             APIConfig.AddTopic("/question/getQuestionsForPlay", (jobject) =>
             {
