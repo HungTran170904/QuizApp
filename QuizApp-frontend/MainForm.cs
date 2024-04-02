@@ -17,7 +17,12 @@ namespace QuizApp_frontend
                 apiThread.IsBackground = true;
                 apiThread.Start();
                 InitializeComponent();
-                curChildForm = new FormDangKi();
+                account=new Account();
+                account.Id = "E14DF576-75E0-48CF-9E9A-1697E30C4742";
+                Quiz quiz= new Quiz();
+                quiz.Id = "125BDE14-69B6-48C5-91B7-92A7F10F8E48";
+                quiz.Title = "Ko biet";
+                curChildForm = new QuizReview(quiz, switchChildForm);
                 showChildForm();
             }
             catch(Exception ex) { }

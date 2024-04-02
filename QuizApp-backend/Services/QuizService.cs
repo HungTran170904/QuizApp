@@ -47,7 +47,7 @@ namespace QuizApp_backend.Services
         public void HostGame(string accountId,string quizId, TcpClient client)
         {
             string creatorId=_quizRepo.GetCreatorId(quizId);
-            if (creatorId == null || !creatorId.Equals(accountId))
+            if (creatorId == null || !creatorId.Equals(accountId, StringComparison.OrdinalIgnoreCase))
                 throw new RequestException("You do not have permission to host this game");
             _quizRepo.UpdateStatus(quizId, "host");
             _socketService.AddQuizSession(quizId, client);
@@ -55,8 +55,10 @@ namespace QuizApp_backend.Services
         public void StartGame(string accountId, string quizId)
         {
             string creatorId = _quizRepo.GetCreatorId(quizId);
-            if (creatorId == null || !creatorId.Equals(accountId))
+            if (creatorId == null || !creatorId.Equals(accountId, StringComparison.OrdinalIgnoreCase))
                 throw new RequestException("You do not have permission to start this game");
+            Console.WriteLine("CreatorId:"+creatorId);
+            Console.WriteLine("AccountId:"+accountId);
             _quizRepo.UpdateStatus(quizId, "play");
             List<Question> questions=_questionRepo.FindByQuizId(quizId, false);
             JObject jobject = new JObject();
@@ -68,7 +70,7 @@ namespace QuizApp_backend.Services
         public void StopGame(string accountId, string quizId)
         {
             string creatorId = _quizRepo.GetCreatorId(quizId);
-            if (creatorId == null || !creatorId.Equals(accountId))
+            if (creatorId == null || !creatorId.Equals(accountId, StringComparison.OrdinalIgnoreCase))
                 throw new RequestException("You do not have permission to end this game");
             _quizRepo.UpdateStatus(quizId, "stop");
             _socketService.RemoveQuizSession(quizId);
@@ -78,7 +80,7 @@ namespace QuizApp_backend.Services
         {
             string creatorId = _quizRepo.GetCreatorId(quizId);
             Console.WriteLine("CreatorId:" + creatorId);
-            if (creatorId == null || !creatorId.Equals(accountId))
+            if (creatorId == null || !creatorId.Equals(accountId, StringComparison.OrdinalIgnoreCase))
                 throw new RequestException("You do not have permission to end this game");
             _quizRepo.UpdateBlock(quizId, IsBlocked);
         }

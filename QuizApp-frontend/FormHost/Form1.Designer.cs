@@ -213,7 +213,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::QuizApp_frontend.Properties.Resources.pngtree_question_mark_on_a_pink_pastel_background_3d_illustration_image_422717;
+            this.BackgroundImage = global::QuizApp_frontend.Properties.Resources.QuestionBox;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1510, 923);
             this.Controls.Add(this.rtbshowlist);
