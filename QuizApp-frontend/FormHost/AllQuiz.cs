@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using QuizApp_frontend.API;
+using QuizApp_frontend.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,27 +15,60 @@ namespace QuizApp_frontend.FormHost
 {
     public partial class AllQuiz : Form
     {
-        public AllQuiz()
+        private List<Quiz> quizzes;
+        private Action<Form, bool> switchChildForm;
+        public AllQuiz() { }
+        public AllQuiz(Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
+            this.switchChildForm = switchChildForm;
+            if (MainForm.account != null)
+                QuizAPI.GetQuizzes(MainForm.account.Id, jobject =>
+                {
+                    string status = (string)jobject["status"];
+                    string payload = (string)jobject["payload"];
+                    if (status.Equals("success"))
+                    {
+                        quizzes = JsonConvert.DeserializeObject<List<Quiz>>(payload);
+                        BeginInvoke(() => addButtonFromQuizzes());
+                    }
+                    else BeginInvoke(() => MessageBox.Show("Error:" + payload));
+                });
         }
-        private string _userName;
-
-        // Constructor mới nhận giá trị txtname từ Form thứ ba
-        public AllQuiz(string userName)
+        private void addButtonFromQuizzes()
         {
-            InitializeComponent();
-            _userName = userName;
+            if (quizzes != null)
+                foreach (var quiz in quizzes)
+                {
+                    Button btn = new Button();
+                    btn.Name = quiz.Id;
+                    btn.Text = quiz.Title;
+                    btn.Click += btn_onClick;
 
-            // Tạo nút với văn bản là giá trị của txtname từ Form thứ ba
-            Button newButton = new Button();
-            newButton.Text = _userName;
-            // Thiết lập vị trí và kích thước của nút
-            newButton.Location = new Point(100, 150); // Ví dụ: Thiết lập vị trí mới của nút
-            newButton.Size = new Size(100, 30); // Ví dụ: Thiết lập kích thước mới cho nút
+                    btn.BackColor = Color.Black;
+                    btn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                    btn.ForeColor = Color.White;
+                    btn.Size = new Size(140, 140);
+                    btn.UseVisualStyleBackColor = false;
 
-            // Thêm nút vào Form thứ tư (AllQuiz)
-            this.Controls.Add(newButton);
+                    flowLayoutPanel.Controls.Add(btn);
+                }
+        }
+        private void btn_onClick(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            Quiz quiz = quizzes.Find(q => q.Id.Equals(btn.Name));
+            if (quiz != null)
+            {
+                QuizReview quizReview = new QuizReview(quiz, this, switchChildForm);
+                switchChildForm(quizReview, true);
+            }
+            else MessageBox.Show("Sorry!Cann't open this quiz");
+        }
+
+        private void addButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -28,61 +28,81 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            label1 = new Label();
+            flowLayoutPanel = new FlowLayoutPanel();
+            addButton = new Button();
+            backButton = new Button();
+            SuspendLayout();
             // 
             // label1
             // 
-            this.label1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.label1.Location = new System.Drawing.Point(3, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1299, 84);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "QUIZY";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label1.BackColor = SystemColors.ActiveCaptionText;
+            label1.Font = new Font("Microsoft Sans Serif", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = SystemColors.HighlightText;
+            label1.Location = new Point(12, 9);
+            label1.Name = "label1";
+            label1.Size = new Size(1091, 84);
+            label1.TabIndex = 0;
+            label1.Text = "ALL QUIZZES";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label2
+            // flowLayoutPanel
             // 
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(508, 132);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(337, 35);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "ALL QUIZZES";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            flowLayoutPanel.AutoScroll = true;
+            flowLayoutPanel.Location = new Point(41, 146);
+            flowLayoutPanel.Name = "flowLayoutPanel";
+            flowLayoutPanel.Size = new Size(1028, 432);
+            flowLayoutPanel.TabIndex = 0;
             // 
-            // label3
+            // addButton
             // 
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(508, 201);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(425, 35);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Click on quiz to privew and host";
+            addButton.AutoSize = true;
+            addButton.BackColor = Color.GreenYellow;
+            addButton.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            addButton.ForeColor = Color.Black;
+            addButton.Location = new Point(943, 96);
+            addButton.Name = "addButton";
+            addButton.Size = new Size(126, 38);
+            addButton.TabIndex = 6;
+            addButton.Text = "Add Quiz";
+            addButton.UseVisualStyleBackColor = false;
+            addButton.Click += addButton_Click;
+            // 
+            // backButton
+            // 
+            backButton.AutoSize = true;
+            backButton.BackColor = Color.Navy;
+            backButton.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            backButton.ForeColor = Color.White;
+            backButton.Location = new Point(41, 96);
+            backButton.Name = "backButton";
+            backButton.Size = new Size(126, 38);
+            backButton.TabIndex = 7;
+            backButton.Text = "<< Back";
+            backButton.UseVisualStyleBackColor = false;
             // 
             // AllQuiz
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ClientSize = new System.Drawing.Size(1314, 955);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Name = "AllQuiz";
-            this.Text = "AllQuiz";
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ControlLight;
+            ClientSize = new Size(1137, 602);
+            Controls.Add(backButton);
+            Controls.Add(addButton);
+            Controls.Add(flowLayoutPanel);
+            Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.None;
+            Name = "AllQuiz";
+            Text = "AllQuiz";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private FlowLayoutPanel flowLayoutPanel;
+        private Button addButton;
+        private Button backButton;
     }
 }

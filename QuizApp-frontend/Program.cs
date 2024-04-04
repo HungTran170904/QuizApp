@@ -9,7 +9,7 @@ namespace QuizApp_frontend
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(new NameCategory());
+            Application.Run(new MainForm());
         }
     }
 }

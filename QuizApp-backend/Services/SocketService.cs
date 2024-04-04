@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QuizApp_backend.Util;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
@@ -29,8 +30,8 @@ namespace QuizApp_backend.Services
         {
             try
             {
+                if (!quizSessions.ContainsKey(quizId)) throw new Exception("Session QuizId does not exists");
                 var quizSession = quizSessions[quizId];
-                if (quizSession == null) throw new Exception("Session QuizId does not exists");
                 var host = quizSession.Host;
                 var jobject=new JObject();
                 jobject["topic"]=topic;
@@ -39,7 +40,9 @@ namespace QuizApp_backend.Services
                 if (host.Connected)
                 {
                     NetworkStream stream = host.GetStream();
-                    byte[] resBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(jobject));
+                    string response = JsonConvert.SerializeObject(jobject);
+                    Console.WriteLine("Send Data to host:" + response);
+                    byte[] resBytes = Encoding.UTF8.GetBytes(response+ "\r\n\r\n");
                     await stream.WriteAsync(resBytes, 0, resBytes.Length);
                 }
             }
@@ -59,12 +62,13 @@ namespace QuizApp_backend.Services
                 jobject["status"] = "success";
                 jobject["payload"] = payload;
                 string response=JsonConvert.SerializeObject(jobject);
+                Console.WriteLine("Send Data to players:" + response);
                 foreach (var player in quizSession.Players)
                 {
                     if (player.Connected)
                     {
                         NetworkStream stream = player.GetStream();
-                        byte[] resBytes = Encoding.UTF8.GetBytes(response);
+                        byte[] resBytes = Encoding.UTF8.GetBytes(response+ "\r\n\r\n");
                         await stream.WriteAsync(resBytes, 0, resBytes.Length);
                     }
                 }

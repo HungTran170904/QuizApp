@@ -53,7 +53,7 @@ namespace QuizApp_frontend.FormHost
         {
           
             _userName = txtname.Text;
-            AllQuiz form4 = new AllQuiz(_userName);
+            AllQuiz form4 = new AllQuiz();
 
             form4.Show();
         }

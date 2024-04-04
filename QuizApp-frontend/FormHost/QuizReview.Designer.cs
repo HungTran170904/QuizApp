@@ -31,6 +31,7 @@
             headerLb = new Label();
             richTb = new RichTextBox();
             hostButton = new Button();
+            backButton = new Button();
             SuspendLayout();
             // 
             // headerLb
@@ -51,14 +52,14 @@
             richTb.Location = new Point(161, 89);
             richTb.Name = "richTb";
             richTb.ReadOnly = true;
-            richTb.Size = new Size(742, 407);
+            richTb.Size = new Size(742, 488);
             richTb.TabIndex = 4;
             richTb.Text = "";
             // 
             // hostButton
             // 
             hostButton.AutoSize = true;
-            hostButton.BackColor = Color.Navy;
+            hostButton.BackColor = Color.MediumSlateBlue;
             hostButton.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             hostButton.ForeColor = Color.White;
             hostButton.Location = new Point(12, 89);
@@ -69,11 +70,26 @@
             hostButton.UseVisualStyleBackColor = false;
             hostButton.Click += hostButton_Click;
             // 
+            // backButton
+            // 
+            backButton.AutoSize = true;
+            backButton.BackColor = Color.Navy;
+            backButton.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            backButton.ForeColor = Color.White;
+            backButton.Location = new Point(12, 146);
+            backButton.Name = "backButton";
+            backButton.Size = new Size(126, 38);
+            backButton.TabIndex = 6;
+            backButton.Text = "<< Back";
+            backButton.UseVisualStyleBackColor = false;
+            backButton.Click += backButton_Click;
+            // 
             // QuizReview
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(975, 508);
+            ClientSize = new Size(975, 589);
+            Controls.Add(backButton);
             Controls.Add(hostButton);
             Controls.Add(richTb);
             Controls.Add(headerLb);
@@ -89,5 +105,6 @@
         private Label headerLb;
         private RichTextBox richTb;
         private Button hostButton;
+        private Button backButton;
     }
 }
