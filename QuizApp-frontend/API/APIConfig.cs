@@ -25,7 +25,7 @@ namespace QuizApp_frontend.API
             string restData = "";
             while ((byteReceived=stream.Read(resBuffer,0, resBuffer.Length))>0)
             {
-                string receivedChunk=UTF8Encoding.UTF8.GetString(resBuffer);
+                string receivedChunk=UTF8Encoding.UTF8.GetString(resBuffer,0,byteReceived);
                 string[] receivedData = receivedChunk.Split("\r\n\r\n");
                 if(receivedData.Length > 0)
                 {

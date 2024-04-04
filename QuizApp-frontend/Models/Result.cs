@@ -1,4 +1,6 @@
-﻿namespace QuizApp_frontend.Models
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace QuizApp_frontend.Models
 {
     public class Result
     {

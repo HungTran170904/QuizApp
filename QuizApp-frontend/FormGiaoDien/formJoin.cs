@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using QuizApp_frontend.API;
+using QuizApp_frontend.FormNguoichoi;
 using QuizApp_frontend.Models;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace QuizApp_frontend
 
         private void pictureBox4_Click(object sender, EventArgs e)
         {
+            
             Participant part=new Participant();
             part.Name = nameTb.Text;
             part.QuizId=pinCodeTb.Text;
@@ -33,12 +35,16 @@ namespace QuizApp_frontend
                 if (status.Equals("success"))
                 {
                     Participant part=JsonConvert.DeserializeObject<Participant>(payload);
+                    textBox1.BeginInvoke(()=>textBox1.Text = status);
 
                 }
                 else BeginInvoke(() => MessageBox.Show("Error:" + payload));
             });
-            FormNguoichoi.formHangCho f1=new FormNguoichoi.formHangCho(nameTb.Text,pinCodeTb.Text);
-            f1.ShowDialog();            
+            if (textBox1.Text.Equals("success"))
+            {
+                FormNguoichoi.formHangCho f1 = new FormNguoichoi.formHangCho(nameTb.Text, pinCodeTb.Text);
+                f1.ShowDialog();
+            }
         }
     }
 }

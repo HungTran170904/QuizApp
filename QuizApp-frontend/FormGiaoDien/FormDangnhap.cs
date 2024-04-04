@@ -29,6 +29,7 @@ namespace QuizApp_frontend
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
+            formJoin f=new formJoin();
             try
             {
                 AccountAPI.Login(richTextBox1.Text, richTextBox2.Text,
@@ -39,16 +40,22 @@ namespace QuizApp_frontend
                     if (status == "success")
                     {
                         account = JsonConvert.DeserializeObject<Account>(payload);
-                        formJoin f = new formJoin();
-                        f.ShowDialog();
+                        textBox1.BeginInvoke(() => textBox1.Text = "success");
                     }
-                    else BeginInvoke(() => MessageBox.Show("Error " + payload));
+                    else
+                    {
+                        textBox1.BeginInvoke(() => textBox1.Text = "failed");
+                        BeginInvoke(() => MessageBox.Show("Error " + payload));
+                    }
                 });
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error " + ex.Message);
             }
+            string t = textBox1.Text;
+            if(t=="success")
+                f.ShowDialog();
         }
     }
 }
