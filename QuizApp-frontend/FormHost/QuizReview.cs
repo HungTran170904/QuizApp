@@ -15,34 +15,37 @@ namespace QuizApp_frontend.FormHost
 {
     public partial class QuizReview : Form
     {
-        private Action<Form> switchChildForm;
+        private Action<Form,bool> switchChildForm;
         private Quiz quiz;
-        public QuizReview(Quiz quiz, Action<Form> switchChildForm)
+        private Form allQuiz;
+        public QuizReview(Quiz quiz,Form allQuiz, Action<Form,bool> switchChildForm)
         {
             InitializeComponent();
             this.quiz = quiz;
             this.switchChildForm = switchChildForm;
+            this.allQuiz = allQuiz;
             QuestionAPI.GetQuestionsForPlay(quiz.Id, (jobject) =>
             {
-            string status = (string)jobject["status"];
-            string payload = (string)jobject["payload"];
-            if (status.Equals("success"))
-            {
-                BeginInvoke(() =>{
-                    headerLb.Text = quiz.Title;
-                    List<Question> questions = JsonConvert.DeserializeObject<List<Question>>(payload);
-                    for (int i = 0; i < questions.Count; i++)
+                string status = (string)jobject["status"];
+                string payload = (string)jobject["payload"];
+                if (status.Equals("success"))
+                {
+                    BeginInvoke(() =>
                     {
-                        var question = questions[i];
-                        richTb.AppendText($"Question {i}:{question.QuestionText}\r\n");
-                        for (int j = 0; j < question.Options.Count; j++)
+                        headerLb.Text = quiz.Title;
+                        List<Question> questions = JsonConvert.DeserializeObject<List<Question>>(payload);
+                        for (int i = 0; i < questions.Count; i++)
                         {
-                            char optionName = (char)('A' + j);
-                            richTb.AppendText($"{optionName}.{question.Options[j]}\r\n");
+                            var question = questions[i];
+                            richTb.AppendText($"Question {i}:{question.QuestionText}\r\n");
+                            for (int j = 0; j < question.Options.Count; j++)
+                            {
+                                char optionName = (char)('A' + j);
+                                richTb.AppendText($"{optionName}.{question.Options[j]}\r\n");
+                            }
+                            richTb.AppendText("\r\n");
                         }
-                        richTb.AppendText("\r\n");
-                    }
-                });
+                    });
                 }
                 else BeginInvoke(() => MessageBox.Show("Error:" + payload));
             });
@@ -50,16 +53,29 @@ namespace QuizApp_frontend.FormHost
 
         private void hostButton_Click(object sender, EventArgs e)
         {
-            QuizAPI.HostGame(quiz.Id, (jobject) =>
+            if (quiz.Status.Equals("stop"))
             {
-                string status = (string)jobject["status"];
-                if (status.Equals("success"))
+                QuizAPI.HostGame(quiz.Id, (jobject) =>
                 {
-                    WaitingRoom waitingRoom = new WaitingRoom(quiz, switchChildForm);
-                    BeginInvoke(() => switchChildForm(waitingRoom));
-                }
-                else BeginInvoke(() => MessageBox.Show("Error:" + jobject["payload"].ToString()));
-            });
+                    string status = (string)jobject["status"];
+                    if (status.Equals("success"))
+                    {
+                        WaitingRoom waitingRoom = new WaitingRoom(quiz,this,switchChildForm);
+                        BeginInvoke(() => switchChildForm(waitingRoom,true));
+                    }
+                    else BeginInvoke(() => MessageBox.Show("Error:" + jobject["payload"].ToString()));
+                });
+            }
+            else if (quiz.Status.Equals("host"))
+            {
+                WaitingRoom waitingRoom = new WaitingRoom(quiz,this,switchChildForm);
+                switchChildForm(waitingRoom,true);
+            }
+        }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            switchChildForm(this.allQuiz, false);
         }
     }
 }

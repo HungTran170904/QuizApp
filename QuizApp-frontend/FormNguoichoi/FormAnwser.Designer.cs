@@ -36,6 +36,7 @@
             // 
             // richTextBox1
             // 
+            richTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             richTextBox1.BackColor = Color.Red;
             richTextBox1.BorderStyle = BorderStyle.None;
             richTextBox1.Font = new Font("Times New Roman", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -48,6 +49,7 @@
             // 
             // richTextBox2
             // 
+            richTextBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             richTextBox2.BackColor = Color.Blue;
             richTextBox2.BorderStyle = BorderStyle.None;
             richTextBox2.Font = new Font("Times New Roman", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -60,6 +62,7 @@
             // 
             // richTextBox3
             // 
+            richTextBox3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             richTextBox3.BackColor = Color.Orange;
             richTextBox3.BorderStyle = BorderStyle.None;
             richTextBox3.Font = new Font("Times New Roman", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -72,6 +75,7 @@
             // 
             // richTextBox4
             // 
+            richTextBox4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             richTextBox4.BackColor = Color.Green;
             richTextBox4.BorderStyle = BorderStyle.None;
             richTextBox4.Font = new Font("Times New Roman", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
