@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using QuizApp_frontend.API;
+using QuizApp_frontend.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +15,8 @@ namespace QuizApp_frontend.FormHost
 {
     public partial class Confirm : Form
     {
+        private Action<Form> switchChildForm;
+        private Quiz quiz;
         public Confirm()
         {
             InitializeComponent();
@@ -26,11 +31,26 @@ namespace QuizApp_frontend.FormHost
             txtname.Text = user;
            
         }
+        public Confirm(Quiz quiz, Action<Form> switchChildForm)
+        {
+            InitializeComponent();
+            this.quiz = quiz;
+
+            for (int i = 0; i < quiz.Questions.Count; i++)
+            {
+                var question = quiz.Questions[i];
+                rtblist.AppendText($"Question {i + 1}:{question.QuestionText}  Answer: {question.CorrectAnswer}\r\n");
+
+
+            }
+            txtname.Text = quiz.Title;
+            this.switchChildForm = switchChildForm;
+        }
         string _userName;
         private void button1_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Form form1 = new Form1();
+            Form form1 = new Form1(quiz,switchChildForm);
             form1.Show();
         }
 
@@ -49,13 +69,23 @@ namespace QuizApp_frontend.FormHost
 
         }
 
-        private void btnnext_Click(object sender, EventArgs e)
-        {
-          
-            _userName = txtname.Text;
-            AllQuiz form4 = new AllQuiz(_userName);
+        //private void btnnext_Click(object sender, EventArgs e)
+        //{
+        //    _userName = quiz.Title;
+        //    QuizAPI.AddQuiz(quiz, (jobject) =>
+        //    {
+        //        string status = (string)jobject["status"];
+        //        if (status.Equals("success"))
+        //        {
+        //            AllQuiz form4 = new AllQuiz(quiz, switchChildForm);
+        //            BeginInvoke(() => switchChildForm(form4));
+        //        }
+        //        else BeginInvoke(() => MessageBox.Show("Error:" + jobject["payload"].ToString()));
+        //    });
+         
+         //   AllQuiz form4 = new AllQuiz(quiz,switchChildForm);
 
-            form4.Show();
+          //  form4.Show();
         }
     }
 }

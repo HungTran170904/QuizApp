@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using QuizApp_frontend.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,29 +9,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace QuizApp_frontend.FormHost
 {
     public partial class Form1 : Form
     {
+        private Action<Form> switchChildForm;
+        private Quiz quiz;
+     private   Question question = new Question();
         public Form1()
         {
             InitializeComponent();
            
         }
 
-         string _userName;
-         string _categoryName;
+        
 
         public string ShowListContent
         {
             get { return rtbshowlist.Text; }
         }
-        public Form1(FormData formData)
+        public Form1(Quiz quiz, Action<Form> switchChildForm)
         {
             InitializeComponent();
-            _userName = formData.UserName;
-            _categoryName = formData.CategoryName;
+            this.quiz = quiz;
+            this.switchChildForm = switchChildForm;
+          //  string newQuestion = $"Question:{dem}\n{quiz.QuestionText} Answer: {quiz.answer}\n";
+           // rtbshowlist.AppendText(newQuestion);
+            for (int i = 0; i < quiz.Questions.Count; i++)
+            {
+                var question = quiz.Questions[i];
+                rtbshowlist.AppendText($"Question {i+1}:{question.QuestionText}  Answer: {question.CorrectAnswer}\r\n");
+               
+               
+            }
+
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -143,14 +158,15 @@ namespace QuizApp_frontend.FormHost
         private void txtback_Click(object sender, EventArgs e)
         {
             Hide();
-            Form NameCategory = new NameCategory();
+            Form NameCategory = new NameCategory(quiz);
             NameCategory.Show();
         }
 
         private void txtnext_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Form Confirm = new Confirm(this.ShowListContent,_userName,_categoryName);
+
+            Form Confirm = new Confirm(quiz, switchChildForm);
             Confirm.Show();
         }
 
@@ -166,19 +182,30 @@ namespace QuizApp_frontend.FormHost
         public int dem = 1;
         private void btnadd_Click(object sender, EventArgs e)
         {
+            try
+            {
 
-            
+
+
                 // Lấy câu hỏi từ TextBox
-                string question = txtquestion.Text;
+                string questionText = txtquestion.Text;
+
 
                 // Lấy đáp án từ ComboBox
                 string answer = comboBox1.SelectedItem.ToString();
-            
+                if (answer == "A") question.CorrectAnswer = txtA.Text;
+                if (answer == "B") question.CorrectAnswer = txtB.Text;
+                if (answer == "C") question.CorrectAnswer = txtC.Text;
+                if (answer == "D") question.CorrectAnswer = txtD.Text;
+                question.Options = new List<string>() { txtA.Text, txtB.Text, txtC.Text, txtD.Text };
+                question.TimeOut = Int32.Parse(txttime.Text);
+                quiz.Questions.Add(question);
+
                 // Kiểm tra xem câu hỏi và đáp án có được nhập đầy đủ hay không
-                if (!string.IsNullOrEmpty(question) && !string.IsNullOrEmpty(answer))
+                if (!string.IsNullOrEmpty(questionText) && !string.IsNullOrEmpty(answer))
                 {
                     // Tạo chuỗi mới chứa câu hỏi và đáp án
-                    string newQuestion = $"Question:{dem}\n{question} Answer: {answer}\n";
+                    string newQuestion = $"Question:{dem}\n{question} Answer: {question.CorrectAnswer}\n";
 
                     // Thêm chuỗi mới vào RichTextBox
                     rtbshowlist.AppendText(newQuestion);
@@ -186,13 +213,15 @@ namespace QuizApp_frontend.FormHost
                     // Xóa nội dung trong TextBox và ComboBox sau khi đã thêm vào RichTextBox
                     txtquestion.Text = "Type question here";
                     comboBox1.SelectedIndex = -1; // Reset ComboBox về trạng thái không chọn
-                dem++;
-            }
-                else
-                {
-                    // Hiển thị thông báo yêu cầu nhập đầy đủ thông tin
-                    MessageBox.Show("Please fill in all fields.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dem++;
                 }
+            }
+            catch (Exception ex)
+
+            {
+                // Hiển thị thông báo yêu cầu nhập đầy đủ thông tin
+                MessageBox.Show("Please fill in all fields.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
             
 
         }

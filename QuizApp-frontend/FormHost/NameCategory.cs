@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuizApp_frontend.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,11 +13,18 @@ namespace QuizApp_frontend.FormHost
 {
     public partial class NameCategory : Form
     {
+        private Quiz quiz=new Quiz();
+        Action<Form> switchChildForm;
         public NameCategory()
         {
             InitializeComponent();
         }
-
+       public NameCategory(Quiz quiz)
+        {
+            InitializeComponent();
+            this.quiz = quiz;
+            txtname.Text = quiz.Title;
+        }
         private void txtname_Enter(object sender, EventArgs e)
         {
             if (txtname.Text == "Name")
@@ -36,33 +44,18 @@ namespace QuizApp_frontend.FormHost
 
         }
 
-        private void txtcategory_Enter(object sender, EventArgs e)
-        {
-            if (txtcategory.Text == "Category")
-            {
-                txtcategory.Text = "";
-            }
-            txtcategory.ForeColor = Color.Black;
-        }
+        
 
-        private void txtcategory_Leave(object sender, EventArgs e)
-        {
-            if (txtcategory.Text == "")
-            {
-                txtcategory.Text = "Category";
-                txtcategory.ForeColor = Color.Silver;
-            }
-
-        }
+        
 
         private void btnnext_Click(object sender, EventArgs e)
         {
-            FormData formData = new FormData();
-            formData.UserName = txtname.Text;
-            formData.CategoryName = txtcategory.Text;
 
-            this.Hide();
-            Form form1 = new Form1(formData);
+            quiz.Title=txtname.Text;
+            
+
+           this.Hide();
+            Form form1 = new Form1(quiz,switchChildForm);
             form1.Show();
         }
 
@@ -74,7 +67,7 @@ namespace QuizApp_frontend.FormHost
     public class FormData
     {
         public string UserName { get; set; }
-        public string CategoryName { get; set; }
+        
     }
 
 }

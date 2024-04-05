@@ -32,7 +32,6 @@
             label2 = new Label();
             label4 = new Label();
             txtname = new TextBox();
-            txtcategory = new TextBox();
             btnnext = new Button();
             SuspendLayout();
             // 
@@ -84,21 +83,6 @@
             txtname.Enter += txtname_Enter;
             txtname.Leave += txtname_Leave;
             // 
-            // txtcategory
-            // 
-            txtcategory.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtcategory.ForeColor = SystemColors.InactiveCaption;
-            txtcategory.Location = new Point(521, 624);
-            txtcategory.Margin = new Padding(3, 4, 3, 4);
-            txtcategory.Multiline = true;
-            txtcategory.Name = "txtcategory";
-            txtcategory.Size = new Size(326, 89);
-            txtcategory.TabIndex = 5;
-            txtcategory.Text = "Category";
-            txtcategory.TextAlign = HorizontalAlignment.Center;
-            txtcategory.Enter += txtcategory_Enter;
-            txtcategory.Leave += txtcategory_Leave;
-            // 
             // btnnext
             // 
             btnnext.BackColor = Color.Black;
@@ -120,7 +104,6 @@
             BackColor = Color.Tomato;
             ClientSize = new Size(1324, 1040);
             Controls.Add(btnnext);
-            Controls.Add(txtcategory);
             Controls.Add(txtname);
             Controls.Add(label4);
             Controls.Add(label2);
@@ -138,7 +121,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtname;
-        private System.Windows.Forms.TextBox txtcategory;
         private System.Windows.Forms.Button btnnext;
     }
 }
