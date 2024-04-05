@@ -35,6 +35,7 @@
             pictureBox4 = new PictureBox();
             nameTb = new RichTextBox();
             pinCodeTb = new RichTextBox();
+            textBox1 = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -118,12 +119,21 @@
             pinCodeTb.TabIndex = 12;
             pinCodeTb.Text = "125BDE14-69B6-48C5-91B7-92A7F10F8E48";
             // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(0, 0);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(125, 27);
+            textBox1.TabIndex = 13;
+            textBox1.Visible = false;
+            // 
             // formJoin
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.joinBackground;
             ClientSize = new Size(800, 450);
+            Controls.Add(textBox1);
             Controls.Add(pinCodeTb);
             Controls.Add(nameTb);
             Controls.Add(pictureBox4);
@@ -151,5 +161,6 @@
         private PictureBox pictureBox4;
         private RichTextBox nameTb;
         private RichTextBox pinCodeTb;
+        private TextBox textBox1;
     }
 }

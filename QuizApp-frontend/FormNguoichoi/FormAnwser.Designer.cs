@@ -28,10 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             richTextBox1 = new RichTextBox();
             richTextBox2 = new RichTextBox();
             richTextBox3 = new RichTextBox();
             richTextBox4 = new RichTextBox();
+            button1 = new Button();
+            textBox1 = new TextBox();
+            timer1 = new System.Windows.Forms.Timer(components);
+            richTextBox5 = new RichTextBox();
             SuspendLayout();
             // 
             // richTextBox1
@@ -86,12 +91,44 @@
             richTextBox4.TabIndex = 3;
             richTextBox4.Text = "dap an a";
             // 
+            // button1
+            // 
+            button1.BackColor = Color.MidnightBlue;
+            button1.FlatAppearance.BorderColor = Color.MidnightBlue;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(22, 95);
+            button1.Name = "button1";
+            button1.Size = new Size(51, 44);
+            button1.TabIndex = 5;
+            button1.Text = "0";
+            button1.UseVisualStyleBackColor = false;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(12, 1);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(125, 27);
+            textBox1.TabIndex = 4;
+            textBox1.Visible = false;
+            // 
+            // richTextBox5
+            // 
+            richTextBox5.Location = new Point(206, 23);
+            richTextBox5.Name = "richTextBox5";
+            richTextBox5.Size = new Size(729, 248);
+            richTextBox5.TabIndex = 6;
+            richTextBox5.Text = "";
+            // 
             // FormAnwser
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.FormDapan;
             ClientSize = new Size(1032, 578);
+            Controls.Add(richTextBox5);
+            Controls.Add(button1);
+            Controls.Add(textBox1);
             Controls.Add(richTextBox4);
             Controls.Add(richTextBox3);
             Controls.Add(richTextBox2);
@@ -100,6 +137,7 @@
             Text = "FormAnwser";
             Load += FormAnwser_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -108,5 +146,9 @@
         private RichTextBox richTextBox2;
         private RichTextBox richTextBox3;
         private RichTextBox richTextBox4;
+        private Button button1;
+        private TextBox textBox1;
+        private System.Windows.Forms.Timer timer1;
+        private RichTextBox richTextBox5;
     }
 }
