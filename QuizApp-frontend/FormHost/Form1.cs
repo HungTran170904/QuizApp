@@ -15,34 +15,37 @@ namespace QuizApp_frontend.FormHost
 {
     public partial class Form1 : Form
     {
-        private Action<Form> switchChildForm;
+        private Action<Form,bool> switchChildForm;
         private Quiz quiz;
-     private   Question question = new Question();
+        private List<Quiz> quizzes;
+        private AllQuiz allQuiz;
         public Form1()
         {
             InitializeComponent();
-           
+
         }
 
-        
+
 
         public string ShowListContent
         {
             get { return rtbshowlist.Text; }
         }
-        public Form1(Quiz quiz, Action<Form> switchChildForm)
+        public Form1(List<Quiz> quizzes,AllQuiz allQuiz,Action<Form,bool> switchChildForm)
         {
             InitializeComponent();
-            this.quiz = quiz;
+            this.quiz = new Quiz();
+            quiz.CreatorId= MainForm.account.Id;
             this.switchChildForm = switchChildForm;
-          //  string newQuestion = $"Question:{dem}\n{quiz.QuestionText} Answer: {quiz.answer}\n";
-           // rtbshowlist.AppendText(newQuestion);
+            this.quizzes= quizzes;
+            //  string newQuestion = $"Question:{dem}\n{quiz.QuestionText} Answer: {quiz.answer}\n";
+            // rtbshowlist.AppendText(newQuestion);
             for (int i = 0; i < quiz.Questions.Count; i++)
             {
                 var question = quiz.Questions[i];
-                rtbshowlist.AppendText($"Question {i+1}:{question.QuestionText}  Answer: {question.CorrectAnswer}\r\n");
-               
-               
+                rtbshowlist.AppendText($"Question {i + 1}:{question.QuestionText}  Answer: {question.CorrectAnswer}\r\n");
+
+
             }
 
         }
@@ -65,11 +68,11 @@ namespace QuizApp_frontend.FormHost
                 txtA.Text = "Answer A";
             }
         }
-     
+
 
         private void txtB_Enter(object sender, EventArgs e)
         {
-            if(txtB.Text == "Answer B")
+            if (txtB.Text == "Answer B")
             {
                 txtB.Text = "";
             }
@@ -85,7 +88,7 @@ namespace QuizApp_frontend.FormHost
 
         private void txtC_Enter(object sender, EventArgs e)
         {
-            if(txtC.Text == "Answer C")
+            if (txtC.Text == "Answer C")
             {
                 txtC.Text = "";
             }
@@ -101,7 +104,7 @@ namespace QuizApp_frontend.FormHost
 
         private void txtD_Enter(object sender, EventArgs e)
         {
-            if(txtD.Text == "Answer D")
+            if (txtD.Text == "Answer D")
             {
                 txtD.Text = "";
             }
@@ -117,7 +120,7 @@ namespace QuizApp_frontend.FormHost
 
         private void txtquestion_Enter(object sender, EventArgs e)
         {
-            if(txtquestion.Text == "Type question here")
+            if (txtquestion.Text == "Type question here")
             {
                 txtquestion.Text = "";
             }
@@ -133,7 +136,7 @@ namespace QuizApp_frontend.FormHost
 
         private void textBox1_Enter(object sender, EventArgs e)
         {
-            if(txttime.Text=="Enter timeout here")
+            if (txttime.Text == "Enter timeout here")
             {
                 txttime.Text = "";
             }
@@ -141,7 +144,7 @@ namespace QuizApp_frontend.FormHost
 
         private void txttime_Leave(object sender, EventArgs e)
         {
-            if(txttime.Text == "")
+            if (txttime.Text == "")
             {
                 txttime.Text = "Enter timeout here";
             }
@@ -157,17 +160,14 @@ namespace QuizApp_frontend.FormHost
 
         private void txtback_Click(object sender, EventArgs e)
         {
-            Hide();
-            Form NameCategory = new NameCategory(quiz);
-            NameCategory.Show();
+            switchChildForm(allQuiz, false);
         }
 
         private void txtnext_Click(object sender, EventArgs e)
         {
-            this.Hide();
-
-            Form Confirm = new Confirm(quiz, switchChildForm);
-            Confirm.Show();
+            quiz.Title = txtname.Text;
+            Form Confirm = new Confirm(quizzes,quiz,this, switchChildForm);
+            switchChildForm(Confirm, true);
         }
 
         private void txttime_TextChanged(object sender, EventArgs e)
@@ -186,24 +186,26 @@ namespace QuizApp_frontend.FormHost
             {
 
 
-
                 // Lấy câu hỏi từ TextBox
                 string questionText = txtquestion.Text;
 
 
                 // Lấy đáp án từ ComboBox
                 string answer = comboBox1.SelectedItem.ToString();
-                if (answer == "A") question.CorrectAnswer = txtA.Text;
-                if (answer == "B") question.CorrectAnswer = txtB.Text;
-                if (answer == "C") question.CorrectAnswer = txtC.Text;
-                if (answer == "D") question.CorrectAnswer = txtD.Text;
-                question.Options = new List<string>() { txtA.Text, txtB.Text, txtC.Text, txtD.Text };
-                question.TimeOut = Int32.Parse(txttime.Text);
-                quiz.Questions.Add(question);
-
-                // Kiểm tra xem câu hỏi và đáp án có được nhập đầy đủ hay không
+                Question question = new Question();
+                question.QuestionText = questionText;
                 if (!string.IsNullOrEmpty(questionText) && !string.IsNullOrEmpty(answer))
                 {
+                    if (answer == "A") question.CorrectAnswer = txtA.Text;
+                    if (answer == "B") question.CorrectAnswer = txtB.Text;
+                    if (answer == "C") question.CorrectAnswer = txtC.Text;
+                    if (answer == "D") question.CorrectAnswer = txtD.Text;
+                    question.Options = new List<string>() { txtA.Text, txtB.Text, txtC.Text, txtD.Text };
+                    question.TimeOut = Int32.Parse(txttime.Text);
+                    quiz.Questions.Add(question);
+
+                    // Kiểm tra xem câu hỏi và đáp án có được nhập đầy đủ hay không
+
                     // Tạo chuỗi mới chứa câu hỏi và đáp án
                     string newQuestion = $"Question:{dem}\n{question} Answer: {question.CorrectAnswer}\n";
 
@@ -222,13 +224,39 @@ namespace QuizApp_frontend.FormHost
                 // Hiển thị thông báo yêu cầu nhập đầy đủ thông tin
                 MessageBox.Show("Please fill in all fields.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            
+
 
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void txtname_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtname_Leave(object sender, EventArgs e)
+        {
+
+            if (txtname.Text == "")
+            {
+                txtname.Text = "Name Title";
+                txtname.ForeColor = Color.Silver;
+            }
+
+
+        }
+
+        private void txtname_Enter(object sender, EventArgs e)
+        {
+            if (txtname.Text == "Name Title")
+            {
+                txtname.Text = "";
+            }
+            txtname.ForeColor = Color.Black;
         }
     }
 }

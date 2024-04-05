@@ -34,7 +34,7 @@ namespace QuizApp_frontend.API
                         receivedData[0] = restData + receivedData[0];
                     }
 
-                    if (receivedData[receivedData.Length-1].EndsWith("\r\n\r\n"))
+                    if (!receivedData[receivedData.Length-1].EndsWith("\r\n\r\n"))
                         restData = receivedData[receivedData.Length-1];
 
                     for(int i = 0; i < receivedData.Length-1; i++)
