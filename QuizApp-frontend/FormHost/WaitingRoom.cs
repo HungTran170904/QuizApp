@@ -1,29 +1,22 @@
 ﻿using Newtonsoft.Json;
 using QuizApp_frontend.API;
 using QuizApp_frontend.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace QuizApp_frontend.FormHost
 {
     public partial class WaitingRoom : Form
     {
         private Quiz quiz;
-        private Action<Form> switchChildForm;
+        private Action<Form, bool> switchChildForm;
+        private Form quizReview;
         private Dictionary<string, Participant> participants;
-        public WaitingRoom(Quiz quiz, Action<Form> switchChildForm)
+        public WaitingRoom(Quiz quiz, Form quizReview, Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
             this.switchChildForm = switchChildForm;
             this.quiz = quiz;
-            participants=new Dictionary<string, Participant>();
+            this.quizReview = quizReview;
+            participants = new Dictionary<string, Participant>();
             APIConfig.AddTopic("/partcipant/addParticipant",
             (jobject) =>
             {
@@ -47,11 +40,11 @@ namespace QuizApp_frontend.FormHost
         {
             QuizAPI.StartGame(quiz.Id, (jobject) =>
             {
-                string status= (string)jobject["status"];
+                string status = (string)jobject["status"];
                 if (status.Equals("success"))
                 {
-                    LeaderBoard leaderBoard=new LeaderBoard(participants,quiz);
-                    BeginInvoke(()=>switchChildForm(leaderBoard));
+                    LeaderBoard leaderBoard = new LeaderBoard(switchChildForm,participants, quiz);
+                    BeginInvoke(() => switchChildForm(leaderBoard,false));
                 }
             });
         }
@@ -60,7 +53,7 @@ namespace QuizApp_frontend.FormHost
         {
             bool isBlocked = blockButton.Text.Equals("Block room");
 
-            QuizAPI.UpdateBlock(quiz.Id,isBlocked, (jobject) =>
+            QuizAPI.UpdateBlock(quiz.Id, isBlocked, (jobject) =>
             {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
@@ -68,6 +61,11 @@ namespace QuizApp_frontend.FormHost
                     BeginInvoke(() => blockButton.Text = isBlocked ? "Unblock room" : "Block room");
                 else MessageBox.Show(payload);
             });
+        }
+
+        private void end_Click(object sender, EventArgs e)
+        {
+            switchChildForm(this.quizReview,false);
         }
     }
 }

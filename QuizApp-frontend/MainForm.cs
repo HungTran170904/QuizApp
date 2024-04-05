@@ -17,7 +17,12 @@ namespace QuizApp_frontend
                 apiThread.IsBackground = true;
                 apiThread.Start();
                 InitializeComponent();
-                curChildForm = new FormDangKi();
+                account=new Account();
+                account.Id = "E14DF576-75E0-48CF-9E9A-1697E30C4742";
+                /*Quiz quiz= new Quiz();
+                quiz.Id = "125BDE14-69B6-48C5-91B7-92A7F10F8E48";
+                quiz.Title = "Ko biet";*/
+                curChildForm = new AllQuiz(switchChildForm);
                 showChildForm();
             }
             catch(Exception ex) { }
@@ -26,14 +31,18 @@ namespace QuizApp_frontend
         {
             curChildForm.TopLevel = false;
             this.Controls.Add(curChildForm);
+            curChildForm.FormBorderStyle = FormBorderStyle.None;
+            this.Size =curChildForm.Size;
             curChildForm.Show();
         }
-        public void switchChildForm(Form newForm)
+
+        public void switchChildForm(Form newForm,bool isSaved)
         {
             if (curChildForm != null)
             {
                 this.Controls.Remove(curChildForm);
-                curChildForm.Dispose();
+                if (isSaved) curChildForm.Hide();
+                else curChildForm.Dispose();
             }
             curChildForm= newForm;
             showChildForm();

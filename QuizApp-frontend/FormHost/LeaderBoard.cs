@@ -16,27 +16,28 @@ namespace QuizApp_frontend.FormHost
     {
         private Dictionary<string, Participant> participants;
         private Quiz quiz;
-        Random rand = new Random();
-        public LeaderBoard(Dictionary<string, Participant> participants,Quiz quiz)
+        private Action<Form, bool> switchChildForm;
+        public LeaderBoard(Action<Form, bool> switchChildForm,Dictionary<string, Participant> participants,Quiz quiz)
         {
             InitializeComponent();
             this.participants = participants;
             this.quiz = quiz;
+            this.switchChildForm = switchChildForm;
             foreach (var pair in participants)
             {
                 flowLayoutPanel.Controls.Add(createNewLabel(pair.Value));
             }
-            APIConfig.AddTopic("/question/updateLeaderboard", (jobject) =>
-            {
-                string partId = (string) jobject["participantId"];
+            APIConfig.AddTopic("/question/updateLeaderboard",(jobject) =>
+            BeginInvoke(() => {
+                string partId = (string)jobject["participantId"];
                 int newScore = (int)jobject["totalScore"];
                 var part = participants[partId];
-                if(part!= null)
+                if (part != null)
                 {
                     part.TotalScore = newScore;
-                    BeginInvoke(() => changeLabelInOrder(part));  
+                    changeLabelInOrder(part);
                 }
-            });
+            }));
         }
         private Label createNewLabel(Participant part)
         {
@@ -89,14 +90,6 @@ namespace QuizApp_frontend.FormHost
                 });
             }
         }
-        public void nextButton_Click(object sender, EventArgs e)
-        {
-            int i = rand.Next(0, 10);
-            var part = participants[i.ToString()];
-            part.TotalScore += rand.Next(0, 100);
-            changeLabelInOrder(part);
-        }
-
         private void endButton_Click(object sender, EventArgs e)
         {
             QuizAPI.StopGame(quiz.Id, (jobject) =>
