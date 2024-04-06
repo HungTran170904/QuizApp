@@ -22,7 +22,7 @@ namespace QuizApp_frontend.Podium
 
         private void podium_Load(object sender, EventArgs e)
         {
-            APIConfig.AddTopic("/quesion/updateLeaderBoard");
+            //APIConfig.AddTopic("/quesion/updateLeaderBoard");
         }
     }
 }

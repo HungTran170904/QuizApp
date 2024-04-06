@@ -10,17 +10,20 @@ namespace QuizApp_backend.Repository
     {
         private readonly string connString;
         private readonly ReaderConverter _converter;
-        private DataColumn[] columns;
         public QuestionRepo(IConfiguration configuration, 
                 ReaderConverter converter) {
              connString = configuration["ConnectionStrings:DefaultConnection"];
             _converter = converter;
-            columns = new DataColumn[5];
+        }
+        private DataColumn[] CreateColumnsForQuiz()
+        {
+            DataColumn[] columns = new DataColumn[5];
             columns[0] = new DataColumn("QuizId", typeof(Guid));
             columns[1] = new DataColumn("QuestionText", typeof(string));
             columns[2] = new DataColumn("TimeOut", typeof(int));
             columns[3] = new DataColumn("Options", typeof(string));
             columns[4] = new DataColumn("CorrectAnswer", typeof(string));
+            return columns;
         }
         public Question SaveQuestion(Question question) { 
             using(SqlConnection conn = new SqlConnection(connString))
@@ -44,6 +47,7 @@ namespace QuizApp_backend.Repository
         {
             
             DataTable dt = new DataTable();
+            DataColumn[] columns = CreateColumnsForQuiz();
             dt.Columns.AddRange(columns);
             foreach (var question in questions)
             {

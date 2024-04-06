@@ -10,11 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <Compile Remove="Podium\**" />
+    <EmbeddedResource Remove="Podium\**" />
+    <None Remove="Podium\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Podium\" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>

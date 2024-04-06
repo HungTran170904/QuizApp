@@ -48,7 +48,7 @@
             txtA.BackColor = SystemColors.ButtonHighlight;
             txtA.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold);
             txtA.ForeColor = Color.Silver;
-            txtA.Location = new Point(34, 234);
+            txtA.Location = new Point(20, 311);
             txtA.Margin = new Padding(2, 3, 2, 3);
             txtA.Multiline = true;
             txtA.Name = "txtA";
@@ -63,7 +63,7 @@
             txtB.BackColor = SystemColors.ButtonHighlight;
             txtB.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold);
             txtB.ForeColor = Color.Silver;
-            txtB.Location = new Point(710, 234);
+            txtB.Location = new Point(696, 311);
             txtB.Margin = new Padding(2, 3, 2, 3);
             txtB.Multiline = true;
             txtB.Name = "txtB";
@@ -78,7 +78,7 @@
             txtC.BackColor = SystemColors.ButtonHighlight;
             txtC.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold);
             txtC.ForeColor = Color.Silver;
-            txtC.Location = new Point(34, 325);
+            txtC.Location = new Point(20, 402);
             txtC.Margin = new Padding(2, 3, 2, 3);
             txtC.Multiline = true;
             txtC.Name = "txtC";
@@ -93,7 +93,7 @@
             txtD.BackColor = SystemColors.ButtonHighlight;
             txtD.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold);
             txtD.ForeColor = Color.Silver;
-            txtD.Location = new Point(713, 325);
+            txtD.Location = new Point(699, 402);
             txtD.Margin = new Padding(2, 3, 2, 3);
             txtD.Multiline = true;
             txtD.Name = "txtD";
@@ -108,7 +108,7 @@
             txtquestion.BackColor = Color.White;
             txtquestion.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtquestion.ForeColor = Color.Silver;
-            txtquestion.Location = new Point(378, 146);
+            txtquestion.Location = new Point(364, 223);
             txtquestion.Margin = new Padding(2, 3, 2, 3);
             txtquestion.Multiline = true;
             txtquestion.Name = "txtquestion";
@@ -142,7 +142,7 @@
             comboBox1.ForeColor = SystemColors.InfoText;
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "A", "B", "C", "D" });
-            comboBox1.Location = new Point(350, 402);
+            comboBox1.Location = new Point(336, 479);
             comboBox1.Margin = new Padding(2, 3, 2, 3);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(212, 33);
@@ -154,7 +154,7 @@
             btnadd.BackColor = SystemColors.ButtonHighlight;
             btnadd.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnadd.ForeColor = SystemColors.InfoText;
-            btnadd.Location = new Point(710, 402);
+            btnadd.Location = new Point(696, 479);
             btnadd.Margin = new Padding(2, 3, 2, 3);
             btnadd.Name = "btnadd";
             btnadd.Size = new Size(257, 40);
@@ -168,7 +168,7 @@
             txtback.BackColor = Color.Red;
             txtback.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             txtback.ForeColor = SystemColors.InactiveCaptionText;
-            txtback.Location = new Point(473, 471);
+            txtback.Location = new Point(103, 96);
             txtback.Margin = new Padding(2, 3, 2, 3);
             txtback.Name = "txtback";
             txtback.Size = new Size(136, 83);
@@ -182,7 +182,7 @@
             txtnext.BackColor = Color.MediumSeaGreen;
             txtnext.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             txtnext.ForeColor = SystemColors.InactiveCaptionText;
-            txtnext.Location = new Point(710, 471);
+            txtnext.Location = new Point(981, 96);
             txtnext.Margin = new Padding(2, 3, 2, 3);
             txtnext.Name = "txtnext";
             txtnext.Size = new Size(125, 83);

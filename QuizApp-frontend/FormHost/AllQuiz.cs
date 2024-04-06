@@ -18,7 +18,6 @@ namespace QuizApp_frontend.FormHost
     {
         private List<Quiz> quizzes;
         private Action<Form, bool> switchChildForm;
-        public AllQuiz() { }
         public AllQuiz(Action<Form, bool> switchChildForm)
         {
             InitializeComponent();

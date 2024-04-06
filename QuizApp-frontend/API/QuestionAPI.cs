@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,19 @@ namespace QuizApp_frontend.API
                 APIConfig.RemoveTopic("/question/getQuestionsForPlay");
             });
             APIConfig.SendData("/question/getQuestionsForPlay", quizId);
+        }
+        public void Test()
+        {
+            APIConfig.AddTopic("/quiz/stopGameForPlayers", jobject => {
+                string status = (string)jobject["status"];
+                string payload = (string)jobject["payload"];
+                if (status.Equals("success"))
+                {
+                    JObject payloadObj = JsonConvert.DeserializeObject<JObject>(payload);
+                    int totalScore = (int)payloadObj["totalScore"];
+                    int rank = (int) payloadObj["rank"];
+                }
+            });
         }
     }
 }

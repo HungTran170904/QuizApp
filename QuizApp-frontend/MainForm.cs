@@ -22,7 +22,7 @@ namespace QuizApp_frontend
                 /*Quiz quiz= new Quiz();
                 quiz.Id = "125BDE14-69B6-48C5-91B7-92A7F10F8E48";
                 quiz.Title = "Ko biet";*/
-                curChildForm = new FormDangnhap();
+                curChildForm = new AllQuiz(switchChildForm);
                 showChildForm();
             }
             catch(Exception ex) { }
