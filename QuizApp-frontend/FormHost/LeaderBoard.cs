@@ -1,4 +1,5 @@
-﻿using QuizApp_frontend.API;
+﻿using Newtonsoft.Json;
+using QuizApp_frontend.API;
 using QuizApp_frontend.Models;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,11 @@ namespace QuizApp_frontend.FormHost
         private Dictionary<string, Participant> participants;
         private Quiz quiz;
         private Action<Form, bool> switchChildForm;
-        public LeaderBoard(Action<Form, bool> switchChildForm,Dictionary<string, Participant> participants,Quiz quiz)
+        private QuizReview quizReview;
+        public LeaderBoard(QuizReview quizReview,Action<Form, bool> switchChildForm,Dictionary<string, Participant> participants,Quiz quiz)
         {
             InitializeComponent();
+            this.quizReview= quizReview;
             this.participants = participants;
             this.quiz = quiz;
             this.switchChildForm = switchChildForm;
@@ -97,7 +100,11 @@ namespace QuizApp_frontend.FormHost
                 string status = (string) jobject["status"];
                 string payload = (string)jobject["payload"];
                 if (status.Equals("success"))
-                    BeginInvoke(() => this.Close());
+                {
+                    var top3 = JsonConvert.DeserializeObject<List<Participant>>(payload);
+                    Podium podium = new Podium(quizReview, quiz.Title, top3, switchChildForm);
+                    BeginInvoke(() => switchChildForm(podium, false));
+                }
                 else BeginInvoke(() => MessageBox.Show("Error" + payload));
             });
         }

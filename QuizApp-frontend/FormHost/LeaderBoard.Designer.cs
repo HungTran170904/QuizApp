@@ -70,7 +70,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.BlueViolet;
+            BackColor = Color.Gold;
             BackgroundImageLayout = ImageLayout.None;
             ClientSize = new Size(1139, 628);
             ControlBox = false;

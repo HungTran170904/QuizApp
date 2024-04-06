@@ -87,5 +87,11 @@ namespace QuizApp_frontend.FormHost
             NameCategory nameCategory = new NameCategory(this, switchChildForm);
             switchChildForm(nameCategory, true);
         }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            FormDangnhap formDangNhap = new FormDangnhap(switchChildForm);
+            switchChildForm(formDangNhap, false);
+        }
     }
 }

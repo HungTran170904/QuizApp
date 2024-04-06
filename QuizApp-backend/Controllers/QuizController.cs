@@ -27,7 +27,7 @@ namespace QuizApp_backend.Controllers
             else if (url.Equals("/hostGame"))
                 HostGame(accountId,payload, client);
             else if (url.Equals("/stopGame"))
-                StopGame(accountId,payload);
+                result=StopGame(accountId,payload);
             else if(url.Equals("/updateBlock"))
                 UpdateBlock(accountId,payload);
             return result;
@@ -52,9 +52,11 @@ namespace QuizApp_backend.Controllers
         {
             _quizService.StartGame(accountId,quizId);
         }
-        public void StopGame(string accountId, string quizId)
+        public string StopGame(string accountId, string quizId)
         {
-            _quizService.StopGame(accountId,quizId);
+            List<Participant> partcipants=_quizService.StopGame(accountId,quizId);
+            if (partcipants == null) return "";
+            else return JsonConvert.SerializeObject(partcipants);
         }
         public void UpdateBlock(string accountId, string payload)
         {

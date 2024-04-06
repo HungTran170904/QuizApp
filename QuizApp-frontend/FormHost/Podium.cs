@@ -10,19 +10,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using QuizApp_frontend.Models;
+using QuizApp_frontend.FormHost;
 
-namespace QuizApp_frontend.Podium
+namespace QuizApp_frontend.FormHost
 {
-    public partial class podium : Form
+    public partial class Podium : Form
     {
-        public podium()
+        private Action<Form, bool> switchChildForm;
+        private QuizReview quizReview;
+        public Podium(QuizReview quizReview,string quizTitle, List<Participant> top3, Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
+            this.switchChildForm = switchChildForm;
+            this.quizReview = quizReview;
+            headerLb.Text = quizTitle;
+            if (top3.Count > 0)
+            {
+                goldenLb.Text = $"{top3[0].TotalScore} points\r\nRank:1st";
+                goldenPlayerLb.Text = top3[0].Name;
+            }
+            if(top3.Count > 1) 
+            {
+                silverLb.Text = $"{top3[1].TotalScore} points\r\nRank:2st";
+                silverPlayerLb.Text = top3[1].Name;
+            }
+            if (top3.Count > 2)
+            {
+                copperLb.Text = $"{top3[2].TotalScore} points\r\nRank:3st";
+                copperPlayerLb.Text = top3[2].Name;
+            }
         }
 
-        private void podium_Load(object sender, EventArgs e)
+        private void backButton_Click(object sender, EventArgs e)
         {
-            //APIConfig.AddTopic("/quesion/updateLeaderBoard");
+            switchChildForm(quizReview, false);
         }
     }
 }

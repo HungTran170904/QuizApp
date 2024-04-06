@@ -8,9 +8,9 @@ namespace QuizApp_frontend.FormHost
     {
         private Quiz quiz;
         private Action<Form, bool> switchChildForm;
-        private Form quizReview;
+        private QuizReview quizReview;
         private Dictionary<string, Participant> participants;
-        public WaitingRoom(Quiz quiz, Form quizReview, Action<Form, bool> switchChildForm)
+        public WaitingRoom(Quiz quiz,QuizReview quizReview, Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
             this.switchChildForm = switchChildForm;
@@ -43,7 +43,7 @@ namespace QuizApp_frontend.FormHost
                 string status = (string)jobject["status"];
                 if (status.Equals("success"))
                 {
-                    LeaderBoard leaderBoard = new LeaderBoard(switchChildForm,participants, quiz);
+                    LeaderBoard leaderBoard = new LeaderBoard(quizReview,switchChildForm,participants, quiz);
                     BeginInvoke(() => switchChildForm(leaderBoard,false));
                 }
             });

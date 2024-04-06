@@ -80,6 +80,7 @@
             backButton.TabIndex = 7;
             backButton.Text = "<< Back";
             backButton.UseVisualStyleBackColor = false;
+            backButton.Click += backButton_Click;
             // 
             // AllQuiz
             // 

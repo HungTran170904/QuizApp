@@ -235,7 +235,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Tomato;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1342, 844);
+            ClientSize = new Size(1342, 918);
             Controls.Add(quizLb);
             Controls.Add(rtbshowlist);
             Controls.Add(label1);

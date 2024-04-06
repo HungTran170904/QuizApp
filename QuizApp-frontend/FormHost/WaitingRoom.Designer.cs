@@ -109,9 +109,11 @@
             // 
             // pinCodeTb
             // 
+            pinCodeTb.BackColor = Color.White;
             pinCodeTb.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             pinCodeTb.Location = new Point(256, 87);
             pinCodeTb.Name = "pinCodeTb";
+            pinCodeTb.ReadOnly = true;
             pinCodeTb.Size = new Size(426, 34);
             pinCodeTb.TabIndex = 8;
             // 
