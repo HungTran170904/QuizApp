@@ -39,6 +39,7 @@
             richTextBox1 = new RichTextBox();
             richTextBox2 = new RichTextBox();
             pictureBox6 = new PictureBox();
+            textBox1 = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -150,12 +151,21 @@
             pictureBox6.TabStop = false;
             pictureBox6.Click += pictureBox6_Click;
             // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(0, 0);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(125, 27);
+            textBox1.TabIndex = 8;
+            textBox1.Visible = false;
+            // 
             // FormDangnhap
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.joinside;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(820, 467);
+            Controls.Add(textBox1);
             Controls.Add(pictureBox6);
             Controls.Add(richTextBox2);
             Controls.Add(richTextBox1);
@@ -187,5 +197,6 @@
         private RichTextBox richTextBox1;
         private RichTextBox richTextBox2;
         private PictureBox pictureBox6;
+        private TextBox textBox1;
     }
 }
