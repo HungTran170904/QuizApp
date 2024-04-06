@@ -55,11 +55,12 @@
             // 
             // endButton
             // 
+            endButton.AutoSize = true;
             endButton.BackColor = Color.FromArgb(128, 255, 255);
             endButton.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             endButton.Location = new Point(900, 101);
             endButton.Name = "endButton";
-            endButton.Size = new Size(114, 35);
+            endButton.Size = new Size(117, 38);
             endButton.TabIndex = 4;
             endButton.Text = "End Game";
             endButton.UseVisualStyleBackColor = false;
@@ -81,6 +82,7 @@
             Name = "LeaderBoard";
             Text = "LeaderBoard";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

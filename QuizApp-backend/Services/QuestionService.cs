@@ -31,14 +31,14 @@ namespace QuizApp_backend.Services
             var questions= _questionRepo.FindByQuizId(QuizId, false);
             return questions;
         }
-        private async Task SendScoreToHost(Question question, Result result)
+        private void SendScoreToHost(Question question, Result result)
         {
             int score = (result.IsCorrect) ? 10 : -10;
-            int totalScore = _participantRepo.AddScore(result.ParticipantId, score);
+            int totalScore = _participantRepo.AddScoreAndFinishedTime(result.ParticipantId, score,DateTime.Now);
             JObject jobject = new JObject();
             jobject["participantId"] = result.ParticipantId;
             jobject["totalScore"] = totalScore;
-            await _socketService.SendDataToHost(question.QuizId,"/question/updateLeaderboard",JsonConvert.SerializeObject(jobject));
+            _socketService.SendDataToHost(question.QuizId,"/question/updateLeaderboard",JsonConvert.SerializeObject(jobject));
         }
         public Result AnswerQuestion(Result result)
         {
@@ -48,7 +48,7 @@ namespace QuizApp_backend.Services
             if(!_socketService.quizSessions.ContainsKey(question.QuizId))
                 throw new RequestException("Sorry, the quiz has been closed");
             result.IsCorrect=question.CorrectAnswer.Equals(result.ChoosedOption);
-            _ = SendScoreToHost(question, result);
+            Task.Run(()=>SendScoreToHost(question, result));
             return result;
         }
     }

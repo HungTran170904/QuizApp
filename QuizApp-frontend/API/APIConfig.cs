@@ -14,9 +14,10 @@ namespace QuizApp_frontend.API
     {
         private static TcpClient tcpClient=new TcpClient();
         private static Dictionary<string, Action<JObject>> topics=new Dictionary<string, Action<JObject>>();
+        private static string delimiter = ";";
         public static void InitConnection()
         {
-            IPAddress ipaddress = IPAddress.Parse("192.168.43.250");
+            IPAddress ipaddress = IPAddress.Parse(GetLocalIPAddress());
             int port = 8080;
             tcpClient.Connect(ipaddress, port);
             byte[] resBuffer = new byte[1024];
@@ -26,7 +27,7 @@ namespace QuizApp_frontend.API
             while ((byteReceived=stream.Read(resBuffer,0, resBuffer.Length))>0)
             {
                 string receivedChunk=UTF8Encoding.UTF8.GetString(resBuffer,0,byteReceived);
-                string[] receivedData = receivedChunk.Split("\r\n\r\n");
+                string[] receivedData = receivedChunk.Split(delimiter);
                 if(receivedData.Length > 0)
                 {
                     if (restData.Length > 0)
@@ -34,7 +35,7 @@ namespace QuizApp_frontend.API
                         receivedData[0] = restData + receivedData[0];
                     }
 
-                    if (receivedData[receivedData.Length-1].EndsWith("\r\n\r\n"))
+                    if (!receivedData[receivedData.Length-1].EndsWith(delimiter))
                         restData = receivedData[receivedData.Length-1];
 
                     for(int i = 0; i < receivedData.Length-1; i++)
@@ -82,7 +83,7 @@ namespace QuizApp_frontend.API
             jobject["url"] = url;
             jobject["payload"]=data;
             if(MainForm.account!=null) jobject["accountId"]= MainForm.account.Id;
-            byte[] sendBytes=UTF8Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(jobject)+ "\r\n\r\n");
+            byte[] sendBytes=UTF8Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(jobject)+delimiter);
             Stream stream=tcpClient.GetStream();
             stream.WriteAsync(sendBytes);
             stream.FlushAsync();

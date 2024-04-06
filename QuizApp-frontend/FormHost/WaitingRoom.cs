@@ -65,7 +65,12 @@ namespace QuizApp_frontend.FormHost
 
         private void end_Click(object sender, EventArgs e)
         {
-            switchChildForm(this.quizReview,false);
+            QuizAPI.StopGame(quiz.Id, jobject =>
+            {
+                string status = (string)jobject["status"];
+                if (status.Equals("success"))
+                    BeginInvoke(() => switchChildForm(this.quizReview, false));
+            });
         }
     }
 }

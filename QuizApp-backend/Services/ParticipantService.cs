@@ -32,7 +32,7 @@ namespace QuizApp_backend.Services
             Task.Run(() =>
             {
                 _socketService.SendDataToHost(participant.QuizId,"/partcipant/addParticipant",participantJson);
-                _socketService.AddPlayer(participant.QuizId, client);
+                _socketService.AddPlayer(participant.QuizId, savedParticipant.Id,client);
             });
             JObject jobject=new JObject();
             jobject["partipant"] = participantJson;

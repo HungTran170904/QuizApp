@@ -12,9 +12,13 @@ namespace QuizApp_frontend.FormHost
 {
     public partial class NameCategory : Form
     {
-        public NameCategory()
+        private AllQuiz allQuiz;
+        private Action<Form,bool> switchChildForm;
+        public NameCategory(AllQuiz allQuiz, Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
+            this.allQuiz = allQuiz;
+            this.switchChildForm = switchChildForm;
         }
 
         private void txtname_Enter(object sender, EventArgs e)
@@ -33,48 +37,18 @@ namespace QuizApp_frontend.FormHost
                 txtname.Text = "Name";
                 txtname.ForeColor = Color.Silver;
             }
-
-        }
-
-        private void txtcategory_Enter(object sender, EventArgs e)
-        {
-            if (txtcategory.Text == "Category")
-            {
-                txtcategory.Text = "";
-            }
-            txtcategory.ForeColor = Color.Black;
-        }
-
-        private void txtcategory_Leave(object sender, EventArgs e)
-        {
-            if (txtcategory.Text == "")
-            {
-                txtcategory.Text = "Category";
-                txtcategory.ForeColor = Color.Silver;
-            }
-
         }
 
         private void btnnext_Click(object sender, EventArgs e)
         {
-            FormData formData = new FormData();
-            formData.UserName = txtname.Text;
-            formData.CategoryName = txtcategory.Text;
-
-            this.Hide();
-            Form form1 = new Form1(formData);
-            form1.Show();
-        }
-
-        private void txtname_TextChanged(object sender, EventArgs e)
-        {
+            if (txtname.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Please fill in the quiz name");
+                return;
+            }
+            AddQuestions addQuestions = new AddQuestions(txtname.Text,allQuiz,switchChildForm);
+            switchChildForm(addQuestions, false);
 
         }
     }
-    public class FormData
-    {
-        public string UserName { get; set; }
-        public string CategoryName { get; set; }
-    }
-
 }

@@ -21,7 +21,7 @@ namespace QuizApp_backend.Repository
             columns[2] = new DataColumn("TimeOut", typeof(int));
             columns[3] = new DataColumn("Options", typeof(string));
             columns[4] = new DataColumn("CorrectAnswer", typeof(string));
-         }
+        }
         public Question SaveQuestion(Question question) { 
             using(SqlConnection conn = new SqlConnection(connString))
             {
@@ -42,6 +42,7 @@ namespace QuizApp_backend.Repository
         }
         public List<Question> SaveQuestions(List<Question> questions, string quizId)
         {
+            
             DataTable dt = new DataTable();
             dt.Columns.AddRange(columns);
             foreach (var question in questions)
@@ -74,6 +75,7 @@ namespace QuizApp_backend.Repository
                     }
                 }
             }
+            dt.Dispose();
             return questions;
         }
         public List<Question> FindByQuizId(string quizId, bool containsAnswer)

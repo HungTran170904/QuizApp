@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.DataFormats;
 
 namespace QuizApp_frontend.FormHost
 {
@@ -34,6 +35,22 @@ namespace QuizApp_frontend.FormHost
                     }
                     else BeginInvoke(() => MessageBox.Show("Error:" + payload));
                 });
+        }
+        public void AddQuiz(Quiz quiz)
+        {
+            quizzes.Add(quiz);
+            Button btn = new Button();
+            btn.Name = quiz.Id;
+            btn.Text = quiz.Title;
+            btn.Click += btn_onClick;
+
+            btn.BackColor = Color.Black;
+            btn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btn.ForeColor = Color.White;
+            btn.Size = new Size(140, 140);
+            btn.UseVisualStyleBackColor = false;
+
+            flowLayoutPanel.Controls.Add(btn);
         }
         private void addButtonFromQuizzes()
         {
@@ -68,7 +85,8 @@ namespace QuizApp_frontend.FormHost
 
         private void addButton_Click(object sender, EventArgs e)
         {
-
+            NameCategory nameCategory = new NameCategory(this, switchChildForm);
+            switchChildForm(nameCategory, true);
         }
     }
 }

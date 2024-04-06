@@ -2,10 +2,11 @@
 using Newtonsoft.Json.Linq;
 using QuizApp_backend.Controllers;
 using QuizApp_backend.Exceptions;
+using QuizApp_backend.Util;
+using System.Data;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace QuizApp_backend
 {
     public class Server
@@ -66,7 +67,7 @@ namespace QuizApp_backend
                 {
                     string receivedChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                     //Console.WriteLine("ReceivedChunk:"+receivedChunk);
-                    string[] receivedData = receivedChunk.Split("\r\n\r\n");
+                    string[] receivedData = receivedChunk.Split(Constraints.delimiter);
                     if (receivedData.Length > 0)
                     {
                         if (restData.Length>0)
@@ -76,7 +77,7 @@ namespace QuizApp_backend
                         }
 
                         // check if the last packet of receivedChunk is not fully streamed
-                        if (!receivedChunk.EndsWith("\r\n\r\n"))
+                        if (!receivedChunk.EndsWith(Constraints.delimiter))
                             restData = receivedData[receivedData.Length - 1];
 
                         for(int i=0;i<receivedData.Length-1;i++)
@@ -85,7 +86,7 @@ namespace QuizApp_backend
                             Console.WriteLine("Request: " + data);
                             string response = await HandlePacket(data, client);
                             Console.WriteLine("Response " + response);
-                            byte[] resBytes = Encoding.UTF8.GetBytes(response+ "\r\n\r\n");
+                            byte[] resBytes = Encoding.UTF8.GetBytes(response+ Constraints.delimiter);
                             await stream.WriteAsync(resBytes, 0, resBytes.Length);
                         }
                     }
