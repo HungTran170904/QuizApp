@@ -26,6 +26,7 @@ internal class Program
         builder.Services.AddSingleton<QuestionService>();
         builder.Services.AddSingleton<QuizService>();
         builder.Services.AddSingleton<ParticipantService>();
+        builder.Services.AddSingleton<FileService>();
 
         builder.Services.AddSingleton<AccountController>();
         builder.Services.AddSingleton<QuestionController>();

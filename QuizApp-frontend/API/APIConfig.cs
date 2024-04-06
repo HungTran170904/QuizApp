@@ -12,12 +12,13 @@ namespace QuizApp_frontend.API
 {
     public class APIConfig
     {
+        private static IPAddress ipaddress;
         private static TcpClient tcpClient=new TcpClient();
         private static Dictionary<string, Action<JObject>> topics=new Dictionary<string, Action<JObject>>();
         private static string delimiter = ";";
         public static void InitConnection()
         {
-            IPAddress ipaddress = IPAddress.Parse(GetLocalIPAddress());
+            ipaddress = IPAddress.Parse(GetLocalIPAddress());
             int port = 8080;
             tcpClient.Connect(ipaddress, port);
             byte[] resBuffer = new byte[1024];

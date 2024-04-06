@@ -15,10 +15,10 @@ namespace QuizApp_frontend.FormHost
 {
     public partial class QuizReview : Form
     {
-        private Action<Form,bool> switchChildForm;
+        private Action<Form, bool> switchChildForm;
         private Quiz quiz;
         private Form allQuiz;
-        public QuizReview(Quiz quiz,Form allQuiz, Action<Form,bool> switchChildForm)
+        public QuizReview(Quiz quiz, Form allQuiz, Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
             this.quiz = quiz;
@@ -60,22 +60,48 @@ namespace QuizApp_frontend.FormHost
                     string status = (string)jobject["status"];
                     if (status.Equals("success"))
                     {
-                        WaitingRoom waitingRoom = new WaitingRoom(quiz,this,switchChildForm);
-                        BeginInvoke(() => switchChildForm(waitingRoom,true));
+                        WaitingRoom waitingRoom = new WaitingRoom(quiz, this, switchChildForm);
+                        BeginInvoke(() => switchChildForm(waitingRoom, true));
                     }
                     else BeginInvoke(() => MessageBox.Show("Error:" + jobject["payload"].ToString()));
                 });
             }
             else if (quiz.Status.Equals("host"))
             {
-                WaitingRoom waitingRoom = new WaitingRoom(quiz,this,switchChildForm);
-                switchChildForm(waitingRoom,true);
+                WaitingRoom waitingRoom = new WaitingRoom(quiz, this, switchChildForm);
+                switchChildForm(waitingRoom, true);
             }
         }
 
         private void backButton_Click(object sender, EventArgs e)
         {
             switchChildForm(this.allQuiz, false);
+        }
+
+        private void downloadButton_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Excel File|*.xlsx";
+            if(sfd.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = sfd.FileName;
+                QuizAPI.GetQuizReport(quiz.Id, jobject =>
+                {
+                    string status = (string)jobject["status"];
+                    string payload = (string)jobject["payload"];
+                    if (status.Equals("success"))
+                    {
+                        Task.Run(() =>
+                        {
+                            byte[] data = Convert.FromBase64String(payload);
+                            using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                            {
+                                fs.WriteAsync(data, 0, data.Length);
+                            }
+                        });
+                    }
+                });
+            }
         }
     }
 }

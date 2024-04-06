@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using QuizApp_backend.Models;
 using QuizApp_backend.Services;
+using System.Buffers.Text;
 using System.Net.Sockets;
 
 namespace QuizApp_backend.Controllers
@@ -10,9 +11,12 @@ namespace QuizApp_backend.Controllers
     {
         public string prefix = "/quiz";
         private readonly QuizService _quizService;
-        public QuizController(QuizService quizService)
+        private readonly FileService _fileService;
+        public QuizController(QuizService quizService,
+            FileService fileService)
         {
             _quizService = quizService;
+            _fileService = fileService;
         }
         public string RouteRequests(string url,string accountId,string payload, TcpClient client)
         {
@@ -30,6 +34,8 @@ namespace QuizApp_backend.Controllers
                 result=StopGame(accountId,payload);
             else if(url.Equals("/updateBlock"))
                 UpdateBlock(accountId,payload);
+            else if(url.Equals("/getQuizReport"))
+                result= GetQuizReport(accountId,payload);
             return result;
         }
         public string AddQuiz(string accountId,string payload) 
@@ -64,6 +70,12 @@ namespace QuizApp_backend.Controllers
             string quizId =(string) jobject["quizId"];
             bool isBlocked = (bool)jobject["isBlocked"];
             _quizService.UpdateBlock(accountId, quizId, isBlocked);
+        }
+        public string GetQuizReport(string accountId, string quizId)
+        {
+            MemoryStream stream = new MemoryStream();
+            _fileService.CreateExcelFile(stream,accountId, quizId);
+            return Convert.ToBase64String(stream.ToArray());
         }
     }
 }

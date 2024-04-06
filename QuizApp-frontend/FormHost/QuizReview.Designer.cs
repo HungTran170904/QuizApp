@@ -32,6 +32,7 @@
             richTb = new RichTextBox();
             hostButton = new Button();
             backButton = new Button();
+            downloadButton = new Button();
             SuspendLayout();
             // 
             // headerLb
@@ -40,7 +41,7 @@
             headerLb.BorderStyle = BorderStyle.FixedSingle;
             headerLb.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             headerLb.ForeColor = Color.White;
-            headerLb.Location = new Point(-1, -1);
+            headerLb.Location = new Point(0, -2);
             headerLb.Name = "headerLb";
             headerLb.Size = new Size(975, 63);
             headerLb.TabIndex = 3;
@@ -84,11 +85,25 @@
             backButton.UseVisualStyleBackColor = false;
             backButton.Click += backButton_Click;
             // 
+            // downloadButton
+            // 
+            downloadButton.BackColor = Color.MediumSeaGreen;
+            downloadButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            downloadButton.ForeColor = Color.White;
+            downloadButton.Location = new Point(12, 205);
+            downloadButton.Name = "downloadButton";
+            downloadButton.Size = new Size(126, 58);
+            downloadButton.TabIndex = 7;
+            downloadButton.Text = "Download report";
+            downloadButton.UseVisualStyleBackColor = false;
+            downloadButton.Click += downloadButton_Click;
+            // 
             // QuizReview
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(975, 589);
+            Controls.Add(downloadButton);
             Controls.Add(backButton);
             Controls.Add(hostButton);
             Controls.Add(richTb);
@@ -106,5 +121,6 @@
         private RichTextBox richTb;
         private Button hostButton;
         private Button backButton;
+        private Button downloadButton;
     }
 }

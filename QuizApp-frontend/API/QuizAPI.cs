@@ -64,5 +64,14 @@ namespace QuizApp_frontend.API
             jobject["isBlocked"]=isBlocked;
             APIConfig.SendData("/quiz/updateBlock",JsonConvert.SerializeObject(jobject));
         }
+        public static void GetQuizReport(string quizId,Action<JObject> callback)
+        {
+            APIConfig.AddTopic("/quiz/getQuizReport", jobject =>
+            {
+                callback(jobject);
+                APIConfig.RemoveTopic("/quiz/getQuizReport");
+            });
+            APIConfig.SendData("/quiz/getQuizReport", quizId);
+        }
     }
 }

@@ -70,7 +70,7 @@ namespace QuizApp_backend
                     string[] receivedData = receivedChunk.Split(Constraints.delimiter);
                     if (receivedData.Length > 0)
                     {
-                        if (restData.Length>0)
+                        if (restData.Length > 0)
                         {
                             receivedData[0] = restData + receivedData[0];
                             restData = "";
@@ -80,13 +80,13 @@ namespace QuizApp_backend
                         if (!receivedChunk.EndsWith(Constraints.delimiter))
                             restData = receivedData[receivedData.Length - 1];
 
-                        for(int i=0;i<receivedData.Length-1;i++)
+                        for (int i = 0; i < receivedData.Length - 1; i++)
                         {
                             string data = receivedData[i];
                             Console.WriteLine("Request: " + data);
                             string response = await HandlePacket(data, client);
                             Console.WriteLine("Response " + response);
-                            byte[] resBytes = Encoding.UTF8.GetBytes(response+ Constraints.delimiter);
+                            byte[] resBytes = Encoding.UTF8.GetBytes(response + Constraints.delimiter);
                             await stream.WriteAsync(resBytes, 0, resBytes.Length);
                         }
                     }
@@ -101,7 +101,7 @@ namespace QuizApp_backend
         }
         private async Task<string> HandlePacket(string jsonString, TcpClient client)
         {
-            var returnedObject=new JObject();
+            var returnedObject = new JObject();
             var jobject = JObject.Parse(jsonString);
             string url = (string)jobject["url"];
             returnedObject["topic"] = url;
@@ -117,7 +117,7 @@ namespace QuizApp_backend
                 else if (url.StartsWith(_questionController.prefix))
                     result = _questionController.RouteRequests(url, payload);
                 else if (url.StartsWith(_partController.prefix))
-                    result = _partController.RouteRequests(url, payload,client);
+                    result = _partController.RouteRequests(url, payload, client);
                 else throw new RequestException("The url " + url + " does not exists");
                 returnedObject["payload"] = result;
                 returnedObject["status"] = "success";
@@ -128,7 +128,7 @@ namespace QuizApp_backend
                 returnedObject["status"] = "error";
                 Console.WriteLine(rex.StackTrace);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 returnedObject["payload"] = "Unknown error";
                 returnedObject["status"] = "error";

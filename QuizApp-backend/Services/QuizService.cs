@@ -77,7 +77,7 @@ namespace QuizApp_backend.Services
                     return player1.TotalScore - player2.TotalScore;
                 else if (player1.FinishedAt == null) return -1;
                 else if (player2.FinishedAt == null) return 1;
-                else return (player1.FinishedAt < player2.FinishedAt) ? -1 : 1;
+                else return (player1.FinishedAt < player2.FinishedAt) ? 1 : -1;
             });
             Task.Run(() =>
             {
