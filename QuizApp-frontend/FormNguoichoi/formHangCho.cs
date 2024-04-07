@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using QuizApp_frontend.API;
+using QuizApp_frontend.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,8 +33,22 @@ namespace QuizApp_frontend.FormNguoichoi
 
         private void button2_Click(object sender, EventArgs e)
         {
-            FormAnwser form = new FormAnwser(textBox1.Text);
-            form.ShowDialog();
+            APIConfig.AddTopic("/Participant/addParticipant", (jobject) =>
+            {
+
+                string status = (string)jobject["status"];
+                string quiz = (string)jobject["quiz"];
+                if (status == "success")
+                {
+                    Quiz quizz = JsonConvert.DeserializeObject<Quiz>(quiz);
+                    if (quizz.Status == "play")
+                        button1.BeginInvoke(() => button1.Text = "play");
+                }
+            });
+            if (button1.Text == "play") {
+                FormAnwser form = new FormAnwser(textBox1.Text);
+                form.ShowDialog();
+            }
         }
     }
 }

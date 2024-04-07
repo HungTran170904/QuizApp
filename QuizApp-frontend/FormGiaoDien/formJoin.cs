@@ -30,21 +30,28 @@ namespace QuizApp_frontend
             {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
+                string quiz = (string)jobject["quiz"];
                 if (status.Equals("success"))
                 {
                     Participant part=JsonConvert.DeserializeObject<Participant>(payload);
-                    Quiz quiz= JsonConvert.DeserializeObject<Quiz>(payload);
-                    textBox1.BeginInvoke(() => textBox1.Text = status);
-
-
+                    Quiz quizz=JsonConvert.DeserializeObject<Quiz>(quiz);
+                    if (quizz.Status == "host")
+                        textBox1.BeginInvoke(() => textBox1.Text = "host");
+                    else if (quizz.Status == "play")
+                        textBox1.BeginInvoke(() => textBox1.Text = "play");
                 }
                 else BeginInvoke(() => MessageBox.Show("Error:" + payload));
             });
 
-            if (textBox1.Text.Equals("success"))
+            if (textBox1.Text.Equals("host"))
             {
                 FormNguoichoi.formHangCho f1 = new FormNguoichoi.formHangCho(nameTb.Text, pinCodeTb.Text);
                 f1.ShowDialog();
+            }
+            if (textBox1.Text.Equals("play"))
+            {
+                FormNguoichoi.FormAnwser f2 = new FormNguoichoi.FormAnwser(pinCodeTb.Text);
+                f2.ShowDialog();
             }
         }
     }
