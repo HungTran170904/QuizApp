@@ -33,6 +33,7 @@ namespace QuizApp_frontend
                 if (status.Equals("success"))
                 {
                     Participant part=JsonConvert.DeserializeObject<Participant>(payload);
+                    Quiz quiz= JsonConvert.DeserializeObject<Quiz>(payload);
                     textBox1.BeginInvoke(() => textBox1.Text = status);
 
 

@@ -73,9 +73,11 @@ namespace QuizApp_backend.Controllers
         }
         public string GetQuizReport(string accountId, string quizId)
         {
-            MemoryStream stream = new MemoryStream();
-            _fileService.CreateExcelFile(stream,accountId, quizId);
-            return Convert.ToBase64String(stream.ToArray());
+            using (MemoryStream stream = new MemoryStream())
+            {
+                _fileService.CreateExcelFile(stream, accountId, quizId);
+                return Convert.ToBase64String(stream.ToArray());
+            }
         }
     }
 }
