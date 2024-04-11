@@ -16,7 +16,6 @@ namespace QuizApp_frontend.API
             APIConfig.AddTopic("/participant/addParticipant", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/participant/addParticipant");
             });
             APIConfig.SendData("/participant/addParticipant",
                 JsonConvert.SerializeObject(participant));

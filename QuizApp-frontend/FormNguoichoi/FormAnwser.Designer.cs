@@ -34,7 +34,6 @@
             richTextBox3 = new RichTextBox();
             richTextBox4 = new RichTextBox();
             button1 = new Button();
-            textBox1 = new TextBox();
             timer1 = new System.Windows.Forms.Timer(components);
             richTextBox5 = new RichTextBox();
             SuspendLayout();
@@ -104,13 +103,10 @@
             button1.Text = "0";
             button1.UseVisualStyleBackColor = false;
             // 
-            // textBox1
+            // timer1
             // 
-            textBox1.Location = new Point(12, 1);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(125, 27);
-            textBox1.TabIndex = 4;
-            textBox1.Visible = false;
+            timer1.Interval = 1000;
+            timer1.Tick += timer1_Tick;
             // 
             // richTextBox5
             // 
@@ -128,7 +124,6 @@
             ClientSize = new Size(1032, 578);
             Controls.Add(richTextBox5);
             Controls.Add(button1);
-            Controls.Add(textBox1);
             Controls.Add(richTextBox4);
             Controls.Add(richTextBox3);
             Controls.Add(richTextBox2);
@@ -137,7 +132,6 @@
             Text = "FormAnwser";
             Load += FormAnwser_Load;
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -147,7 +141,6 @@
         private RichTextBox richTextBox3;
         private RichTextBox richTextBox4;
         private Button button1;
-        private TextBox textBox1;
         private System.Windows.Forms.Timer timer1;
         private RichTextBox richTextBox5;
     }

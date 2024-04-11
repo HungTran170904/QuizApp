@@ -15,15 +15,24 @@ namespace QuizApp_frontend.FormNguoichoi
 {
     public partial class formHangCho : Form
     {
-        public formHangCho()
+        public Participant part;
+        public formHangCho(Participant part)
         {
             InitializeComponent();
-        }
-        public formHangCho(string t, string s)
-        {
-            InitializeComponent();
-            textBox1.Text = s;
-            textBox2.Text = t;
+            APIConfig.AddTopic("/quiz/startGameForPlayers", (jobect) =>
+            {
+                string status = (string)jobect["status"];
+                string payload = (string)jobect["payload"];
+                if (status.Equals("success"))
+                {
+                    List<Question> ans =JsonConvert.DeserializeObject<List<Question>>(payload);
+                    BeginInvoke(() =>
+                    {
+                        FormAnwser f = new FormAnwser(ans,part);
+                        f.ShowDialog();
+                    });
+                }
+            });
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -33,22 +42,7 @@ namespace QuizApp_frontend.FormNguoichoi
 
         private void button2_Click(object sender, EventArgs e)
         {
-            APIConfig.AddTopic("/Participant/addParticipant", (jobject) =>
-            {
-
-                string status = (string)jobject["status"];
-                string quiz = (string)jobject["quiz"];
-                if (status == "success")
-                {
-                    Quiz quizz = JsonConvert.DeserializeObject<Quiz>(quiz);
-                    if (quizz.Status == "play")
-                        button1.BeginInvoke(() => button1.Text = "play");
-                }
-            });
-            if (button1.Text == "play") {
-                FormAnwser form = new FormAnwser(textBox1.Text);
-                form.ShowDialog();
-            }
+       
         }
     }
 }

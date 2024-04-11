@@ -61,11 +61,8 @@ namespace QuizApp_backend.Services
                 throw new RequestException("You do not have permission to start this game");
             _quizRepo.UpdateStatus(quizId,Constraints.play);
             List<Question> questions=_questionRepo.FindByQuizId(quizId, false);
-            JObject jobject = new JObject();
-            jobject["quizId"] = quizId;
-            jobject["questions"] = JsonConvert.SerializeObject(questions);
             _socketService.SendDataToPlayers(quizId, "/quiz/startGameForPlayers", 
-                    JsonConvert.SerializeObject(jobject));
+                    JsonConvert.SerializeObject(questions));
         }
         private List<Participant> GetTop3Participants(Quiz quiz)
         {

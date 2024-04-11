@@ -35,7 +35,7 @@ namespace QuizApp_backend.Services
                 _socketService.AddPlayer(participant.QuizId, savedParticipant.Id,client);
             });
             JObject jobject=new JObject();
-            jobject["partipant"] = participantJson;
+            jobject["participant"] = participantJson;
             jobject["quiz"]= JsonConvert.SerializeObject(_quizRepo.FindById(participant.QuizId));
             return JsonConvert.SerializeObject(jobject);
         }

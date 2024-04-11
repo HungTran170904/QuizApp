@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using QuizApp_frontend.API;
+using QuizApp_frontend.FormNguoichoi;
 using QuizApp_frontend.Models;
 using System;
 using System.Collections.Generic;
@@ -22,37 +24,56 @@ namespace QuizApp_frontend
 
         private void pictureBox4_Click(object sender, EventArgs e)
         {
-            Participant part=new Participant();
+            Participant part = new Participant();
             part.Name = nameTb.Text;
-            part.QuizId=pinCodeTb.Text;
-            part.AttendedAt=DateTime.Now;
+            part.QuizId = pinCodeTb.Text;
+            part.AttendedAt = DateTime.Now;
             ParticipantAPI.AddParticipant(part, (jobject) =>
             {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
-                string quiz = (string)jobject["quiz"];
+                JObject resObj = JsonConvert.DeserializeObject<JObject>(payload);
                 if (status.Equals("success"))
                 {
-                    Participant part=JsonConvert.DeserializeObject<Participant>(payload);
-                    Quiz quizz=JsonConvert.DeserializeObject<Quiz>(quiz);
-                    if (quizz.Status == "host")
-                        textBox1.BeginInvoke(() => textBox1.Text = "host");
-                    else if (quizz.Status == "play")
-                        textBox1.BeginInvoke(() => textBox1.Text = "play");
+                    Participant partt = JsonConvert.DeserializeObject<Participant>(resObj["participant"].ToString());
+                    Quiz quizz = JsonConvert.DeserializeObject<Quiz>(resObj["quiz"].ToString());
+                    BeginInvoke(() => 
+                {
+                    if (quizz.Status.Equals("host"))
+                    {
+                        FormNguoichoi.formHangCho f = new FormNguoichoi.formHangCho(partt);
+                        f.ShowDialog();
+                    }
+                    else if (quizz.Status.Equals("play"))
+                    {
+                        QuestionAPI.GetQuestionsForPlay(pinCodeTb.Text, (jobject) =>
+                        {
+                            string status = (string)jobject["status"];
+                            string payload = (string)jobject["payload"];
+                            if (status.Equals("success"))
+                            {
+                                List<Question> list = JsonConvert.DeserializeObject<List<Question>>(payload);
+                                FormAnwser f2 = new FormAnwser(list,partt);
+                                f2.ShowDialog();
+                            }
+                        });
+                        
+                    }
+                });
                 }
-                else BeginInvoke(() => MessageBox.Show("Error:" + payload));
+                else BeginInvoke(() => MessageBox.Show("Error:"));
             });
+        }
 
-            if (textBox1.Text.Equals("host"))
-            {
-                FormNguoichoi.formHangCho f1 = new FormNguoichoi.formHangCho(nameTb.Text, pinCodeTb.Text);
-                f1.ShowDialog();
-            }
-            if (textBox1.Text.Equals("play"))
-            {
-                FormNguoichoi.FormAnwser f2 = new FormNguoichoi.FormAnwser(pinCodeTb.Text);
-                f2.ShowDialog();
-            }
+
+        private void pinCodeTb_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox4_DoubleClick(object sender, EventArgs e)
+        {
+            
         }
     }
 }

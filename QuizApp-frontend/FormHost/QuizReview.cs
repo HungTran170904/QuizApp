@@ -24,7 +24,7 @@ namespace QuizApp_frontend.FormHost
             this.quiz = quiz;
             this.switchChildForm = switchChildForm;
             this.allQuiz = allQuiz;
-            QuestionAPI.GetQuestionsForPlay(quiz.Id, (jobject) =>
+            QuestionAPI.GetQuestions(quiz.Id, (jobject) =>
             {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];

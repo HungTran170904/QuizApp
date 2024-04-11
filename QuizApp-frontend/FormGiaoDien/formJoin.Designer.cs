@@ -98,6 +98,7 @@
             pictureBox4.TabIndex = 10;
             pictureBox4.TabStop = false;
             pictureBox4.Click += pictureBox4_Click;
+            pictureBox4.DoubleClick += pictureBox4_DoubleClick;
             // 
             // nameTb
             // 
@@ -117,7 +118,8 @@
             pinCodeTb.Name = "pinCodeTb";
             pinCodeTb.Size = new Size(257, 30);
             pinCodeTb.TabIndex = 12;
-            pinCodeTb.Text = "125BDE14-69B6-48C5-91B7-92A7F10F8E48";
+            pinCodeTb.Text = "";
+            pinCodeTb.TextChanged += pinCodeTb_TextChanged;
             // 
             // textBox1
             // 

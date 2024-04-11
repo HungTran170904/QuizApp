@@ -82,7 +82,7 @@ namespace QuizApp_backend.Repository
             dt.Dispose();
             return questions;
         }
-        public List<Question> FindByQuizId(string quizId, bool containsAnswer)
+        public List<Question> FindByQuizId(string quizId,bool containsAnswer)
         {
             using(var conn=new SqlConnection(connString))
             {
@@ -95,10 +95,10 @@ namespace QuizApp_backend.Repository
                 while(reader.Read())
                 {
                     Question question = _converter.convertToQuestion(reader);
-                    if(containsAnswer) 
-                        question.CorrectAnswer= reader.GetFieldValue<string>("CorrectAnswer");
-                    questions.Add(question);  
-                    
+                    if(!containsAnswer)
+                        question.CorrectAnswer = null;
+                    questions.Add(question);
+
                 }
                 return questions;
             }

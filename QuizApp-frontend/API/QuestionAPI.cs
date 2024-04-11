@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using QuizApp_frontend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,16 @@ namespace QuizApp_frontend.API
                     int rank = (int) payloadObj["rank"];
                 }
             });
+        }
+        public static void answerQuestion(Result rs,Action<JObject> callback)
+        {
+            APIConfig.AddTopic("/question/answerQuestion", (jobject) =>
+            {
+                callback(jobject);
+                APIConfig.RemoveTopic("/question/answerQuestion");
+            });
+            APIConfig.SendData("/question/answerQuestion", JsonConvert.SerializeObject(rs));
+
         }
     }
 }

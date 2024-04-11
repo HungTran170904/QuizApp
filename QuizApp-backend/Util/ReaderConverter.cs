@@ -26,6 +26,7 @@ namespace QuizApp_backend.Util
             question.TimeOut = reader.GetFieldValue<int>("TimeOut");
             string jsonOptions = reader.GetFieldValue<string>("Options");
             question.Options = JsonNet.Deserialize<List<string>>(jsonOptions);
+            question.CorrectAnswer = reader.GetFieldValue<string>("CorrectAnswer");
             return question;
         }
         public Quiz convertToQuiz(SqlDataReader reader)
