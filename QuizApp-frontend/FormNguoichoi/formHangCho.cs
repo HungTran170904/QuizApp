@@ -16,9 +16,11 @@ namespace QuizApp_frontend.FormNguoichoi
     public partial class formHangCho : Form
     {
         public Participant part;
-        public formHangCho(Participant part)
+        public formHangCho(Participant part,string t)
         {
             InitializeComponent();
+            textBox1.Text = t;
+            textBox2.Text=part.Name;
             APIConfig.AddTopic("/quiz/startGameForPlayers", (jobect) =>
             {
                 string status = (string)jobect["status"];

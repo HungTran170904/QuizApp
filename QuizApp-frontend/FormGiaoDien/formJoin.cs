@@ -41,7 +41,7 @@ namespace QuizApp_frontend
                 {
                     if (quizz.Status.Equals("host"))
                     {
-                        FormNguoichoi.formHangCho f = new FormNguoichoi.formHangCho(partt);
+                        FormNguoichoi.formHangCho f = new FormNguoichoi.formHangCho(partt,pinCodeTb.Text);
                         f.ShowDialog();
                     }
                     else if (quizz.Status.Equals("play"))

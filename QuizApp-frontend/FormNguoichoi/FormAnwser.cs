@@ -18,20 +18,17 @@ namespace QuizApp_frontend.FormNguoichoi
     {
         private List<Question> questions;
         private Participant part;
-        private int i;
+        private int i = 0;
         public FormAnwser(List<Question> questions, Participant participant)
         {
             InitializeComponent();
             this.questions = questions;
             this.part = participant;
-            if(questions.Count > 0 )
-            {
-                i = 0;
-                timer1.Stop();
-                showQuestion();
+            if(questions.Count > 0) {
+                showQuestion(i);
             }
         }
-        private void showQuestion()
+        private void showQuestion(int i)
         {
             richTextBox5.Text = questions[i].QuestionText;
             richTextBox1.Text = questions[i].Options[0];
@@ -69,9 +66,36 @@ namespace QuizApp_frontend.FormNguoichoi
                 {
                     bool IsCorrect = bool.Parse(payload);
                     if (IsCorrect)
-                        BeginInvoke(() => MessageBox.Show("bạn trả lời đúng"));
+                        BeginInvoke(() =>{
+                            timer1.Stop();
+                            DialogResult rss = MessageBox.Show("ban da tra loi dung");
+                            if (rss == DialogResult.OK)
+                            {
+                                i++;
+                                if (i < questions.Count)
+                                    showQuestion(i);
+                                else if(i==questions.Count)
+                                {
+                                    showPoidum();
+                                }    
+                            }
+                    });
                     else
-                        BeginInvoke(() => MessageBox.Show("bạn trả lời sai"));
+                        BeginInvoke(() =>
+                        {
+                            timer1.Stop();
+                            DialogResult rss = MessageBox.Show("ban da tra loi sai");
+                            if (rss == DialogResult.OK)
+                            {
+                                i++;
+                                if (i < questions.Count)
+                                    showQuestion(i);
+                                else if (i == questions.Count)
+                                {
+                                    showPoidum();
+                                }
+                            }
+                        });
 
                 }
                 else BeginInvoke(() => MessageBox.Show("error" + payload));
@@ -82,7 +106,7 @@ namespace QuizApp_frontend.FormNguoichoi
         private void timer1_Tick(object sender, EventArgs e)
         {
             int timeOut = int.Parse(button1.Text)-1;
-            if (timeOut == 0)
+            if (timeOut == 0 && i!=questions.Count)
             {
                 timer1.Stop();
                 DialogResult rs= MessageBox.Show("Time out");
@@ -90,10 +114,15 @@ namespace QuizApp_frontend.FormNguoichoi
                 {
                     i++;
                     if (i < questions.Count)
-                        showQuestion();
+                        showQuestion(i);
                 }
             }
             else button1.Text = timeOut.ToString();
+        }
+        private void showPoidum()
+        {
+            formPodidum f3 = new formPodidum();
+            f3.ShowDialog();
         }
     }
 }

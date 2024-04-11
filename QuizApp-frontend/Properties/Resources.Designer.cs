@@ -238,5 +238,13 @@ namespace QuizApp_frontend.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        internal static System.Drawing.Bitmap congratulate
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("congratulate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
