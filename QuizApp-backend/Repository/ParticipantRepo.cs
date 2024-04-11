@@ -40,7 +40,7 @@ namespace QuizApp_backend.Repository
                 string query = "update Participant set TotalScore=TotalScore+@Score, FinishedAt=@FinishedAt " +
                     "output inserted.TotalScore where Id=@ParticipantId";
                 SqlCommand sql_cmd = new SqlCommand(query, conn);
-                sql_cmd.Parameters.AddWithValue("PaticipantId", participantId);
+                sql_cmd.Parameters.AddWithValue("ParticipantId", participantId);
                 sql_cmd.Parameters.AddWithValue("Score", score);
                 sql_cmd.Parameters.AddWithValue("FinishedAt", finishedAt);
                 SqlDataReader reader= sql_cmd.ExecuteReader();

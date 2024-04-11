@@ -15,11 +15,13 @@ namespace QuizApp_frontend.FormNguoichoi
 {
     public partial class formPodidum : Form
     {
-        public formPodidum()
+        private Action<Form, bool> switchChildForm;
+        public formPodidum(Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
-
-            APIConfig.AddTopic("/quiz/stopGameForPlayers", (jobject) => {
+            this.switchChildForm = switchChildForm;
+            APIConfig.AddTopic("/quiz/stopGameForPlayers", (jobject) =>
+            {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
                 if (status.Equals("success"))
@@ -28,7 +30,8 @@ namespace QuizApp_frontend.FormNguoichoi
                     JObject payloadObj = JsonConvert.DeserializeObject<JObject>(payload);
                     int totalScore = (int)payloadObj["totalScore"];
                     int rank = (int)payloadObj["rank"];
-                    BeginInvoke(() => {
+                    BeginInvoke(() =>
+                    {
                         Waiting.Visible = false;
                         Rank.Visible = true;
                         Point.Visible = true;
@@ -38,6 +41,12 @@ namespace QuizApp_frontend.FormNguoichoi
                 }
                 else BeginInvoke(() => MessageBox.Show("khong nhan dc ket qua"));
             });
+        }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            formJoin fj = new formJoin(switchChildForm);
+            switchChildForm(fj, false);
         }
     }
 }

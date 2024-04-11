@@ -23,10 +23,11 @@ namespace QuizApp_frontend.FormNguoichoi
         public FormAnwser(List<Question> questions, Participant participant, Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
-            this.switchChildForm=switchChildForm;
+            this.switchChildForm = switchChildForm;
             this.questions = questions;
             this.part = participant;
-            if(questions.Count > 0) {
+            if (questions.Count > 0)
+            {
                 showQuestion(i);
             }
         }
@@ -48,14 +49,12 @@ namespace QuizApp_frontend.FormNguoichoi
             button1.Text = questions[i].TimeOut.ToString();
             timer1.Start();
         }
-        private void FormAnwser_Load(object sender, EventArgs e)
-        {
-
-        }
 
         private void Answer_Click(object sender, EventArgs e)
         {
+            if (questions[i].CorrectAnswer != null) return;
             string target = ((RichTextBox)sender).Text;
+            questions[i].CorrectAnswer = target;
             Result rs = new Result();
             rs.ParticipantId = part.Id;
             rs.QuestionId = questions[i].Id;
@@ -68,7 +67,7 @@ namespace QuizApp_frontend.FormNguoichoi
                 {
                     bool IsCorrect = bool.Parse(payload);
                     if (IsCorrect)
-                        BeginInvoke(() =>{
+                        BeginInvoke(() => {
                             timer1.Stop();
                             DialogResult rss = MessageBox.Show("ban da tra loi dung");
                             if (rss == DialogResult.OK)
@@ -76,12 +75,12 @@ namespace QuizApp_frontend.FormNguoichoi
                                 i++;
                                 if (i < questions.Count)
                                     showQuestion(i);
-                                else if(i==questions.Count)
+                                else if (i == questions.Count)
                                 {
                                     showPoidum();
-                                }    
+                                }
                             }
-                    });
+                        });
                     else
                         BeginInvoke(() =>
                         {
@@ -107,11 +106,11 @@ namespace QuizApp_frontend.FormNguoichoi
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            int timeOut = int.Parse(button1.Text)-1;
-            if (timeOut == 0 && i!=questions.Count)
+            int timeOut = int.Parse(button1.Text) - 1;
+            if (timeOut == 0 && i != questions.Count)
             {
                 timer1.Stop();
-                DialogResult rs= MessageBox.Show("Time out");
+                DialogResult rs = MessageBox.Show("Time out");
                 if (rs == DialogResult.OK)
                 {
                     i++;
@@ -123,8 +122,8 @@ namespace QuizApp_frontend.FormNguoichoi
         }
         private void showPoidum()
         {
-            formPodidum f3 = new formPodidum();
-            f3.ShowDialog();
+            formPodidum f3 = new formPodidum(switchChildForm);
+            switchChildForm(f3, false);
         }
     }
 }

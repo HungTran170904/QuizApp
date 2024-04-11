@@ -43,6 +43,7 @@ namespace QuizApp_frontend.FormHost
                                 char optionName = (char)('A' + j);
                                 richTb.AppendText($"{optionName}.{question.Options[j]}\r\n");
                             }
+                            richTb.AppendText($"Correct Answer: {question.CorrectAnswer}\r\n");
                             richTb.AppendText("\r\n");
                         }
                     });
@@ -53,24 +54,16 @@ namespace QuizApp_frontend.FormHost
 
         private void hostButton_Click(object sender, EventArgs e)
         {
-            if (quiz.Status.Equals("stop"))
+            QuizAPI.HostGame(quiz.Id, (jobject) =>
             {
-                QuizAPI.HostGame(quiz.Id, (jobject) =>
+                string status = (string)jobject["status"];
+                if (status.Equals("success"))
                 {
-                    string status = (string)jobject["status"];
-                    if (status.Equals("success"))
-                    {
-                        WaitingRoom waitingRoom = new WaitingRoom(quiz, this, switchChildForm);
-                        BeginInvoke(() => switchChildForm(waitingRoom, true));
-                    }
-                    else BeginInvoke(() => MessageBox.Show("Error:" + jobject["payload"].ToString()));
-                });
-            }
-            else if (quiz.Status.Equals("host"))
-            {
-                WaitingRoom waitingRoom = new WaitingRoom(quiz, this, switchChildForm);
-                switchChildForm(waitingRoom, true);
-            }
+                    WaitingRoom waitingRoom = new WaitingRoom(quiz, this, switchChildForm);
+                    BeginInvoke(() => switchChildForm(waitingRoom, true));
+                }
+                else BeginInvoke(() => MessageBox.Show("Error:" + jobject["payload"].ToString()));
+            });
         }
 
         private void backButton_Click(object sender, EventArgs e)

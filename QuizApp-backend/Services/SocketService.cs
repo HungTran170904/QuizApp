@@ -14,9 +14,16 @@ namespace QuizApp_backend.Services
 
         public void AddQuizSession(string quizId, TcpClient host)
         {
-            QuizSession quizSession=new QuizSession();
-            quizSession.Host = host;
-            quizSessions.Add(quizId, quizSession);
+            if (quizSessions.ContainsKey(quizId))
+            {
+                quizSessions[quizId].Host = host;
+            }
+            else
+            {
+                QuizSession quizSession = new QuizSession();
+                quizSession.Host = host;
+                quizSessions.Add(quizId, quizSession);
+            }
         }
         public void RemoveQuizSession(string quizId)
         {

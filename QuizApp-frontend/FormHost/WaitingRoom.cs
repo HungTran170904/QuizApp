@@ -16,6 +16,7 @@ namespace QuizApp_frontend.FormHost
             this.switchChildForm = switchChildForm;
             this.quiz = quiz;
             this.quizReview = quizReview;
+            this.switchChildForm = switchChildForm;
             participants = new Dictionary<string, Participant>();
             APIConfig.AddTopic("/partcipant/addParticipant",
             (jobject) =>
@@ -24,13 +25,15 @@ namespace QuizApp_frontend.FormHost
                 string payload = (string)jobject["payload"];
                 if (status.Equals("success"))
                 {
-                    Participant part = JsonConvert.DeserializeObject<Participant>(payload);
-                    participants.Add(part.Id, part);
-                    listView.Items.Add(part.Name);
-                    numberLb.Text = $"{participants.Count} players";
+                    BeginInvoke(() =>
+                    {
+                        Participant part = JsonConvert.DeserializeObject<Participant>(payload);
+                        participants.Add(part.Id, part);
+                        listView.Items.Add(part.Name);
+                        numberLb.Text = $"{participants.Count} players";
+                    });
                 }
             });
-            this.switchChildForm = switchChildForm;
 
             headerLb.Text = $"Quiz: {quiz.Title}";
             pinCodeTb.Text = quiz.Id;

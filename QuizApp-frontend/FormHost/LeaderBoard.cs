@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using QuizApp_frontend.API;
 using QuizApp_frontend.Models;
 using System;
@@ -31,16 +32,22 @@ namespace QuizApp_frontend.FormHost
                 flowLayoutPanel.Controls.Add(createNewLabel(pair.Value));
             }
             APIConfig.AddTopic("/question/updateLeaderboard",(jobject) =>
-            BeginInvoke(() => {
-                string partId = (string)jobject["participantId"];
-                int newScore = (int)jobject["totalScore"];
-                var part = participants[partId];
-                if (part != null)
+            {
+                string status = (string)jobject["status"];
+                string payload = (string)jobject["payload"];
+                if (status.Equals("success"))
                 {
-                    part.TotalScore = newScore;
-                    changeLabelInOrder(part);
+                    JObject obj = JsonConvert.DeserializeObject<JObject>(payload);
+                    string partId = (string)obj["participantId"];
+                    int newScore = (int)obj["totalScore"];
+                    var part = participants[partId];
+                    if (part != null)
+                    {
+                        part.TotalScore = newScore;
+                        BeginInvoke(() => changeLabelInOrder(part));
+                    }
                 }
-            }));
+            });
         }
         private Label createNewLabel(Participant part)
         {
@@ -70,10 +77,11 @@ namespace QuizApp_frontend.FormHost
                 if (newPosition == -1 && participants[label.Name].TotalScore >= part.TotalScore)
                     newPosition = i;
             }
-            if (newPosition > -1 && currPosition > -1 && newPosition != currPosition)
+            if (newPosition > -1 && currPosition > -1)
             {
                 var label = flowLayoutPanel.Controls[currPosition];
-                flowLayoutPanel.Controls.SetChildIndex(label, newPosition);
+                if(newPosition != currPosition)
+                    flowLayoutPanel.Controls.SetChildIndex(label, newPosition);
                 int diffRank = newPosition - currPosition;
                 if (diffRank > 0)
                 {

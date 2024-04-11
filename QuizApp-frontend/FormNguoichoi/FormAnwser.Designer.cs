@@ -130,7 +130,6 @@
             Controls.Add(richTextBox1);
             Name = "FormAnwser";
             Text = "FormAnwser";
-            Load += FormAnwser_Load;
             ResumeLayout(false);
         }
 
