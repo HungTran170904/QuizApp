@@ -40,12 +40,15 @@
             richTextBox2 = new RichTextBox();
             pictureBox6 = new PictureBox();
             textBox1 = new TextBox();
+            pictureBox7 = new PictureBox();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             SuspendLayout();
             // 
             // imageList1
@@ -159,12 +162,39 @@
             textBox1.TabIndex = 8;
             textBox1.Visible = false;
             // 
+            // pictureBox7
+            // 
+            pictureBox7.BackColor = Color.Transparent;
+            pictureBox7.Image = Properties.Resources.dangnhap;
+            pictureBox7.Location = new Point(604, 147);
+            pictureBox7.Name = "pictureBox7";
+            pictureBox7.Size = new Size(200, 101);
+            pictureBox7.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox7.TabIndex = 9;
+            pictureBox7.TabStop = false;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.FromArgb(0, 192, 0);
+            button1.FlatAppearance.BorderColor = Color.FromArgb(0, 192, 0);
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.Location = new Point(635, 175);
+            button1.Name = "button1";
+            button1.Size = new Size(127, 51);
+            button1.TabIndex = 10;
+            button1.Text = "Join Quizz";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
             // FormDangnhap
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.joinside;
             ClientSize = new Size(820, 467);
+            Controls.Add(button1);
+            Controls.Add(pictureBox7);
             Controls.Add(textBox1);
             Controls.Add(pictureBox6);
             Controls.Add(richTextBox2);
@@ -174,6 +204,7 @@
             Controls.Add(pictureBox3);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
+            ForeColor = Color.White;
             Name = "FormDangnhap";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -182,6 +213,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -198,5 +230,7 @@
         private RichTextBox richTextBox2;
         private PictureBox pictureBox6;
         private TextBox textBox1;
+        private PictureBox pictureBox7;
+        private Button button1;
     }
 }

@@ -16,12 +16,14 @@ namespace QuizApp_frontend.FormNguoichoi
 {
     public partial class FormAnwser : Form
     {
+        private Action<Form, bool> switchChildForm;
         private List<Question> questions;
         private Participant part;
         private int i = 0;
-        public FormAnwser(List<Question> questions, Participant participant)
+        public FormAnwser(List<Question> questions, Participant participant, Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
+            this.switchChildForm=switchChildForm;
             this.questions = questions;
             this.part = participant;
             if(questions.Count > 0) {

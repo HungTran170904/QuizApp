@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.DirectoryServices.ActiveDirectory;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,9 +18,11 @@ namespace QuizApp_frontend
 {
     public partial class formJoin : Form
     {
-        public formJoin()
+        private Action<Form, bool> switchChildForm;
+        public formJoin(Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
+            this.switchChildForm = switchChildForm;
         }
 
         private void pictureBox4_Click(object sender, EventArgs e)
@@ -37,12 +40,12 @@ namespace QuizApp_frontend
                 {
                     Participant partt = JsonConvert.DeserializeObject<Participant>(resObj["participant"].ToString());
                     Quiz quizz = JsonConvert.DeserializeObject<Quiz>(resObj["quiz"].ToString());
-                    BeginInvoke(() => 
+                    BeginInvoke(() =>
                 {
                     if (quizz.Status.Equals("host"))
                     {
-                        FormNguoichoi.formHangCho f = new FormNguoichoi.formHangCho(partt,pinCodeTb.Text);
-                        f.ShowDialog();
+                        FormNguoichoi.formHangCho f = new FormNguoichoi.formHangCho(partt, pinCodeTb.Text, switchChildForm);
+                        switchChildForm(f, false);
                     }
                     else if (quizz.Status.Equals("play"))
                     {
@@ -53,11 +56,11 @@ namespace QuizApp_frontend
                             if (status.Equals("success"))
                             {
                                 List<Question> list = JsonConvert.DeserializeObject<List<Question>>(payload);
-                                FormAnwser f2 = new FormAnwser(list,partt);
-                                f2.ShowDialog();
+                                FormAnwser f2 = new FormAnwser(list, partt, switchChildForm);
+                                switchChildForm(f2, false);
                             }
                         });
-                        
+
                     }
                 });
                 }
@@ -73,7 +76,13 @@ namespace QuizApp_frontend
 
         private void pictureBox4_DoubleClick(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FormDangnhap f=new FormDangnhap(switchChildForm);
+            switchChildForm(f, false);
         }
     }
 }

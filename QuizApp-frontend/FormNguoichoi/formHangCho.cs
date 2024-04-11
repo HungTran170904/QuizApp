@@ -15,26 +15,29 @@ namespace QuizApp_frontend.FormNguoichoi
 {
     public partial class formHangCho : Form
     {
+        private Action<Form, bool> switchChildForm;
         public Participant part;
-        public formHangCho(Participant part,string t)
+        public formHangCho(Participant part,string t, Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
+            this.switchChildForm = switchChildForm;
             textBox1.Text = t;
-            textBox2.Text=part.Name;
+            textBox2.Text = part.Name;
             APIConfig.AddTopic("/quiz/startGameForPlayers", (jobect) =>
             {
                 string status = (string)jobect["status"];
                 string payload = (string)jobect["payload"];
                 if (status.Equals("success"))
                 {
-                    List<Question> ans =JsonConvert.DeserializeObject<List<Question>>(payload);
+                    List<Question> ans = JsonConvert.DeserializeObject<List<Question>>(payload);
                     BeginInvoke(() =>
                     {
-                        FormAnwser f = new FormAnwser(ans,part);
-                        f.ShowDialog();
+                        FormAnwser f = new FormAnwser(ans, part,switchChildForm);
+                        switchChildForm(f,false);
                     });
                 }
             });
+            
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)

@@ -36,7 +36,6 @@ namespace QuizApp_frontend
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             Account account = new Account();
-            formJoin f = new formJoin();
             try
             {
                 AccountAPI.Login(richTextBox1.Text, richTextBox2.Text,
@@ -63,8 +62,12 @@ namespace QuizApp_frontend
                 MessageBox.Show("Error " + ex.Message);
             }
             string t = textBox1.Text;
-            if (t == "success")
-                f.ShowDialog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            formJoin f = new formJoin(switchChildForm);
+            switchChildForm(f, false) ;
         }
     }
 }
