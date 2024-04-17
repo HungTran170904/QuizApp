@@ -18,7 +18,7 @@ namespace QuizApp_frontend.API
         private static string delimiter = ";";
         public static void InitConnection()
         {
-            ipaddress = IPAddress.Parse(GetLocalIPAddress());
+            ipaddress = IPAddress.Parse("20.247.129.232");
             int port = 8080;
             tcpClient.Connect(ipaddress, port);
             byte[] resBuffer = new byte[1024];

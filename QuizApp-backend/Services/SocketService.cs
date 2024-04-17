@@ -57,7 +57,7 @@ namespace QuizApp_backend.Services
                 if (host.Connected)
                 {
                     string response = GetResponse(topic, payload);
-                    Console.WriteLine("Send Data to host:" + response);
+                    // Console.WriteLine("Send Data to host:" + response);
                     _=SendData(response, host);
                 }
             }
@@ -72,7 +72,7 @@ namespace QuizApp_backend.Services
             {
                 var quizSession = quizSessions[quizId];
                 string response = GetResponse(topic, payload);
-                Console.WriteLine("Send Data to players:" + response);
+                //Console.WriteLine("Send Data to players:" + response);
                 foreach (var pair in quizSession.Players)
                 {
                     TcpClient player = pair.Value;
@@ -94,7 +94,7 @@ namespace QuizApp_backend.Services
                 if (player.Connected)
                 {
                     string response = GetResponse(topic, payload);
-                    Console.WriteLine("Send Data to player"+partId+":"+ response);
+                    //Console.WriteLine("Send Data to player"+partId+":"+ response);
                     _ =SendData(response,player);
                 }
             }

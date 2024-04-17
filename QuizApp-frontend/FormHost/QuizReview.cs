@@ -94,7 +94,7 @@ namespace QuizApp_frontend.FormHost
                             byte[] data = Convert.FromBase64String(payload);
                             using (FileStream fs = new FileStream(filePath, FileMode.Create))
                             {
-                                fs.WriteAsync(data, 0, data.Length);
+                                fs.Write(data, 0, data.Length);
                             }
                         });
                     }

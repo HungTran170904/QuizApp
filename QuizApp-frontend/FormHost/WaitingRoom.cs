@@ -55,12 +55,13 @@ namespace QuizApp_frontend.FormHost
 
         private void blockButton_Click(object sender, EventArgs e)
         {
-            QuizAPI.UpdateBlock(quiz.Id, quiz.IsBlocked, (jobject) =>
+            bool isBlocked = !blockButton.Text.Equals("Unblock room");
+            QuizAPI.UpdateBlock(quiz.Id, isBlocked, (jobject) =>
             {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
                 if (status.Equals("success"))
-                    BeginInvoke(() => blockButton.Text = quiz.IsBlocked ? "Unblock room" : "Block room");
+                    BeginInvoke(() => blockButton.Text = isBlocked ? "Unblock room" : "Block room");
                 else MessageBox.Show(payload);
             });
         }

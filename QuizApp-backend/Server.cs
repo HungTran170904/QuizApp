@@ -24,7 +24,7 @@ namespace QuizApp_backend
                     QuestionController questionController,
                     ParticipantController partController)
         {
-            ipaddress = IPAddress.Parse(GetLocalIPAddress());
+            ipaddress = IPAddress.Any;
             port = Int32.Parse(configuration["ServerConfiguration:Port"]);
             _accountController = accountController;
             _quizController = quizController;
@@ -32,18 +32,6 @@ namespace QuizApp_backend
             _partController = partController;
         }
 
-        private static string GetLocalIPAddress()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            throw new Exception("No network adapters with an IPv4 address in the system!");
-        }
         public async Task Run()
         {
             TcpListener listener = new TcpListener(ipaddress, port);
@@ -66,7 +54,6 @@ namespace QuizApp_backend
                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
                     string receivedChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    //Console.WriteLine("ReceivedChunk:"+receivedChunk);
                     string[] receivedData = receivedChunk.Split(Constraints.delimiter);
                     if (receivedData.Length > 0)
                     {

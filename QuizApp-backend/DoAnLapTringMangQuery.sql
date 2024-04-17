@@ -45,3 +45,17 @@ create table Result(
 	constraint FK_PARTICIPANT_RESULT foreign key(ParticipantId) references Participant(Id),
 	constraint FK_QUESTION_RESULT foreign key(QuestionId) references Question(Id)
 )
+create type dbo.IdListType as table
+(
+    Id uniqueidentifier
+)
+go
+create procedure dbo.GetParticipantsByIdList
+    @IdList dbo.IdListType readonly,
+	@QuizId uniqueidentifier
+as
+begin
+    select * from Participant 
+	where Id in (select Id from @IdList)
+	and QuizId=@QuizId
+end;
