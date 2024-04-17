@@ -37,6 +37,7 @@ namespace QuizApp_backend.Util
             quiz.Title = reader.GetFieldValue<string>("Title");
             quiz.Status= reader.GetFieldValue<string>("Status");
             quiz.CreatedAt= reader.GetFieldValue<DateTime>("CreatedAt");
+            quiz.IsBlocked = reader.GetFieldValue<bool>("IsBlocked");
             return quiz;
         }
         public Participant convertToParticipant(SqlDataReader reader)

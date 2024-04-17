@@ -3,7 +3,7 @@ using OfficeOpenXml;
 using QuizApp_backend.Exceptions;
 using QuizApp_backend.Repository;
 using QuizApp_backend.Models;
-using System.Drawing;
+using System;
 
 namespace QuizApp_backend.Services
 {
@@ -29,67 +29,65 @@ namespace QuizApp_backend.Services
             var questions = _questionRepo.FindByQuizId(quiz.Id, true);
             using (var package = new ExcelPackage(stream))
             {
-                var answerSheet = CreateAnswerSheet(package, questions);
-                var scoreSheet = CreateScoreSheet(package, questions);
+                var scoreSheet = CreateSheet(package, questions.Count, participants.Count, 2);
+                var answerSheet = CreateSheet(package, questions.Count, participants.Count,3);
                 int rowIndex = 2;
+                string dateFormat = "HH:mm:ss dd/MM/yyyy";
                 foreach (var part in participants)
                 {
-                    answerSheet.Cells[rowIndex + 1, 1].Value = part.Name;
                     scoreSheet.Cells[rowIndex, 1].Value = part.Name;
-                    int colIndex = 2;
+                    scoreSheet.Cells[rowIndex, 2].Value = part.TotalScore;
+
+                    answerSheet.Cells[rowIndex, 1].Value = part.Name;
+                    answerSheet.Cells[rowIndex, 2].Value = part.AttendedAt.Value.ToString(dateFormat);
+                    if(part.FinishedAt.HasValue)
+                        answerSheet.Cells[rowIndex + 1, 3].Value = part.FinishedAt.Value.ToString(dateFormat);
+
+                    int colIndex = 3;
                     foreach (var question in questions)
                     {
                         var result = part.Results.Find(r => r.QuestionId.Equals(question.Id));
                         if (result != null)
                         {
-                            answerSheet.Cells[rowIndex + 1, colIndex].Value = result.ChoosedOption;
                             scoreSheet.Cells[rowIndex, colIndex].Value = result.IsCorrect ? "T" : "F";
+                            answerSheet.Cells[rowIndex, colIndex+1].Value = result.ChoosedOption;
                         }
                         else scoreSheet.Cells[rowIndex, colIndex].Value = "NA";
                         colIndex++;
                     }
-                    scoreSheet.Cells[rowIndex, colIndex].Value = part.TotalScore;
                     rowIndex++;
                 }
                 package.SaveAs(stream);
             }
         }
-        private void AddHeaderRow(ExcelWorksheet workSheet,List<Question> questions)
+        private ExcelWorksheet CreateSheet(ExcelPackage package,int questionsLen,int partsLen,int type)
         {
+            string sheetName = (type ==2) ? "Score Sheet" : "Answer Sheet";
+            var workSheet = package.Workbook.Worksheets.Add(sheetName);
+            workSheet.TabColor = System.Drawing.Color.Black;
+            workSheet.DefaultRowHeight = 13;
+            workSheet.DefaultColWidth = 12;
+
             workSheet.Row(1).Height = 20;
             workSheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             workSheet.Row(1).Style.Font.Bold = true;
-            workSheet.Column(1).Width = 15;
-            workSheet.Column(1).AutoFit();
 
-            workSheet.Cells[1, 1].Value = "Name/Question";
-            for (int i = 0; i < questions.Count; i++)
-                workSheet.Cells[1, i + 2].Value = $"Q{i + 1}:{questions[i].QuestionText}";
-        }
-        private ExcelWorksheet CreateAnswerSheet(ExcelPackage package, List<Question> questions)
-        {
-            var answerSheet = package.Workbook.Worksheets.Add("Answer Sheet");
-            answerSheet.TabColor = System.Drawing.Color.Black;
-            answerSheet.DefaultRowHeight = 12;
+            ExcelRange range = workSheet.Cells[1, 1, partsLen + 1, questionsLen + type];
+            range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+            range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+            range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+            range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
 
-            AddHeaderRow(answerSheet, questions);
-            answerSheet.Cells[2, 1].Value = "Question Text";
-            int colIndex = 2;
-            foreach (Question question in questions)
+            workSheet.Cells[1, 1].Value = "Participant";
+            if(type==2) workSheet.Cells[1, 2].Value = "TotalScore";
+            else if (type == 3)
             {
-                answerSheet.Cells[2, colIndex].Value = question.QuestionText;
+                workSheet.Cells[1, 2].Value = "Attended at";
+                workSheet.Cells[1, 3].Value = "Finished at";
             }
-            return answerSheet;
-        }
-        private ExcelWorksheet CreateScoreSheet(ExcelPackage package, List<Question> questions)
-        {
-            var scoreSheet = package.Workbook.Worksheets.Add("Score Sheet");
-            scoreSheet.TabColor = System.Drawing.Color.Black;
-            scoreSheet.DefaultRowHeight = 12;
-
-            AddHeaderRow(scoreSheet, questions);
-            scoreSheet.Cells[1,questions.Count + 2].Value = "Total Score";
-            return scoreSheet;
+            for (int i = 1; i <=questionsLen; i++)
+                workSheet.Cells[1, i+type].Value = $"Q{i}";
+            return workSheet;
         }
     }
 }

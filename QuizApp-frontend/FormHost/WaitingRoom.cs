@@ -37,6 +37,7 @@ namespace QuizApp_frontend.FormHost
 
             headerLb.Text = $"Quiz: {quiz.Title}";
             pinCodeTb.Text = quiz.Id;
+            blockButton.Text = quiz.IsBlocked ? "Unblock room" : "Block room";
         }
 
         private void startButton_Click(object sender, EventArgs e)
@@ -47,21 +48,19 @@ namespace QuizApp_frontend.FormHost
                 if (status.Equals("success"))
                 {
                     LeaderBoard leaderBoard = new LeaderBoard(quizReview,switchChildForm,participants, quiz);
-                    BeginInvoke(() => switchChildForm(leaderBoard,false));
+                    BeginInvoke(()=>switchChildForm(leaderBoard,false));
                 }
             });
         }
 
         private void blockButton_Click(object sender, EventArgs e)
         {
-            bool isBlocked = blockButton.Text.Equals("Block room");
-
-            QuizAPI.UpdateBlock(quiz.Id, isBlocked, (jobject) =>
+            QuizAPI.UpdateBlock(quiz.Id, quiz.IsBlocked, (jobject) =>
             {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
                 if (status.Equals("success"))
-                    BeginInvoke(() => blockButton.Text = isBlocked ? "Unblock room" : "Block room");
+                    BeginInvoke(() => blockButton.Text = quiz.IsBlocked ? "Unblock room" : "Block room");
                 else MessageBox.Show(payload);
             });
         }

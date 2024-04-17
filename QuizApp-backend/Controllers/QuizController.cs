@@ -25,7 +25,7 @@ namespace QuizApp_backend.Controllers
             if (url.Equals("/addQuiz"))
                 result = AddQuiz(accountId,payload);
             else if (url.Equals("/getQuizzes"))
-                result = GetQuizzes(payload);
+                result = GetQuizzes(accountId);
             else if(url.Equals("/startGame"))
                 StartGame(accountId,payload);
             else if (url.Equals("/hostGame"))

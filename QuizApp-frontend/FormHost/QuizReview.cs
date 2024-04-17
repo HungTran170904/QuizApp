@@ -24,34 +24,39 @@ namespace QuizApp_frontend.FormHost
             this.quiz = quiz;
             this.switchChildForm = switchChildForm;
             this.allQuiz = allQuiz;
-            QuestionAPI.GetQuestions(quiz.Id, (jobject) =>
-            {
-                string status = (string)jobject["status"];
-                string payload = (string)jobject["payload"];
-                if (status.Equals("success"))
+            if (quiz.Questions != null) showQuizDetail();
+            else QuestionAPI.GetQuestions(quiz.Id, (jobject) =>
                 {
-                    BeginInvoke(() =>
+                    string status = (string)jobject["status"];
+                    string payload = (string)jobject["payload"];
+                    if (status.Equals("success"))
                     {
-                        headerLb.Text = quiz.Title;
-                        List<Question> questions = JsonConvert.DeserializeObject<List<Question>>(payload);
-                        for (int i = 0; i < questions.Count; i++)
+                        BeginInvoke(() =>
                         {
-                            var question = questions[i];
-                            richTb.AppendText($"Question {i}:{question.QuestionText}\r\n");
-                            for (int j = 0; j < question.Options.Count; j++)
-                            {
-                                char optionName = (char)('A' + j);
-                                richTb.AppendText($"{optionName}.{question.Options[j]}\r\n");
-                            }
-                            richTb.AppendText($"Correct Answer: {question.CorrectAnswer}\r\n");
-                            richTb.AppendText("\r\n");
-                        }
-                    });
-                }
-                else BeginInvoke(() => MessageBox.Show("Error:" + payload));
-            });
+                            quiz.Questions = JsonConvert.DeserializeObject<List<Question>>(payload);
+                            showQuizDetail();
+                        });
+                    }
+                    else BeginInvoke(() => MessageBox.Show("Error:" + payload));
+                });
         }
-
+        private void showQuizDetail()
+        {
+            headerLb.Text = quiz.Title;
+            var questions = quiz.Questions;
+            for (int i = 0; i < questions.Count; i++)
+            {
+                var question = questions[i];
+                richTb.AppendText($"Question {i}:{question.QuestionText}\r\n");
+                for (int j = 0; j < question.Options.Count; j++)
+                {
+                    char optionName = (char)('A' + j);
+                    richTb.AppendText($"{optionName}.{question.Options[j]}\r\n");
+                }
+                richTb.AppendText($"Correct Answer: {question.CorrectAnswer}\r\n");
+                richTb.AppendText("\r\n");
+            }
+        }
         private void hostButton_Click(object sender, EventArgs e)
         {
             QuizAPI.HostGame(quiz.Id, (jobject) =>

@@ -53,7 +53,7 @@ namespace QuizApp_frontend.FormHost
         {
             Label label = new Label();
             label.Name = part.Id;
-            label.Text = $"{part.Name}:{part.TotalScore}";
+            label.Text = $"{part.Name}: {part.TotalScore}";
 
             label.BackColor = SystemColors.Window;
             label.BorderStyle = BorderStyle.FixedSingle;
@@ -82,23 +82,7 @@ namespace QuizApp_frontend.FormHost
                 var label = flowLayoutPanel.Controls[currPosition];
                 if(newPosition != currPosition)
                     flowLayoutPanel.Controls.SetChildIndex(label, newPosition);
-                int diffRank = newPosition - currPosition;
-                if (diffRank > 0)
-                {
-                    label.Text = $"{part.Name}:{part.TotalScore}(+{diffRank} positions)";
-                    label.BackColor = Color.Lime;
-                }
-                else
-                {
-                    label.Text = $"{part.Name}:{part.TotalScore}(Wrong Answer)";
-                    label.BackColor = Color.Tomato;
-                }
-                var task = Task.Run(() =>
-                {
-                    Task.Delay(1000).Wait();
-                    label.Text = $"{part.Name}:{part.TotalScore}";
-                    label.BackColor = SystemColors.Window;
-                });
+                label.Text = $"{part.Name}: {part.TotalScore}";
             }
         }
         private void endButton_Click(object sender, EventArgs e)
