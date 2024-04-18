@@ -37,7 +37,6 @@
             pinCodeTb = new RichTextBox();
             textBox1 = new TextBox();
             pictureBox5 = new PictureBox();
-            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -94,7 +93,7 @@
             // 
             pictureBox4.BackColor = Color.Transparent;
             pictureBox4.Image = Properties.Resources.enter;
-            pictureBox4.Location = new Point(455, 298);
+            pictureBox4.Location = new Point(446, 288);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(211, 129);
             pictureBox4.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -135,28 +134,14 @@
             // pictureBox5
             // 
             pictureBox5.BackColor = Color.Transparent;
-            pictureBox5.Image = Properties.Resources.enter;
-            pictureBox5.Location = new Point(175, 298);
+            pictureBox5.Image = Properties.Resources.Returnn;
+            pictureBox5.Location = new Point(111, 288);
             pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(211, 129);
+            pictureBox5.Size = new Size(284, 160);
             pictureBox5.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox5.TabIndex = 14;
             pictureBox5.TabStop = false;
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.Firebrick;
-            button1.FlatAppearance.BorderColor = Color.Firebrick;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.ForeColor = Color.White;
-            button1.Location = new Point(205, 325);
-            button1.Name = "button1";
-            button1.Size = new Size(138, 71);
-            button1.TabIndex = 15;
-            button1.Text = "Return";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            pictureBox5.Click += pictureBox5_Click;
             // 
             // formJoin
             // 
@@ -164,7 +149,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.joinBackground;
             ClientSize = new Size(800, 450);
-            Controls.Add(button1);
             Controls.Add(pictureBox5);
             Controls.Add(textBox1);
             Controls.Add(pinCodeTb);
@@ -197,6 +181,5 @@
         private RichTextBox pinCodeTb;
         private TextBox textBox1;
         private PictureBox pictureBox5;
-        private Button button1;
     }
 }

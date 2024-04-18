@@ -169,6 +169,9 @@
   <data name="registerbackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resourse\registerbackground.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Returnn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resourse\Returnn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="signin" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resourse\signin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

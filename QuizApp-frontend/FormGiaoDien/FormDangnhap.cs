@@ -22,8 +22,8 @@ namespace QuizApp_frontend
         {
             try
             {
-                FormDangKi dki = new FormDangKi();
-                dki.ShowDialog();
+                FormDangKi f = new FormDangKi(switchChildForm);
+                switchChildForm(f, true);
             }
 
             catch (Exception ex)
@@ -38,7 +38,7 @@ namespace QuizApp_frontend
             Account account = new Account();
             try
             {
-                AccountAPI.Login(richTextBox1.Text, richTextBox2.Text,
+                AccountAPI.Login(richTextBox1.Text, richTextBox2.Tag.ToString(),
                 (jobject) =>
                 {
                     string status = (string)jobject["status"];
@@ -67,7 +67,17 @@ namespace QuizApp_frontend
         private void button1_Click(object sender, EventArgs e)
         {
             formJoin f = new formJoin(switchChildForm);
-            switchChildForm(f, false) ;
+            switchChildForm(f, false);
+        }
+
+        private void richTextBox2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar))
+            {
+                richTextBox2.Tag = e.KeyChar;
+                richTextBox2.AppendText("*");
+                e.Handled = true;
+            }
         }
     }
 }

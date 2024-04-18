@@ -79,9 +79,10 @@ namespace QuizApp_frontend
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+        private void pictureBox5_Click(object sender, EventArgs e)
         {
-            FormDangnhap f=new FormDangnhap(switchChildForm);
+            FormDangnhap f = new FormDangnhap(switchChildForm);
             switchChildForm(f, false);
         }
     }
