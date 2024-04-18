@@ -171,6 +171,7 @@
             passTb.Size = new Size(354, 36);
             passTb.TabIndex = 12;
             passTb.Text = "";
+            passTb.KeyPress += passTb_KeyPress_1;
             // 
             // confirmPassTb
             // 
@@ -181,6 +182,7 @@
             confirmPassTb.Size = new Size(273, 36);
             confirmPassTb.TabIndex = 13;
             confirmPassTb.Text = "";
+            confirmPassTb.KeyPress += confirmPassTb_KeyPress;
             // 
             // nameTb
             // 

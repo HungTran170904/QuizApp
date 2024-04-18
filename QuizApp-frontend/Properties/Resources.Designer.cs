@@ -246,5 +246,21 @@ namespace QuizApp_frontend.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        internal static System.Drawing.Bitmap Returnn
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("Returnn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        internal static System.Drawing.Bitmap joinQuiz
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("joinQuiz", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

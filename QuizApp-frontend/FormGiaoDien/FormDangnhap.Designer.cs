@@ -41,7 +41,6 @@
             pictureBox6 = new PictureBox();
             textBox1 = new TextBox();
             pictureBox7 = new PictureBox();
-            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -141,6 +140,7 @@
             richTextBox2.Size = new Size(223, 36);
             richTextBox2.TabIndex = 6;
             richTextBox2.Text = "";
+            richTextBox2.KeyPress += richTextBox2_KeyPress;
             // 
             // pictureBox6
             // 
@@ -165,27 +165,14 @@
             // pictureBox7
             // 
             pictureBox7.BackColor = Color.Transparent;
-            pictureBox7.Image = Properties.Resources.dangnhap;
-            pictureBox7.Location = new Point(604, 147);
+            pictureBox7.Image = Properties.Resources.joinQuiz;
+            pictureBox7.Location = new Point(572, 137);
             pictureBox7.Name = "pictureBox7";
-            pictureBox7.Size = new Size(200, 101);
+            pictureBox7.Size = new Size(255, 130);
             pictureBox7.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox7.TabIndex = 9;
             pictureBox7.TabStop = false;
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.FromArgb(0, 192, 0);
-            button1.FlatAppearance.BorderColor = Color.FromArgb(0, 192, 0);
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(635, 175);
-            button1.Name = "button1";
-            button1.Size = new Size(127, 51);
-            button1.TabIndex = 10;
-            button1.Text = "Join Quizz";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            pictureBox7.Click += pictureBox7_Click;
             // 
             // FormDangnhap
             // 
@@ -193,7 +180,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.joinside;
             ClientSize = new Size(820, 467);
-            Controls.Add(button1);
             Controls.Add(pictureBox7);
             Controls.Add(textBox1);
             Controls.Add(pictureBox6);
@@ -231,6 +217,5 @@
         private PictureBox pictureBox6;
         private TextBox textBox1;
         private PictureBox pictureBox7;
-        private Button button1;
     }
 }
