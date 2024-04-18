@@ -64,11 +64,6 @@ namespace QuizApp_frontend
             string t = textBox1.Text;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            formJoin f = new formJoin(switchChildForm);
-            switchChildForm(f, false);
-        }
 
         private void richTextBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -78,6 +73,13 @@ namespace QuizApp_frontend
                 richTextBox2.AppendText("*");
                 e.Handled = true;
             }
+        }
+
+        private void pictureBox7_Click(object sender, EventArgs e)
+        {
+
+            formJoin f = new formJoin(switchChildForm);
+            switchChildForm(f, false);
         }
     }
 }

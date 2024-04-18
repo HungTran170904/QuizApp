@@ -41,7 +41,7 @@ namespace QuizApp_frontend
                             DialogResult rs = MessageBox.Show("ban da dang ki thanh cong ");
                             if (rs == DialogResult.OK)
                             {   
-                                switchChildForm(f, false);
+                                switchChildForm(f, true);
                             }
                         }
                         );
