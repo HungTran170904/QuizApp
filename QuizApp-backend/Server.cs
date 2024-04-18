@@ -70,9 +70,9 @@ namespace QuizApp_backend
                         for (int i = 0; i < receivedData.Length - 1; i++)
                         {
                             string data = receivedData[i];
-                            Console.WriteLine("Request: " + data);
+                            //Console.WriteLine("Request: " + data);
                             string response = await HandlePacket(data, client);
-                            Console.WriteLine("Response " + response);
+                            //Console.WriteLine("Response " + response);
                             byte[] resBytes = Encoding.UTF8.GetBytes(response + Constraints.delimiter);
                             await stream.WriteAsync(resBytes, 0, resBytes.Length);
                         }

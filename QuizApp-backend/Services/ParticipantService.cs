@@ -27,6 +27,7 @@ namespace QuizApp_backend.Services
                 throw new RequestException("QuizId "+participant.QuizId+" does not exists");
             if (quiz.IsBlocked)
                 throw new RequestException("The quiz has been blocked");
+            participant.AttendedAt = participant.FinishedAt= DateTime.Now;
             var savedParticipant=_participantRepo.AddParticipant(participant);
             string participantJson = JsonConvert.SerializeObject(savedParticipant);
             Task.Run(() =>

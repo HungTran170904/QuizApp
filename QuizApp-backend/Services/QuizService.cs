@@ -4,6 +4,7 @@ using QuizApp_backend.Exceptions;
 using QuizApp_backend.Models;
 using QuizApp_backend.Repository;
 using QuizApp_backend.Util;
+using System.Diagnostics.Eventing.Reader;
 using System.Net.Sockets;
 using System.Transactions;
 
@@ -67,14 +68,17 @@ namespace QuizApp_backend.Services
         private List<Participant> GetTop3Participants(Quiz quiz)
         {
             var players = _socketService.quizSessions[quiz.Id].Players;
-            List<Participant> participants = _participantRepo.FindByIdsAndQuizId(players.Keys.ToList(),quiz.Id);
+            List<Participant> participants = _participantRepo.FindByIdsAndQuizId(players.Keys.ToList(), quiz.Id);
             participants.Sort((player1, player2) =>
             {
-                if (player1.TotalScore != player2.TotalScore)
-                    return player1.TotalScore - player2.TotalScore;
-                else if (player1.FinishedAt == null) return -1;
-                else if (player2.FinishedAt == null) return 1;
-                else return (player1.FinishedAt < player2.FinishedAt) ? 1 : -1;
+                int scoreDis = player2.TotalScore - player1.TotalScore;
+                if (scoreDis == 0)
+                {
+                    int finishedSecs1 = (player1.FinishedAt.HasValue) ? player1.FinishedAt.Value.Second : 0;
+                    int finishedSecs2 = (player2.FinishedAt.HasValue) ? player2.FinishedAt.Value.Second : 0;
+                    return finishedSecs2 - finishedSecs1;
+                }
+                else return scoreDis;
             });
             Task.Run(() =>
             {
@@ -89,7 +93,7 @@ namespace QuizApp_backend.Services
                 _socketService.RemoveQuizSession(quiz.Id);
             });
             if(participants.Count<4) return participants;
-            else return participants.GetRange(0, 3);
+            else return participants.GetRange(0,3);
         }
         public List<Participant> StopGame(string accountId, string quizId)
         {

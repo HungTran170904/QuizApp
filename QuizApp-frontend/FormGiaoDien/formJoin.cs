@@ -30,7 +30,6 @@ namespace QuizApp_frontend
             Participant part = new Participant();
             part.Name = nameTb.Text;
             part.QuizId = pinCodeTb.Text;
-            part.AttendedAt = DateTime.Now;
             ParticipantAPI.AddParticipant(part, (jobject) =>
             {
                 string status = (string)jobject["status"];
@@ -44,7 +43,7 @@ namespace QuizApp_frontend
                 {
                     if (quizz.Status.Equals("host"))
                     {
-                        FormNguoichoi.formHangCho f = new FormNguoichoi.formHangCho(partt, pinCodeTb.Text, switchChildForm);
+                        formHangCho f = new formHangCho(partt, pinCodeTb.Text, switchChildForm);
                         switchChildForm(f, false);
                     }
                     else if (quizz.Status.Equals("play"))

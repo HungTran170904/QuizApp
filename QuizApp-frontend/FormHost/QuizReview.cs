@@ -1,15 +1,6 @@
 ﻿using Newtonsoft.Json;
 using QuizApp_frontend.API;
 using QuizApp_frontend.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace QuizApp_frontend.FormHost
 {
@@ -47,7 +38,7 @@ namespace QuizApp_frontend.FormHost
             for (int i = 0; i < questions.Count; i++)
             {
                 var question = questions[i];
-                richTb.AppendText($"Question {i}:{question.QuestionText}\r\n");
+                richTb.AppendText($"Question {i+1}:{question.QuestionText}\r\n");
                 for (int j = 0; j < question.Options.Count; j++)
                 {
                     char optionName = (char)('A' + j);

@@ -1,17 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using QuizApp_frontend.API;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using QuizApp_frontend.Models;
-using QuizApp_frontend.FormHost;
+﻿using QuizApp_frontend.Models;
 
 namespace QuizApp_frontend.FormHost
 {
