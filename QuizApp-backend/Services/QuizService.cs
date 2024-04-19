@@ -4,7 +4,6 @@ using QuizApp_backend.Exceptions;
 using QuizApp_backend.Models;
 using QuizApp_backend.Repository;
 using QuizApp_backend.Util;
-using System.Diagnostics.Eventing.Reader;
 using System.Net.Sockets;
 using System.Transactions;
 
@@ -47,13 +46,13 @@ namespace QuizApp_backend.Services
         {
             return _quizRepo.FindByCreatorId(accountId);
         }
-        public void HostGame(string accountId,string quizId, TcpClient client)
+        public string HostGame(string accountId,string quizId, TcpClient client)
         {
             string creatorId=_quizRepo.GetCreatorId(quizId);
             if (creatorId == null || !creatorId.Equals(accountId, StringComparison.OrdinalIgnoreCase))
                 throw new RequestException("You do not have permission to host this game");
             _quizRepo.UpdateStatus(quizId,Constraints.host);
-            _socketService.AddQuizSession(quizId, client);
+            return _socketService.AddQuizSession(quizId, client);
         }
         public void StartGame(string accountId, string quizId)
         {
@@ -76,7 +75,7 @@ namespace QuizApp_backend.Services
                 {
                     int finishedSecs1 = (player1.FinishedAt.HasValue) ? player1.FinishedAt.Value.Second : 0;
                     int finishedSecs2 = (player2.FinishedAt.HasValue) ? player2.FinishedAt.Value.Second : 0;
-                    return finishedSecs2 - finishedSecs1;
+                    return finishedSecs1 - finishedSecs2;
                 }
                 else return scoreDis;
             });

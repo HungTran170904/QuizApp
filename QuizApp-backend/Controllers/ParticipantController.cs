@@ -24,8 +24,10 @@ namespace QuizApp_backend.Controllers
         }
         public string AddParticipant(string payload, TcpClient client)
         {
-            var participant = JsonConvert.DeserializeObject<Participant>(payload); 
-            return _participantService.AddParticipant(participant, client);
+            JObject jobject= JObject.Parse(payload);
+            string name = (string)jobject["name"];
+            string pinCode = (string)jobject["pinCode"];
+            return _participantService.AddParticipant(name,pinCode, client);
         }
     }
 }

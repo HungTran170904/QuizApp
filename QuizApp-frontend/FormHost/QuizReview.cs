@@ -53,8 +53,10 @@ namespace QuizApp_frontend.FormHost
             QuizAPI.HostGame(quiz.Id, (jobject) =>
             {
                 string status = (string)jobject["status"];
+                string payload= (string)jobject["payload"];
                 if (status.Equals("success"))
                 {
+                    quiz.PinCode = payload;
                     WaitingRoom waitingRoom = new WaitingRoom(quiz, this, switchChildForm);
                     BeginInvoke(() => switchChildForm(waitingRoom, true));
                 }

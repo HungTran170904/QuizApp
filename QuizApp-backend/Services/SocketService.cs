@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using QuizApp_backend.Exceptions;
+using QuizApp_backend.Models;
 using QuizApp_backend.Util;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Numerics;
@@ -11,23 +14,47 @@ namespace QuizApp_backend.Services
     public class SocketService
     {
         public Dictionary<string, QuizSession> quizSessions = new Dictionary<string, QuizSession>();
-
-        public void AddQuizSession(string quizId, TcpClient host)
+        public Dictionary<string,string> pinCodes = new Dictionary<string,string>();
+        private Random random = new Random();
+        private int maxPinCode = 10000;
+        public string GetNewPinCode()
+        {
+            if (quizSessions.Count>= (maxPinCode/100))
+                throw new RequestException("Unable to allocate new pin code!");
+            while (true)
+            {
+                string pinCode=random.Next(0,maxPinCode).ToString();
+                if (!pinCodes.ContainsKey(pinCode))
+                    return pinCode;                   
+            }
+        }
+        public string AddQuizSession(string quizId, TcpClient host)
         {
             if (quizSessions.ContainsKey(quizId))
             {
                 quizSessions[quizId].Host = host;
+                return quizSessions[quizId].PinCode;
             }
             else
             {
-                QuizSession quizSession = new QuizSession();
-                quizSession.Host = host;
+                var newPinCode=GetNewPinCode();
+                QuizSession quizSession = new QuizSession()
+                {
+                    Host = host,
+                    PinCode = newPinCode
+                };
+                pinCodes.Add(newPinCode,quizId);
                 quizSessions.Add(quizId, quizSession);
+                return newPinCode;
             }
         }
         public void RemoveQuizSession(string quizId)
         {
-            quizSessions.Remove(quizId);
+            if (quizSessions.ContainsKey(quizId))
+            {
+                pinCodes.Remove(quizSessions[quizId].PinCode);
+                quizSessions.Remove(quizId);
+            }
         }
         public void AddPlayer(string quizId,string partId,TcpClient player)
         {

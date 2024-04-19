@@ -111,11 +111,12 @@
             // 
             pinCodeTb.BackColor = Color.White;
             pinCodeTb.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            pinCodeTb.Location = new Point(256, 87);
+            pinCodeTb.Location = new Point(551, 82);
             pinCodeTb.Name = "pinCodeTb";
             pinCodeTb.ReadOnly = true;
-            pinCodeTb.Size = new Size(426, 34);
+            pinCodeTb.Size = new Size(160, 34);
             pinCodeTb.TabIndex = 8;
+            pinCodeTb.TextAlign = HorizontalAlignment.Center;
             // 
             // pinCodeLb
             // 
@@ -123,7 +124,7 @@
             pinCodeLb.BackColor = SystemColors.Window;
             pinCodeLb.BorderStyle = BorderStyle.FixedSingle;
             pinCodeLb.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-            pinCodeLb.Location = new Point(140, 87);
+            pinCodeLb.Location = new Point(435, 82);
             pinCodeLb.Name = "pinCodeLb";
             pinCodeLb.Size = new Size(110, 32);
             pinCodeLb.TabIndex = 9;
@@ -136,7 +137,7 @@
             endButton.BackColor = Color.OrangeRed;
             endButton.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             endButton.ForeColor = Color.White;
-            endButton.Location = new Point(20, 79);
+            endButton.Location = new Point(27, 78);
             endButton.Name = "endButton";
             endButton.Size = new Size(114, 42);
             endButton.TabIndex = 10;

@@ -11,15 +11,18 @@ namespace QuizApp_frontend.API
 {
     public class ParticipantAPI
     {
-        public static void AddParticipant(Participant participant, Action<JObject> callback)
+        public static void AddParticipant(string name, string pinCode, Action<JObject> callback)
         {
             APIConfig.AddTopic("/participant/addParticipant", (jobject) =>
             {
                 callback(jobject);
                 APIConfig.RemoveTopic("/participant/addParticipant");
             });
+            JObject reqObj = new JObject();
+            reqObj["name"] = name;
+            reqObj["pinCode"] = pinCode;
             APIConfig.SendData("/participant/addParticipant",
-                JsonConvert.SerializeObject(participant));
+                JsonConvert.SerializeObject(reqObj));
         }
     }
 }

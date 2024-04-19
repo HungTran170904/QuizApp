@@ -9,5 +9,6 @@
         public string Status { get; set; } // stop, play, host
         public bool IsBlocked { get; set; } = false;
         public List<Question> Questions { get; set; }
+        public string PinCode { get; set; }
     }
 }

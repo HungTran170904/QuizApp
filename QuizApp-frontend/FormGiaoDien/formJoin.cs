@@ -27,43 +27,43 @@ namespace QuizApp_frontend
 
         private void pictureBox4_Click(object sender, EventArgs e)
         {
-            Participant part = new Participant();
-            part.Name = nameTb.Text;
-            part.QuizId = pinCodeTb.Text;
-            ParticipantAPI.AddParticipant(part, (jobject) =>
+            if (nameTb.Text == "" || pinCodeTb.Text == "")
+            {
+                MessageBox.Show("Please enter both name and pin code of the quiz");
+            }
+            ParticipantAPI.AddParticipant(nameTb.Text,pinCodeTb.Text, (jobject) =>
             {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
-                JObject resObj = JsonConvert.DeserializeObject<JObject>(payload);
                 if (status.Equals("success"))
                 {
-                    Participant partt = JsonConvert.DeserializeObject<Participant>(resObj["participant"].ToString());
+                    JObject resObj = JsonConvert.DeserializeObject<JObject>(payload);
+                    Participant part = JsonConvert.DeserializeObject<Participant>(resObj["participant"].ToString());
                     Quiz quizz = JsonConvert.DeserializeObject<Quiz>(resObj["quiz"].ToString());
                     BeginInvoke(() =>
-                {
-                    if (quizz.Status.Equals("host"))
                     {
-                        formHangCho f = new formHangCho(partt, pinCodeTb.Text, switchChildForm);
-                        switchChildForm(f, false);
-                    }
-                    else if (quizz.Status.Equals("play"))
-                    {
-                        QuestionAPI.GetQuestionsForPlay(pinCodeTb.Text, (jobject) =>
+                        if (quizz.Status.Equals("host"))
                         {
-                            string status = (string)jobject["status"];
-                            string payload = (string)jobject["payload"];
-                            if (status.Equals("success"))
+                            formHangCho f = new formHangCho(part, pinCodeTb.Text, switchChildForm);
+                            switchChildForm(f, false);
+                        }
+                        else if (quizz.Status.Equals("play"))
+                        {
+                            QuestionAPI.GetQuestionsForPlay(pinCodeTb.Text, (jobject) =>
                             {
-                                List<Question> list = JsonConvert.DeserializeObject<List<Question>>(payload);
-                                FormAnwser f2 = new FormAnwser(list, partt, switchChildForm);
-                                switchChildForm(f2, false);
-                            }
-                        });
-
-                    }
-                });
+                                string status = (string)jobject["status"];
+                                string payload = (string)jobject["payload"];
+                                if (status.Equals("success"))
+                                {
+                                    List<Question> list = JsonConvert.DeserializeObject<List<Question>>(payload);
+                                    FormAnwser f2 = new FormAnwser(list, part, switchChildForm);
+                                    switchChildForm(f2, false);
+                                }
+                            });
+                          }
+                    });
                 }
-                else BeginInvoke(() => MessageBox.Show("Error:"));
+                else BeginInvoke(() => MessageBox.Show(payload));
             });
         }
 

@@ -29,7 +29,7 @@ namespace QuizApp_backend.Controllers
             else if(url.Equals("/startGame"))
                 StartGame(accountId,payload);
             else if (url.Equals("/hostGame"))
-                HostGame(accountId,payload, client);
+                result=HostGame(accountId,payload, client);
             else if (url.Equals("/stopGame"))
                 result=StopGame(accountId,payload);
             else if(url.Equals("/updateBlock"))
@@ -50,9 +50,9 @@ namespace QuizApp_backend.Controllers
             var quizzes=_quizService.GetQuizzes(accountId);
             return JsonConvert.SerializeObject(quizzes);
         }
-        public void HostGame(string accountId,string quizId, TcpClient client)
+        public string HostGame(string accountId,string quizId, TcpClient client)
         {
-            _quizService.HostGame(accountId,quizId,client);
+            return _quizService.HostGame(accountId,quizId,client);
         }
         public void StartGame(string accountId, string quizId)
         {
