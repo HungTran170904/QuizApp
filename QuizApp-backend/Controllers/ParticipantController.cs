@@ -14,7 +14,7 @@ namespace QuizApp_backend.Controllers
         { 
             _participantService = participantService;
         }
-        public string routeRequests(string url,string payload,TcpClient client)
+        public string RouteRequests(string url,string payload,TcpClient client)
         {
             url=url.Substring(prefix.Length);
             string result = "";
@@ -24,8 +24,10 @@ namespace QuizApp_backend.Controllers
         }
         public string AddParticipant(string payload, TcpClient client)
         {
-            var participant = JsonConvert.DeserializeObject<Participant>(payload); 
-            return _participantService.AddParticipant(participant, client);
+            JObject jobject= JObject.Parse(payload);
+            string name = (string)jobject["name"];
+            string pinCode = (string)jobject["pinCode"];
+            return _participantService.AddParticipant(name,pinCode, client);
         }
     }
 }

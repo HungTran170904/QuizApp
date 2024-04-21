@@ -26,6 +26,7 @@ namespace QuizApp_backend.Util
             question.TimeOut = reader.GetFieldValue<int>("TimeOut");
             string jsonOptions = reader.GetFieldValue<string>("Options");
             question.Options = JsonNet.Deserialize<List<string>>(jsonOptions);
+            question.CorrectAnswer = reader.GetFieldValue<string>("CorrectAnswer");
             return question;
         }
         public Quiz convertToQuiz(SqlDataReader reader)
@@ -36,6 +37,7 @@ namespace QuizApp_backend.Util
             quiz.Title = reader.GetFieldValue<string>("Title");
             quiz.Status= reader.GetFieldValue<string>("Status");
             quiz.CreatedAt= reader.GetFieldValue<DateTime>("CreatedAt");
+            quiz.IsBlocked = reader.GetFieldValue<bool>("IsBlocked");
             return quiz;
         }
         public Participant convertToParticipant(SqlDataReader reader)

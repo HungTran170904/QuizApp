@@ -19,8 +19,8 @@ namespace QuizApp_backend.Repository
             using(var conn=new SqlConnection(connString))
             {
                 conn.Open();
-                string query = "insert into Quiz(CreatorId,Title,CreatedAt,Status) output inserted.*" +
-                        "values (@CreatorId,@Title,@CreatedAt,@Status)";
+                string query = "insert into Quiz(CreatorId,Title,CreatedAt,Status,IsBlocked) output inserted.*" +
+                        "values (@CreatorId,@Title,@CreatedAt,@Status,@IsBlocked)";
                 SqlCommand sql_cmd = new SqlCommand(query, conn);
                 sql_cmd.Parameters.AddWithValue("CreatorId", quiz.CreatorId);
                 sql_cmd.Parameters.AddWithValue("Title", quiz.Title);
@@ -40,6 +40,7 @@ namespace QuizApp_backend.Repository
                 string query = "update Quiz set Status=@Status where Id=@Id";
                 SqlCommand sql_cmd = new SqlCommand(query, conn);
                 sql_cmd.Parameters.AddWithValue("Status", status);
+                sql_cmd.Parameters.AddWithValue("Id", QuizId);
                 sql_cmd.ExecuteNonQuery();
             }
         }
@@ -50,19 +51,21 @@ namespace QuizApp_backend.Repository
                 conn.Open();
                 string query = "update Quiz set IsBlocked=@IsBlocked where Id=@Id";
                 SqlCommand sql_cmd = new SqlCommand(query, conn);
+                sql_cmd.Parameters.AddWithValue("Id", QuizId);
                 sql_cmd.Parameters.AddWithValue("IsBlocked", IsBlocked);
                 sql_cmd.ExecuteNonQuery();
             }
         }
 
-        public List<Quiz> FindByCreatorId(string accountId)
+        public List<Quiz> FindByCreatorId(string AccountId)
         {
             using (var conn = new SqlConnection(connString))
             {
                 conn.Open();
                 SqlCommand sql_cmd = new SqlCommand("select * from Quiz where CreatorId=@CreatorId", conn);
-                List<Quiz> quizzes = new List<Quiz>();
+                sql_cmd.Parameters.AddWithValue("CreatorId", AccountId);
                 SqlDataReader reader = sql_cmd.ExecuteReader();
+                List<Quiz> quizzes = new List<Quiz>();
                 while (reader.Read())
                 {
                     quizzes.Add(_converter.convertToQuiz(reader));
@@ -76,8 +79,9 @@ namespace QuizApp_backend.Repository
             {
                 conn.Open();
                 SqlCommand sql_cmd = new SqlCommand("select CreatorId from Quiz where Id=@Id", conn);
+                sql_cmd.Parameters.AddWithValue("Id", QuizId);
                 SqlDataReader reader = sql_cmd.ExecuteReader();
-                if (reader.Read()) return reader.GetString(0);
+                if (reader.Read()) return reader.GetGuid(0).ToString();
                 else return null;
             }
         }
@@ -87,6 +91,7 @@ namespace QuizApp_backend.Repository
             {
                 conn.Open();
                 SqlCommand sql_cmd = new SqlCommand("select * from Quiz where Id=@Id", conn);
+                sql_cmd.Parameters.AddWithValue("Id", Id);
                 SqlDataReader reader = sql_cmd.ExecuteReader();
                 if (reader.Read()) return _converter.convertToQuiz(reader);
                 else return null;

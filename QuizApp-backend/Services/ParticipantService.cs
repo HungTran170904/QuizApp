@@ -20,22 +20,26 @@ namespace QuizApp_backend.Services
             _socketService = socketService;
             _quizRepo= quizRepo;
         }
-        public string AddParticipant(Participant participant, TcpClient client)
+        public string AddParticipant(string partName,string pinCode, TcpClient client)
         {
-            Quiz quiz = _quizRepo.FindById(participant.QuizId);
-            if(quiz==null)
-                throw new RequestException("QuizId "+participant.QuizId+" does not exists");
-            if (quiz.IsBlocked)
-                throw new RequestException("The quiz has been blocked");
+            if (!_socketService.pinCodes.ContainsKey(pinCode))
+                throw new RequestException("The pin code you enter does not exists");
+            Participant participant = new Participant()
+            {
+                Name = partName,
+                QuizId = _socketService.pinCodes[pinCode],
+                AttendedAt= DateTime.Now,
+                FinishedAt = DateTime.Now
+            };
             var savedParticipant=_participantRepo.AddParticipant(participant);
             string participantJson = JsonConvert.SerializeObject(savedParticipant);
             Task.Run(() =>
             {
-                _socketService.SendDataToHost(participant.QuizId,"/partcipant/addParticipant",participantJson);
-                _socketService.AddPlayer(participant.QuizId, client);
+                _socketService.SendDataToHost(savedParticipant.QuizId,"/partcipant/addParticipant",participantJson);
+                _socketService.AddPlayer(savedParticipant.QuizId, savedParticipant.Id,client);
             });
             JObject jobject=new JObject();
-            jobject["partipant"] = participantJson;
+            jobject["participant"] = participantJson;
             jobject["quiz"]= JsonConvert.SerializeObject(_quizRepo.FindById(participant.QuizId));
             return JsonConvert.SerializeObject(jobject);
         }

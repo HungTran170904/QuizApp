@@ -4,7 +4,8 @@ namespace QuizApp_backend.Util
 {
     public class QuizSession
     {
+        public string PinCode { get; set; }
         public TcpClient Host { get; set; }
-        public List<TcpClient> Players { get; set; }=new List<TcpClient>();
+        public Dictionary<string,TcpClient> Players { get; set; }=new Dictionary<string,TcpClient>();
     }
 }

@@ -14,7 +14,17 @@ namespace QuizApp_backend.Repository
                 ReaderConverter converter) {
              connString = configuration["ConnectionStrings:DefaultConnection"];
             _converter = converter;
-         }
+        }
+        private DataColumn[] CreateColumnsForQuiz()
+        {
+            DataColumn[] columns = new DataColumn[5];
+            columns[0] = new DataColumn("QuizId", typeof(Guid));
+            columns[1] = new DataColumn("QuestionText", typeof(string));
+            columns[2] = new DataColumn("TimeOut", typeof(int));
+            columns[3] = new DataColumn("Options", typeof(string));
+            columns[4] = new DataColumn("CorrectAnswer", typeof(string));
+            return columns;
+        }
         public Question SaveQuestion(Question question) { 
             using(SqlConnection conn = new SqlConnection(connString))
             {
@@ -33,13 +43,16 @@ namespace QuizApp_backend.Repository
 
             }
         }
-        public List<Question> SaveQuestions(List<Question> questions)
+        public List<Question> SaveQuestions(List<Question> questions, string quizId)
         {
+            
             DataTable dt = new DataTable();
+            DataColumn[] columns = CreateColumnsForQuiz();
+            dt.Columns.AddRange(columns);
             foreach (var question in questions)
             {
                 DataRow dr = dt.NewRow();
-                dr["QuizId"] = question.QuizId;
+                dr["QuizId"]=new Guid(quizId);
                 dr["QuestionText"] = question.QuestionText;
                 dr["CorrectAnswer"] = question.CorrectAnswer;
                 dr["TimeOut"] = question.TimeOut;
@@ -51,22 +64,25 @@ namespace QuizApp_backend.Repository
                 conn.Open();
                 using (SqlBulkCopy bulkCopy = new SqlBulkCopy(conn))
                 {
+                    foreach(var column in columns) 
+                        bulkCopy.ColumnMappings.Add(column.ColumnName, column.ColumnName);
                     bulkCopy.DestinationTableName = "Question";
                     bulkCopy.WriteToServer(dt);
 
                     var sql_cmd = new SqlCommand("Select Id from Question where @@ROWCOUNT>0", conn);
+                    SqlDataReader reader= sql_cmd.ExecuteReader();
                     int rowIndex = 0;
-                    SqlDataReader reader= sql_cmd.ExecuteReader();    
-                    while(reader.Read())
+                    while (reader.Read()&&rowIndex<questions.Count)
                     {
                         questions[rowIndex].Id = reader.GetGuid(0).ToString();
                         rowIndex++;
                     }
                 }
             }
+            dt.Dispose();
             return questions;
         }
-        public List<Question> FindByQuizId(string QuizId)
+        public List<Question> FindByQuizId(string quizId,bool containsAnswer)
         {
             using(var conn=new SqlConnection(connString))
             {
@@ -74,10 +90,15 @@ namespace QuizApp_backend.Repository
                 List<Question> questions = new List<Question>();
                 string query = "select * from Question q where q.QuizId=@QuizId";
                 SqlCommand sql_cmd= new SqlCommand(query, conn);
+                sql_cmd.Parameters.AddWithValue("QuizId", quizId);
                 SqlDataReader reader = sql_cmd.ExecuteReader();
                 while(reader.Read())
                 {
-                    questions.Add(_converter.convertToQuestion(reader));   
+                    Question question = _converter.convertToQuestion(reader);
+                    if(!containsAnswer)
+                        question.CorrectAnswer = null;
+                    questions.Add(question);
+
                 }
                 return questions;
             }

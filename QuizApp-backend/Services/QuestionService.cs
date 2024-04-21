@@ -14,35 +14,33 @@ namespace QuizApp_backend.Services
         private readonly QuestionRepo _questionRepo;
         private readonly ParticipantRepo _participantRepo;
         private readonly SocketService _socketService;
+        private readonly ResultRepo _resultRepo;
         public QuestionService(QuestionRepo questionRepo,
                             ParticipantRepo participantRepo,
-                            SocketService socketService)
+                            SocketService socketService,
+                            ResultRepo resultRepo)
         {
-            _socketService= socketService;
+            _socketService = socketService;
             _questionRepo = questionRepo;
             _participantRepo = participantRepo;
+            _resultRepo = resultRepo;
         }
         public List<Question> GetQuestions(string QuizId)
         {
-            return _questionRepo.FindByQuizId(QuizId);
+            return _questionRepo.FindByQuizId(QuizId,true);
         }
         public List<Question> GetQuestionsForPlay(string QuizId)
         {
-            var questions= _questionRepo.FindByQuizId(QuizId);
-            foreach(var question in questions)
-            {
-                question.CorrectAnswer = null;
-            }
-            return questions;
+            return _questionRepo.FindByQuizId(QuizId,false);
         }
-        private async Task SendScoreToHost(Question question, Result result)
+        private void SendScoreToHost(Question question, Result result)
         {
-            int score = (result.IsCorrect) ? 10 : -10;
-            int totalScore = _participantRepo.AddScore(result.ParticipantId, score);
+            int score = (result.IsCorrect) ? 10 :0;
+            int totalScore = _participantRepo.AddScoreAndFinishedTime(result.ParticipantId, score,DateTime.Now);
             JObject jobject = new JObject();
-            jobject["ParticipantId"] = result.ParticipantId;
-            jobject["TotalScore"] = totalScore;
-            await _socketService.SendDataToHost(question.QuizId,"/question/updateLeaderboard",JsonConvert.SerializeObject(jobject));
+            jobject["participantId"] = result.ParticipantId;
+            jobject["totalScore"] = totalScore;
+            _socketService.SendDataToHost(question.QuizId, "/question/updateLeaderboard", JsonConvert.SerializeObject(jobject));
         }
         public bool AnswerQuestion(Result result)
         {
@@ -52,7 +50,8 @@ namespace QuizApp_backend.Services
             if(!_socketService.quizSessions.ContainsKey(question.QuizId))
                 throw new RequestException("Sorry, the quiz has been closed");
             result.IsCorrect=question.CorrectAnswer.Equals(result.ChoosedOption);
-            SendScoreToHost(question, result);
+            _resultRepo.addResult(result);
+            Task.Run(()=>SendScoreToHost(question, result));
             return result.IsCorrect;
         }
     }
