@@ -49,15 +49,18 @@ namespace QuizApp_frontend
                         }
                         else if (quizz.Status.Equals("play"))
                         {
-                            QuestionAPI.GetQuestionsForPlay(pinCodeTb.Text, (jobject) =>
+                            QuestionAPI.GetQuestionsForPlay(quizz.Id, (jobject) =>
                             {
                                 string status = (string)jobject["status"];
                                 string payload = (string)jobject["payload"];
                                 if (status.Equals("success"))
                                 {
                                     List<Question> list = JsonConvert.DeserializeObject<List<Question>>(payload);
-                                    FormAnwser f2 = new FormAnwser(list, part, switchChildForm);
-                                    switchChildForm(f2, false);
+                                    BeginInvoke(() =>
+                                    {
+                                        FormAnwser f2 = new FormAnwser(list, part, switchChildForm);
+                                        switchChildForm(f2, false);
+                                    });
                                 }
                             });
                           }

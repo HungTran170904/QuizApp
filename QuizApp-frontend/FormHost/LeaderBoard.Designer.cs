@@ -81,6 +81,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "LeaderBoard";
             Text = "LeaderBoard";
+            FormClosing += LeaderBoard_FormClosing;
             ResumeLayout(false);
             PerformLayout();
         }

@@ -162,6 +162,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "WaitingRoom";
             Text = "WaitingRoom";
+            FormClosing += WaitingRoom_FormClosing;
             ResumeLayout(false);
             PerformLayout();
         }

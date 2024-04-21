@@ -39,7 +39,7 @@ namespace QuizApp_frontend
                 if (isSaved) curChildForm.Hide();
                 else curChildForm.Dispose();
             }
-            curChildForm= newForm;
+            curChildForm = newForm;
             showChildForm();
         }
     }

@@ -13,7 +13,7 @@ namespace QuizApp_frontend.FormHost
     public partial class NameCategory : Form
     {
         private AllQuiz allQuiz;
-        private Action<Form,bool> switchChildForm;
+        private Action<Form, bool> switchChildForm;
         public NameCategory(AllQuiz allQuiz, Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
@@ -46,9 +46,14 @@ namespace QuizApp_frontend.FormHost
                 MessageBox.Show("Please fill in the quiz name");
                 return;
             }
-            AddQuestions addQuestions = new AddQuestions(txtname.Text,allQuiz,switchChildForm);
+            AddQuestions addQuestions = new AddQuestions(txtname.Text, allQuiz, switchChildForm);
             switchChildForm(addQuestions, false);
 
+        }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            switchChildForm(allQuiz, false);
         }
     }
 }
