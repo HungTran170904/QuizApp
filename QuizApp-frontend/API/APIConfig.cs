@@ -27,7 +27,7 @@ namespace QuizApp_frontend.API
             string restData = "";
             while ((byteReceived=stream.Read(resBuffer,0, resBuffer.Length))>0)
             {
-                string receivedChunk=UTF8Encoding.UTF8.GetString(resBuffer,0,byteReceived);
+                string receivedChunk=Encoding.UTF8.GetString(resBuffer,0,byteReceived);
                 string[] receivedData = receivedChunk.Split(delimiter);
                 if(receivedData.Length > 0)
                 {
@@ -84,7 +84,7 @@ namespace QuizApp_frontend.API
             jobject["url"] = url;
             jobject["payload"]=data;
             if(MainForm.account!=null) jobject["accountId"]= MainForm.account.Id;
-            byte[] sendBytes=UTF8Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(jobject)+delimiter);
+            byte[] sendBytes=Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(jobject)+delimiter);
             Stream stream=tcpClient.GetStream();
             stream.WriteAsync(sendBytes);
             stream.FlushAsync();

@@ -11,10 +11,10 @@ namespace QuizApp_frontend.FormHost
         private Quiz quiz;
         private Action<Form, bool> switchChildForm;
         private QuizReview quizReview;
-        public LeaderBoard(QuizReview quizReview,Action<Form, bool> switchChildForm,Dictionary<string, Participant> participants,Quiz quiz)
+        public LeaderBoard(QuizReview quizReview, Action<Form, bool> switchChildForm, Dictionary<string, Participant> participants, Quiz quiz)
         {
             InitializeComponent();
-            this.quizReview= quizReview;
+            this.quizReview = quizReview;
             this.participants = participants;
             this.quiz = quiz;
             this.switchChildForm = switchChildForm;
@@ -22,7 +22,7 @@ namespace QuizApp_frontend.FormHost
             {
                 flowLayoutPanel.Controls.Add(createNewLabel(pair.Value));
             }
-            APIConfig.AddTopic("/question/updateLeaderboard",(jobject) =>
+            APIConfig.AddTopic("/question/updateLeaderboard", (jobject) =>
             {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
@@ -31,9 +31,9 @@ namespace QuizApp_frontend.FormHost
                     JObject obj = JsonConvert.DeserializeObject<JObject>(payload);
                     string partId = (string)obj["participantId"];
                     int newScore = (int)obj["totalScore"];
-                    var part = participants[partId];
-                    if (part != null)
+                    if (participants.ContainsKey(partId))
                     {
+                        var part = participants[partId];
                         part.TotalScore = newScore;
                         BeginInvoke(() => changeLabelInOrder(part));
                     }
@@ -71,7 +71,7 @@ namespace QuizApp_frontend.FormHost
             if (newPosition > -1 && currPosition > -1)
             {
                 var label = flowLayoutPanel.Controls[currPosition];
-                if(newPosition != currPosition)
+                if (newPosition != currPosition)
                     flowLayoutPanel.Controls.SetChildIndex(label, newPosition);
                 label.Text = $"{part.Name}: {part.TotalScore}";
             }
@@ -80,7 +80,7 @@ namespace QuizApp_frontend.FormHost
         {
             QuizAPI.StopGame(quiz.Id, (jobject) =>
             {
-                string status = (string) jobject["status"];
+                string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
                 if (status.Equals("success"))
                 {
@@ -90,6 +90,11 @@ namespace QuizApp_frontend.FormHost
                 }
                 else BeginInvoke(() => MessageBox.Show("Error" + payload));
             });
+        }
+
+        private void LeaderBoard_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            APIConfig.RemoveTopic("/question/updateLeaderboard");
         }
     }
 }

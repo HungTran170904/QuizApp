@@ -32,6 +32,7 @@
             label2 = new Label();
             txtname = new TextBox();
             btnnext = new Button();
+            backButton = new Button();
             SuspendLayout();
             // 
             // label1
@@ -87,12 +88,27 @@
             btnnext.UseVisualStyleBackColor = false;
             btnnext.Click += btnnext_Click;
             // 
+            // backButton
+            // 
+            backButton.AutoSize = true;
+            backButton.BackColor = Color.Gray;
+            backButton.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            backButton.ForeColor = Color.White;
+            backButton.Location = new Point(33, 113);
+            backButton.Name = "backButton";
+            backButton.Size = new Size(126, 38);
+            backButton.TabIndex = 8;
+            backButton.Text = "<< Back";
+            backButton.UseVisualStyleBackColor = false;
+            backButton.Click += backButton_Click;
+            // 
             // NameCategory
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Tomato;
             ClientSize = new Size(1059, 613);
+            Controls.Add(backButton);
             Controls.Add(btnnext);
             Controls.Add(txtname);
             Controls.Add(label2);
@@ -110,5 +126,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtname;
         private System.Windows.Forms.Button btnnext;
+        private Button backButton;
     }
 }

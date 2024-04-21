@@ -10,7 +10,7 @@ namespace QuizApp_frontend.FormHost
         private Action<Form, bool> switchChildForm;
         private QuizReview quizReview;
         private Dictionary<string, Participant> participants;
-        public WaitingRoom(Quiz quiz,QuizReview quizReview, Action<Form, bool> switchChildForm)
+        public WaitingRoom(Quiz quiz, QuizReview quizReview, Action<Form, bool> switchChildForm)
         {
             InitializeComponent();
             this.switchChildForm = switchChildForm;
@@ -47,15 +47,15 @@ namespace QuizApp_frontend.FormHost
                 string status = (string)jobject["status"];
                 if (status.Equals("success"))
                 {
-                    LeaderBoard leaderBoard = new LeaderBoard(quizReview,switchChildForm,participants, quiz);
-                    BeginInvoke(()=>switchChildForm(leaderBoard,false));
+                    LeaderBoard leaderBoard = new LeaderBoard(quizReview, switchChildForm, participants, quiz);
+                    BeginInvoke(() => switchChildForm(leaderBoard, false));
                 }
             });
         }
 
         private void blockButton_Click(object sender, EventArgs e)
         {
-            quiz.IsBlocked=!quiz.IsBlocked;
+            quiz.IsBlocked = !quiz.IsBlocked;
             QuizAPI.UpdateBlock(quiz.Id, quiz.IsBlocked, (jobject) =>
             {
                 string status = (string)jobject["status"];
@@ -74,6 +74,11 @@ namespace QuizApp_frontend.FormHost
                 if (status.Equals("success"))
                     BeginInvoke(() => switchChildForm(this.quizReview, false));
             });
+        }
+
+        private void WaitingRoom_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            APIConfig.RemoveTopic("/partcipant/addParticipant");
         }
     }
 }
