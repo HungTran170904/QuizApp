@@ -43,6 +43,7 @@
             richTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             richTextBox1.BackColor = Color.Red;
             richTextBox1.BorderStyle = BorderStyle.None;
+            richTextBox1.Cursor = Cursors.Hand;
             richTextBox1.Font = new Font("Times New Roman", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             richTextBox1.ForeColor = Color.White;
             richTextBox1.Location = new Point(52, 334);
@@ -56,6 +57,7 @@
             richTextBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             richTextBox2.BackColor = Color.Blue;
             richTextBox2.BorderStyle = BorderStyle.None;
+            richTextBox2.Cursor = Cursors.Hand;
             richTextBox2.Font = new Font("Times New Roman", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             richTextBox2.ForeColor = Color.White;
             richTextBox2.Location = new Point(581, 334);
@@ -69,6 +71,7 @@
             richTextBox3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             richTextBox3.BackColor = Color.Orange;
             richTextBox3.BorderStyle = BorderStyle.None;
+            richTextBox3.Cursor = Cursors.Hand;
             richTextBox3.Font = new Font("Times New Roman", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             richTextBox3.ForeColor = Color.White;
             richTextBox3.Location = new Point(52, 441);
@@ -82,6 +85,7 @@
             richTextBox4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             richTextBox4.BackColor = Color.Green;
             richTextBox4.BorderStyle = BorderStyle.None;
+            richTextBox4.Cursor = Cursors.Hand;
             richTextBox4.Font = new Font("Times New Roman", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             richTextBox4.ForeColor = Color.White;
             richTextBox4.Location = new Point(581, 441);
@@ -110,6 +114,7 @@
             // 
             // richTextBox5
             // 
+            richTextBox5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             richTextBox5.Location = new Point(206, 23);
             richTextBox5.Name = "richTextBox5";
             richTextBox5.Size = new Size(729, 248);
