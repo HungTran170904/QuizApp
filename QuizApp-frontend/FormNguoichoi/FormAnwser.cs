@@ -85,7 +85,7 @@ namespace QuizApp_frontend.FormNguoichoi
                     if (IsCorrect)
                         BeginInvoke(() => {
                             timer1.Stop();
-                            DialogResult rss = MessageBox.Show("ban da tra loi dung");
+                            DialogResult rss = MessageBox.Show("CORRECT ANSWER");
                             if (rss == DialogResult.OK)
                             {
                                 i++;
@@ -101,7 +101,7 @@ namespace QuizApp_frontend.FormNguoichoi
                         BeginInvoke(() =>
                         {
                             timer1.Stop();
-                            DialogResult rss = MessageBox.Show("ban da tra loi sai");
+                            DialogResult rss = MessageBox.Show("WRONG ANSWER");
                             if (rss == DialogResult.OK)
                             {
                                 i++;
