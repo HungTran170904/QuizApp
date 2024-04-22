@@ -38,6 +38,6 @@ internal class Program
         var app=builder.Build();
 
         Server server=app.Services.GetService<Server>();
-        _=server.Run();
+        server.Run();
     }
 }
