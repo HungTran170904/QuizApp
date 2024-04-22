@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Newtonsoft.Json.Linq;
 
 namespace QuizApp_frontend.FormNguoichoi
 {
@@ -30,6 +31,21 @@ namespace QuizApp_frontend.FormNguoichoi
             {
                 showQuestion(i);
             }
+            APIConfig.AddTopic("/quiz/stopGameForPlayers", (jobject) =>
+            {
+                string status = (string)jobject["status"];
+                string payload = (string)jobject["payload"];
+                BeginInvoke(() =>
+                {
+                    if (status.Equals("success"))
+                    {
+                        JObject payloadObj = JsonConvert.DeserializeObject<JObject>(payload);
+                        formPodidum podium=new formPodidum(switchChildForm,payloadObj);
+                        switchChildForm(podium, false);
+                    }
+                    else MessageBox.Show("khong nhan dc ket qua");
+                });
+            });
         }
         private void showQuestion(int i)
         {
@@ -122,7 +138,7 @@ namespace QuizApp_frontend.FormNguoichoi
         }
         private void showPoidum()
         {
-            formPodidum f3 = new formPodidum(switchChildForm);
+            formPodidum f3 = new formPodidum(switchChildForm,null);
             switchChildForm(f3, false);
         }
     }
