@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formPodidum));
             Rank = new Button();
             Point = new Button();
             Waiting = new Button();
@@ -38,7 +39,7 @@
             // 
             Rank.BackColor = Color.FromArgb(0, 0, 64);
             Rank.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Rank.Location = new Point(246, 272);
+            Rank.Location = new Point(139, 300);
             Rank.Margin = new Padding(5);
             Rank.Name = "Rank";
             Rank.Size = new Size(202, 95);
@@ -51,7 +52,7 @@
             // 
             Point.BackColor = Color.LightSkyBlue;
             Point.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Point.Location = new Point(502, 272);
+            Point.Location = new Point(660, 300);
             Point.Margin = new Padding(5);
             Point.Name = "Point";
             Point.Size = new Size(212, 95);
@@ -63,8 +64,9 @@
             // Waiting
             // 
             Waiting.BackColor = Color.FromArgb(0, 0, 64);
+            Waiting.BackgroundImageLayout = ImageLayout.Zoom;
             Waiting.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Waiting.Location = new Point(276, 272);
+            Waiting.Location = new Point(308, 455);
             Waiting.Margin = new Padding(5);
             Waiting.Name = "Waiting";
             Waiting.Size = new Size(410, 95);
@@ -87,15 +89,17 @@
             // 
             // formPodidum
             // 
-            AutoScaleDimensions = new SizeF(13F, 31F);
+            AutoScaleDimensions = new SizeF(15F, 38F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            BackgroundImage = Properties.Resources.congratulate;
-            ClientSize = new Size(999, 531);
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(1028, 643);
             Controls.Add(backButton);
             Controls.Add(Waiting);
             Controls.Add(Point);
             Controls.Add(Rank);
+            DoubleBuffered = true;
             Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             ForeColor = Color.White;
             Margin = new Padding(5);
