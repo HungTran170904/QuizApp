@@ -24,7 +24,7 @@ namespace QuizApp_backend
                     QuestionController questionController,
                     ParticipantController partController)
         {
-            ipaddress = IPAddress.Any;
+            ipaddress = IPAddress.Parse(configuration["ServerConfiguration:IpAddress"]);
             port = Int32.Parse(configuration["ServerConfiguration:Port"]);
             _accountController = accountController;
             _quizController = quizController;
