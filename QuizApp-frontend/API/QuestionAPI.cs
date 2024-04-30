@@ -13,25 +13,25 @@ namespace QuizApp_frontend.API
     {
         public static void GetQuestions(string quizId, Action<JObject> callback)
         {
-            APIConfig.AddTopic("/question/getQuestions", (jobject) =>
+            APIClient.AddTopic("/question/getQuestions", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/question/getQuestions");
+                APIClient.RemoveTopic("/question/getQuestions");
             });
-            APIConfig.SendData("/question/getQuestions", quizId);
+            APIClient.SendData("/question/getQuestions", quizId);
         }
         public static void GetQuestionsForPlay(string quizId, Action<JObject> callback)
         {
-            APIConfig.AddTopic("/question/getQuestionsForPlay", (jobject) =>
+            APIClient.AddTopic("/question/getQuestionsForPlay", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/question/getQuestionsForPlay");
+                APIClient.RemoveTopic("/question/getQuestionsForPlay");
             });
-            APIConfig.SendData("/question/getQuestionsForPlay", quizId);
+            APIClient.SendData("/question/getQuestionsForPlay", quizId);
         }
         public void Test()
         {
-            APIConfig.AddTopic("/quiz/stopGameForPlayers", jobject => {
+            APIClient.AddTopic("/quiz/stopGameForPlayers", jobject => {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
                 if (status.Equals("success"))
@@ -44,12 +44,12 @@ namespace QuizApp_frontend.API
         }
         public static void answerQuestion(Result rs,Action<JObject> callback)
         {
-            APIConfig.AddTopic("/question/answerQuestion", (jobject) =>
+            APIClient.AddTopic("/question/answerQuestion", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/question/answerQuestion");
+                APIClient.RemoveTopic("/question/answerQuestion");
             });
-            APIConfig.SendData("/question/answerQuestion", JsonConvert.SerializeObject(rs));
+            APIClient.SendData("/question/answerQuestion", JsonConvert.SerializeObject(rs));
 
         }
     }

@@ -18,7 +18,7 @@ namespace QuizApp_frontend.FormHost
             this.quizReview = quizReview;
             this.switchChildForm = switchChildForm;
             participants = new Dictionary<string, Participant>();
-            APIConfig.AddTopic("/partcipant/addParticipant",
+            APIClient.AddTopic("/partcipant/addParticipant",
             (jobject) =>
             {
                 string status = (string)jobject["status"];
@@ -78,7 +78,7 @@ namespace QuizApp_frontend.FormHost
 
         private void WaitingRoom_FormClosing(object sender, FormClosingEventArgs e)
         {
-            APIConfig.RemoveTopic("/partcipant/addParticipant");
+            APIClient.RemoveTopic("/partcipant/addParticipant");
         }
     }
 }

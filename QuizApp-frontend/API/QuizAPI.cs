@@ -8,70 +8,70 @@ namespace QuizApp_frontend.API
     {
         public static void AddQuiz(Quiz quiz, Action<JObject> callback)
         {
-            APIConfig.AddTopic("/quiz/addQuiz", (jobject) =>
+            APIClient.AddTopic("/quiz/addQuiz", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/quiz/addQuiz");
+                APIClient.RemoveTopic("/quiz/addQuiz");
             });
             string payload=JsonConvert.SerializeObject(quiz);
-            APIConfig.SendData("/quiz/addQuiz", payload);
+            APIClient.SendData("/quiz/addQuiz", payload);
         }
         public static void GetQuizzes(string quizId, Action<JObject> callback)
         {
-            APIConfig.AddTopic("/quiz/getQuizzes", (jobject) =>
+            APIClient.AddTopic("/quiz/getQuizzes", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/quiz/getQuizzes");
+                APIClient.RemoveTopic("/quiz/getQuizzes");
             });
-            APIConfig.SendData("/quiz/getQuizzes", quizId);
+            APIClient.SendData("/quiz/getQuizzes", quizId);
         }
         public static void HostGame(string quizId, Action<JObject> callback)
         {
-            APIConfig.AddTopic("/quiz/hostGame", (jobject) =>
+            APIClient.AddTopic("/quiz/hostGame", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/quiz/hostGame");
+                APIClient.RemoveTopic("/quiz/hostGame");
             });
-            APIConfig.SendData("/quiz/hostGame", quizId);
+            APIClient.SendData("/quiz/hostGame", quizId);
         }
         public static void StartGame(string quizId, Action<JObject> callback)
         {
-            APIConfig.AddTopic("/quiz/startGame", (jobject) =>
+            APIClient.AddTopic("/quiz/startGame", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/quiz/startGame");
+                APIClient.RemoveTopic("/quiz/startGame");
             });
-            APIConfig.SendData("/quiz/startGame", quizId);
+            APIClient.SendData("/quiz/startGame", quizId);
         }
         public static void StopGame(string quizId, Action<JObject> callback)
         {
-            APIConfig.AddTopic("/quiz/stopGame", (jobject) =>
+            APIClient.AddTopic("/quiz/stopGame", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/quiz/stopGame");
+                APIClient.RemoveTopic("/quiz/stopGame");
             });
-            APIConfig.SendData("/quiz/stopGame", quizId);
+            APIClient.SendData("/quiz/stopGame", quizId);
         }
         public static void UpdateBlock(string quizId, bool isBlocked, Action<JObject> callback)
         {
-            APIConfig.AddTopic("/quiz/updateBlock", (jobject) =>
+            APIClient.AddTopic("/quiz/updateBlock", (jobject) =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/quiz/updateBlock");
+                APIClient.RemoveTopic("/quiz/updateBlock");
             });
             JObject jobject = new JObject();
             jobject["quizId"] = quizId;
             jobject["isBlocked"]=isBlocked;
-            APIConfig.SendData("/quiz/updateBlock",JsonConvert.SerializeObject(jobject));
+            APIClient.SendData("/quiz/updateBlock",JsonConvert.SerializeObject(jobject));
         }
         public static void GetQuizReport(string quizId,Action<JObject> callback)
         {
-            APIConfig.AddTopic("/quiz/getQuizReport", jobject =>
+            APIClient.AddTopic("/quiz/getQuizReport", jobject =>
             {
                 callback(jobject);
-                APIConfig.RemoveTopic("/quiz/getQuizReport");
+                APIClient.RemoveTopic("/quiz/getQuizReport");
             });
-            APIConfig.SendData("/quiz/getQuizReport", quizId);
+            APIClient.SendData("/quiz/getQuizReport", quizId);
         }
     }
 }

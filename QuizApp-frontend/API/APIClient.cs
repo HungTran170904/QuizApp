@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace QuizApp_frontend.API
 {
-    public class APIConfig
+    public class APIClient
     {
         private static IPAddress ipaddress;
         private static TcpClient tcpClient=new TcpClient();
@@ -18,7 +18,7 @@ namespace QuizApp_frontend.API
         private static string delimiter = ";";
         public static void InitConnection()
         {
-            ipaddress = IPAddress.Parse("4.144.194.5");
+            ipaddress = IPAddress.Parse(GetLocalIPAddress());
             int port = 8080;
             tcpClient.Connect(ipaddress, port);
             byte[] resBuffer = new byte[1024];

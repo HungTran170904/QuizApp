@@ -23,7 +23,7 @@ namespace QuizApp_frontend.FormNguoichoi
             this.switchChildForm = switchChildForm;
             textBox1.Text = t;
             textBox2.Text = part.Name;
-            APIConfig.AddTopic("/quiz/startGameForPlayers", (jobect) =>
+            APIClient.AddTopic("/quiz/startGameForPlayers", (jobect) =>
             {
                 string status = (string)jobect["status"];
                 string payload = (string)jobect["payload"];

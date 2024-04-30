@@ -22,7 +22,7 @@ namespace QuizApp_frontend.FormHost
             {
                 flowLayoutPanel.Controls.Add(createNewLabel(pair.Value));
             }
-            APIConfig.AddTopic("/question/updateLeaderboard", (jobject) =>
+            APIClient.AddTopic("/question/updateLeaderboard", (jobject) =>
             {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
@@ -94,7 +94,7 @@ namespace QuizApp_frontend.FormHost
 
         private void LeaderBoard_FormClosing(object sender, FormClosingEventArgs e)
         {
-            APIConfig.RemoveTopic("/question/updateLeaderboard");
+            APIClient.RemoveTopic("/question/updateLeaderboard");
         }
     }
 }

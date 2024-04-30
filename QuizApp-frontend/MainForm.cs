@@ -13,7 +13,7 @@ namespace QuizApp_frontend
         {
             try
             {
-                Thread apiThread = new Thread(() => APIConfig.InitConnection());
+                Thread apiThread = new Thread(() => APIClient.InitConnection());
                 apiThread.IsBackground = true;
                 apiThread.Start();
                 InitializeComponent();

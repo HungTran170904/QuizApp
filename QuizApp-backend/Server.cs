@@ -32,7 +32,7 @@ namespace QuizApp_backend
             _partController = partController;
         }
 
-        public async void Run()
+        public void Run()
         {
             TcpListener listener = new TcpListener(ipaddress, port);
             listener.Start();

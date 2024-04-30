@@ -31,7 +31,7 @@ namespace QuizApp_frontend.FormNguoichoi
             {
                 showQuestion(i);
             }
-            APIConfig.AddTopic("/quiz/stopGameForPlayers", (jobject) =>
+            APIClient.AddTopic("/quiz/stopGameForPlayers", (jobject) =>
             {
                 string status = (string)jobject["status"];
                 string payload = (string)jobject["payload"];
